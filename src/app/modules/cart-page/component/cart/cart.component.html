@@ -1,0 +1,129 @@
+
+<app-header></app-header>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="title">
+        <h1 class="mb-4">My Cart</h1>
+    </div>
+    <div class="row">
+        <div class="col mb-5">
+            <!-- Item on Cart -->
+            <div class="items"  *ngFor="let prod of products">
+                <div class="row g-0 ms-4">
+                    <div class="col-md-2 me-2 text-center">
+                        <div class="row m-0 p-0">
+                            <!-- CheckBox -->
+                            <div class="col-1 pt-3">
+                                <div class="form-check">
+                                    <input 
+                                        class="form-check-input" 
+                                        type="checkbox" 
+                                        value="" 
+                                        id="flexCheckDefault"
+                                        [checked]="isSelected(prod)" 
+                                        (change)="toggleSelectProd(prod)"
+                                    >
+                                </div>
+                            </div>
+                            <!-- Image -->
+                            <div class="col-9">
+                                <img [src]=prod.prodImg/>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Details -->
+                    <div class="col-md-9">
+                        <div class="row">
+                            <!-- Item Name -->
+                            <div class="col-sm me-4 mb-2 text-truncate">{{ prod.prodName }}</div>
+                            <!-- Item Price -->
+                            <div class="col-sm">₱{{ prod.prodPrice }}</div>
+                            <!-- Quantity -->
+                            <div class="col-sm-2 mt-2 p-0">
+                                <div class="input-group">
+                                    <button 
+                                        class="btn btn-outline-secondary" 
+                                        type="button" 
+                                        aria-expanded="" 
+                                        (click)="decrease(prod)"
+                                    >
+                                        -
+                                    </button>
+                                    <input 
+                                        type="number" 
+                                        class="form-control" 
+                                        aria-label="" 
+                                        [value]=prod.prodQuantity 
+                                    >
+                                    <button 
+                                        class="btn btn-outline-secondary" 
+                                        type="button" 
+                                        data-bs-toggle="" 
+                                        aria-expanded="" 
+                                        (click)="increase(prod)"
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Delete Button -->
+                            <div class="col-sm-1 d-flex justify-content-end">
+                                <button class="deleteBtn m-3" type="button" id="button-addon2" >
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="fixed-bottom">
+            <div class="row checkoutCont">
+                <div class="col-8">
+                    <!-- Select All button -->
+                    <div class="form-check selectAll">
+                        <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            id="flexCheckDefault"
+                            [(ngModel)]="isSelectAll" 
+                            (change)="selectAllCartProd()"
+                        >
+                        <h4 class="form-check-label" for="flexCheckDefault">
+                            Select All
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-4 d-flex justify-content-end mt-1">
+                    <h4 class="mt-1">₱{{ calculateTotalPrice() }}</h4>
+                    <button 
+                        type="button" 
+                        class="btn btn-success checkoutBtn" 
+                        (click)="checkout()"
+                    >
+                        CHECKOUT({{ countSelectedProd() }})
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

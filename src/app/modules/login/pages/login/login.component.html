@@ -1,0 +1,73 @@
+<div class="wrapper">
+  <div class="ball1"></div>
+  <div class="container">
+    <div class="form-container">
+      <div class="title">
+        <h1>Sign In</h1>
+      </div>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" name="loginForm">
+        <!-- Username -->
+        <div class="group">
+          <label class="inputLbl">Username</label>
+          <input
+            type="text"
+            class="form-control border-bottom"
+            formControlName="username"
+            required
+          />
+          <!-- Validation -->
+          <div
+            class="validation"
+            *ngIf="username?.invalid && (username?.dirty || username?.touched)"
+          >
+            <p *ngIf="username?.errors?.['required']">Username is required.</p>
+          </div>
+        </div>
+
+        <div class="group">
+          <!-- Password -->
+          <label class="inputLbl">Password</label>
+          <input
+            type="password"
+            class="form-control border-bottom"
+            formControlName="password"
+            required
+          />
+          <!-- Validation -->
+          <div
+            class="validation"
+            *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+          >
+            <div *ngIf="password?.errors?.['required']">
+              Password is required.
+            </div>
+            <div *ngIf="password?.errors?.['minlength']">
+              Password must be 8 characters and above.
+            </div>
+            <div *ngIf="password?.errors?.['hasUppercase']">
+              It must contain an uppercase letter.
+            </div>
+            <div *ngIf="password?.errors?.['hasLowercase']">
+              It must contain a lowercase letter.
+            </div>
+            <div *ngIf="password?.errors?.['hasNumber']">
+              It must contain a number.
+            </div>
+          </div>
+        </div>
+        <div class="forgot-password">Forgot Password?</div>
+        <button type="submit" class="loginbtn">SIGN IN</button>
+      </form>
+      <div class="no-acc">
+        Don't have an account? <span routerLink="/register">Sign up</span>
+      </div>
+    </div>
+  </div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <path
+      fill="#ffffff"
+      fill-opacity="1"
+      d="M0,224L48,197.3C96,171,192,117,288,101.3C384,85,480,107,576,144C672,181,768,235,864,224C960,213,1056,139,1152,122.7C1248,107,1344,149,1392,170.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+    ></path>
+  </svg>
+</div>

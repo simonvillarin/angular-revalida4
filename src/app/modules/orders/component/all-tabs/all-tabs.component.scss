@@ -1,0 +1,24 @@
+.container .items{
+    margin-bottom: 10px;
+    background-color: white;
+}
+
+.container .items .row{
+    padding: 10px;
+}
+
+.container .items .row img{
+    width: 70px;
+}
+
+.status {
+    border-bottom: 1px solid rgb(209, 206, 206);
+    padding: 10px;
+}
+
+.status button {
+    border: 0px;
+    border-radius: 15px;
+    padding: 5px 10px 5px 10px;
+    margin-right: 10px;
+}

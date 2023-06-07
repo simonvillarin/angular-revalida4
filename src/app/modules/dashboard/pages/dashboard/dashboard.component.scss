@@ -1,0 +1,279 @@
+.wrapper {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  font-weight: 300;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 0 1rem;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.25);
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+  border-bottom: 1px solid rgb(229, 229, 229);
+  cursor: pointer;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.125rem 1.75rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgb(76, 175, 80);
+  font-size: 1rem;
+  color: rgb(76, 175, 80);
+  cursor: pointer;
+}
+
+.link:hover {
+  background-color: rgb(76, 175, 80);
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(76, 175, 80);
+}
+
+.link-active {
+  background-color: rgb(76, 175, 80);
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(76, 175, 80);
+}
+
+.link:hover mat-icon {
+  color: rgb(255, 255, 255);
+}
+
+mat-icon {
+  font-size: 1.5rem;
+}
+
+main {
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.main-container {
+  padding: 1.5rem;
+}
+
+header {
+  height: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  color: rgb(255, 255, 255);
+  background-color: rgb(76, 175, 80);
+  z-index: 100;
+}
+
+.left-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.location {
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+}
+
+.icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 100vmax;
+  border: 1px solid rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
+  overflow: hidden;
+  cursor: pointer;
+  transition: width 300ms ease-in;
+}
+
+.icon:hover {
+  width: 6rem;
+}
+
+.icon > span {
+  display: none;
+  font-size: 0.75rem;
+}
+
+.icon:hover > span {
+  display: block;
+}
+
+.icon-menu:hover {
+  width: 2.5rem;
+}
+
+i {
+  font-size: 1.5rem;
+}
+
+.icon-menu {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .icon-menu {
+    display: flex;
+  }
+
+  .sidebar {
+    position: absolute;
+    top: 4rem;
+    left: -100%;
+    width: 100%;
+    min-height: calc(100vh - 4rem);
+    transition: left 300ms ease-in;
+  }
+
+  .show-sidebar {
+    left: 0;
+  }
+
+  .wrapper {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  header {
+    padding: 1rem;
+  }
+
+  .left-nav {
+    gap: 1rem;
+  }
+
+  .icon:hover {
+    width: 2.5rem;
+  }
+
+  .icon:hover span {
+    display: none;
+  }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  width: 100%;
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+}
+
+.data {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.icon-box {
+  font-size: 45px;
+  margin-left: 20px;
+}
+
+.bi {
+  font-size: 50px;
+}
+
+.big-font {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 1.3rem;
+  white-space: normal;
+  word-wrap: break-word;
+  text-align: center;
+}
+
+#lineChart {
+  height: 200px;
+}
+.chartCanvas {
+  margin-top: 1.1rem;
+  width: 100%;
+}
+
+.chartCanvas canvas {
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+}
+
+.tblCard {
+  margin-top: 1.1rem;
+  width: 100%;
+  // height: 100%;
+  // display: flex;
+  // flex-direction: column;
+}
+
+.responsive-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+// .demo-table {
+//   width: 100%;
+//   min-width: 800px;
+// }
+
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 1.3rem;
+}
+
+table th {
+  background-color: rgb(76, 175, 80);
+  color: #fff;
+  font-size: 18px;
+}

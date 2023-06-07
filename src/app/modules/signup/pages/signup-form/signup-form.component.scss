@@ -1,0 +1,161 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgb(76, 175, 80);
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem;
+  border-radius: 0.25rem;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+  z-index: 10;
+}
+
+h1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.75rem;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+}
+
+.stepper-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.responsive-stepper {
+  width: 100%;
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .form-container {
+    max-width: none;
+  }
+}
+
+form {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+label {
+  margin: 0;
+}
+
+svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+}
+
+.form-control {
+  height: 40px;
+  border-radius: 0px;
+  border: none;
+  font-weight: 300;
+  margin-bottom: 0.25rem;
+}
+
+.form-control:focus {
+  box-shadow: inset 0px -10px 10px -10px rgba(198, 253, 211, 0.75);
+}
+
+.form-group {
+  margin-top: 1.3rem;
+  max-width: 300px;
+  gap: 0.25rem;
+}
+
+@media (min-width: 576px) {
+  .form-group {
+    max-width: none;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.validation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: red;
+}
+
+.button {
+  color: #fff;
+  width: 100%;
+  padding: 0.875rem;
+  margin-top: 1rem;
+  border-radius: 0.25rem;
+  background-color: rgb(76, 175, 80);
+}
+
+@media (max-width: 576px) {
+  .button-row {
+    flex-direction: column;
+  }
+
+  .button-row button {
+    margin-top: 0.5rem;
+  }
+}
+
+.ball1 {
+  border-radius: 50%;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+}
+
+.ball1 {
+  width: 10rem;
+  height: 10rem;
+  top: 10%;
+  left: 8%;
+  transform: translate(-8%, -10%);
+  animation: float1 3s infinite alternate;
+}
+
+@keyframes float1 {
+  0% {
+    top: 20%;
+    left: 12%;
+    transform: translate(-12%, -20%);
+  }
+  25% {
+    top: 40%;
+    left: 10%;
+    transform: translate(-10%, -40%);
+  }
+  50% {
+    top: 30%;
+    left: 15%;
+    transform: translate(-15%, -30%);
+  }
+  100% {
+    top: 12%;
+    left: 8%;
+    transform: translate(-8%, -12%);
+  }
+}

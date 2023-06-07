@@ -1,0 +1,76 @@
+<header>
+  <div class="container">
+    <div class="icon" id="menu" (click)="toggleMenu()">
+      <i class="bi bi-list" *ngIf="!isShowMenu"></i>
+      <i class="bi bi-x" *ngIf="isShowMenu"></i>
+    </div>
+    <div class="logo">LOGO</div>
+    <div class="nav-list" [class.show-nav]="isShowMenu">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/home"
+          routerLinkActive="nav-link-active"
+          >HOME</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/computers"
+          routerLinkActive="nav-link-active"
+          >COMPUTERS</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/components"
+          routerLinkActive="nav-link-active"
+          >COMPONENTS</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/peripherals"
+          routerLinkActive="nav-link-active"
+          >PERIPHERALS</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/contacts"
+          routerLinkActive="nav-link-active"
+          >CONTACTS</a
+        >
+      </li>
+    </div>
+    <div class="icons">
+      <div class="icon search-icon">
+        <i class="bi bi-search" (click)="toggleSearch()"></i>
+        <div class="search" [class.show-search]="isShowSearch">
+          <div class="search-container">
+            <i class="bi bi-search" id="search"></i>
+            <input type="text" [(ngModel)]="searchInput" />
+            <i class="bi bi-x" id="close" (click)="clearInput()"></i>
+          </div>
+        </div>
+      </div>
+      <div class="icon">
+        <i class="bi bi-cart2"></i>
+        <div class="cart-count">10</div>
+      </div>
+      <div class="icon icon-person" (click)="toggleDropdown()">
+        <i class="bi bi-person"></i>
+        <div class="dropdown" [class.show-dropdown]="isShowDropdown">
+          <div routerLink="/cart">My Cart</div>
+          <div routerLink="/orders">My Orders</div>
+          <div routerLink="/profile">Profile</div>
+          <div (click)="logout()">Logout</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

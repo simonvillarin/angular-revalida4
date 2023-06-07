@@ -1,0 +1,530 @@
+<div class="wrapper">
+  <div class="ball1"></div>
+  <div class="container">
+    <div class="form-container">
+      <!-- Title -->
+      <div class="title">
+        <h1>Sign Up</h1>
+      </div>
+      <!-- Form -->
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <div class="stepper-wrapper">
+          <mat-stepper
+            labelPosition="bottom"
+            linear
+            #stepper
+            class="responsive-stepper"
+          >
+            <!-- linear="isPersonalInfoValid()" -->
+            <!-- Step 1 Personal Info -->
+            <mat-step
+              [stepControl]="personalInfoForm"
+              label="Personal Information"
+            >
+              <!-- Firstname -->
+              <form [formGroup]="personalInfoForm">
+                <div class="row gx-5">
+                  <div class="col col-md">
+                    <div class="form-group">
+                      <label>First Name</label>
+                      <input
+                        type="text"
+                        class="form-control border-bottom"
+                        formControlName="firstName"
+                        required
+                      />
+                      <mat-error
+                        *ngIf="
+                          personalInfoForm.get('firstName')?.invalid &&
+                          personalInfoForm.get('firstName')?.touched
+                        "
+                      >
+                        Firstname is Required
+                      </mat-error>
+                    </div>
+                  </div>
+                  <!-- Lastname -->
+                  <div class="col col-md">
+                    <div class="form-group">
+                      <label>Last Name</label>
+                      <input
+                        type="text"
+                        class="form-control border-bottom"
+                        formControlName="lastName"
+                        required
+                      />
+                      <mat-error
+                        *ngIf="
+                          personalInfoForm.get('lastName')?.invalid &&
+                          personalInfoForm.get('lastName')?.touched
+                        "
+                      >
+                        Lastname is Required
+                      </mat-error>
+                    </div>
+                  </div>
+                </div>
+                <!-- Middlename -->
+                <div class="row gx-5">
+                  <div class="col col-md">
+                    <div class="form-group">
+                      <label>Middle Name</label>
+                      <input type="text" class="form-control border-bottom" />
+                    </div>
+                  </div>
+                  <!-- Birthday -->
+                  <div class="col col-md">
+                    <div class="form-group">
+                      <label>Birthday</label>
+                      <input
+                        type="date"
+                        class="form-control border-bottom"
+                        formControlName="birthdate"
+                      />
+                      <div
+                        class="validation"
+                        *ngIf="
+                          personalInfoForm.get('birthdate')?.invalid &&
+                          (personalInfoForm.get('birthdate')?.dirty ||
+                            personalInfoForm.get('birthdate')?.touched)
+                        "
+                      >
+                        <div
+                          *ngIf="
+                            personalInfoForm
+                              .get('birthdate')
+                              ?.hasError('required')
+                          "
+                        >
+                          Birthday is required
+                        </div>
+                        <div
+                          *ngIf="
+                            personalInfoForm
+                              .get('birthdate')
+                              ?.hasError('futureDate')
+                          "
+                        >
+                          Birthday cannot be today or in the future.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Interests -->
+                <div class="row gx-5">
+                  <div class="form-group">
+                    <label>Interest</label>
+                    <input
+                      class="form-control border-bottom"
+                      type="text"
+                      #interestInput
+                      [formControl]="interestCtrl"
+                      [matChipInputFor]="chipGrid"
+                      [matAutocomplete]="auto"
+                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      (matChipInputTokenEnd)="add($event)"
+                    />
+                    <mat-chip-grid #chipGrid aria-label="Interest selection">
+                      <mat-chip-row
+                        *ngFor="let interest of interests"
+                        (removed)="remove(interest)"
+                      >
+                        {{ interest }}
+                        <button
+                          matChipRemove
+                          [attr.aria-label]="'remove ' + interest"
+                        >
+                          <mat-icon>cancel</mat-icon>
+                        </button>
+                      </mat-chip-row>
+                    </mat-chip-grid>
+                    <mat-autocomplete
+                      #auto="matAutocomplete"
+                      (optionSelected)="selected($event)"
+                    >
+                      <mat-option
+                        *ngFor="let interest of filteredInterests | async"
+                        [value]="interest"
+                      >
+                        {{ interest }}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-error
+                      *ngIf="
+                        interests.length < 3 &&
+                        (interestCtrl?.invalid ||
+                          interestCtrl?.touched ||
+                          interestCtrl?.dirty)
+                      "
+                    >
+                      Select Atleast 3 Interests
+                    </mat-error>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  class="button"
+                  matStepperNext
+                  [disabled]="personalInfoForm.invalid || interests.length < 3"
+                >
+                  <!-- [disabled]="personalInfoForm.invalid || interests.length < 3" -->
+                  Next
+                </button>
+              </form>
+            </mat-step>
+            <!-- Address -->
+            <mat-step
+              [stepControl]="addressInfoForm"
+              label="Address Information"
+            >
+              <form [formGroup]="addressInfoForm">
+                <!-- House Number -->
+                <div class="row gx-5">
+                  <div class="col col-md">
+                    <div class="form-group">
+                      <label>House No. | Unit | Floor No.</label>
+                      <input
+                        type="text"
+                        class="form-control border-bottom"
+                        formControlName="houseNo"
+                        required
+                      />
+                      <mat-error
+                        *ngIf="
+                          addressInfoForm.get('houseNo')?.invalid &&
+                          addressInfoForm.get('houseNo')?.touched
+                        "
+                      >
+                        House No. is Required
+                      </mat-error>
+                    </div>
+                  </div>
+                  <!-- Bldg Name -->
+                  <div class="col col-md">
+                    <div class="form-group">
+                      <label>Building Name</label>
+                      <input
+                        type="text"
+                        class="form-control border-bottom"
+                        formControlName="buildingName"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row gx-5">
+                  <!-- Street -->
+                  <div class="col col-md">
+                    <div class="form-group">
+                      <label>Street</label>
+                      <input
+                        type="text"
+                        class="form-control border-bottom"
+                        formControlName="streetName"
+                      />
+                      <mat-error
+                        *ngIf="
+                          addressInfoForm.get('streetName')?.invalid &&
+                          addressInfoForm.get('streetName')?.touched
+                        "
+                      >
+                        Street is Required
+                      </mat-error>
+                    </div>
+                  </div>
+                </div>
+                <div class="row gx-5">
+                  <!-- City -->
+                  <div class="col col-md">
+                    <div class="form-group">
+                      <label>City</label>
+                      <input
+                        type="text"
+                        class="form-control border-bottom"
+                        formControlName="city"
+                      />
+                      <mat-error
+                        *ngIf="
+                          addressInfoForm.get('city')?.invalid &&
+                          addressInfoForm.get('city')?.touched
+                        "
+                      >
+                        City is Required
+                      </mat-error>
+                    </div>
+                  </div>
+                  <!-- BRGY -->
+                  <div class="col col-md">
+                    <div class="form-group">
+                      <label>Barangay</label>
+                      <input
+                        type="text"
+                        class="form-control border-bottom"
+                        formControlName="brgy"
+                      />
+                      <mat-error
+                        *ngIf="
+                          addressInfoForm.get('brgy')?.invalid &&
+                          addressInfoForm.get('brgy')?.touched
+                        "
+                      >
+                        Barangay is Required
+                      </mat-error>
+                    </div>
+                  </div>
+                  <!-- Zip Code -->
+                  <div class="col col-md">
+                    <div class="form-group">
+                      <label>Zip Code</label>
+                      <input
+                        type="number"
+                        class="form-control border-bottom"
+                        formControlName="zipCode"
+                      />
+                      <div
+                        class="validation"
+                        *ngIf="
+                          addressInfoForm.get('zipCode')?.invalid &&
+                          (addressInfoForm.get('zipCode')?.dirty ||
+                            addressInfoForm.get('zipCode')?.touched)
+                        "
+                      >
+                        <div
+                          *ngIf="
+                            addressInfoForm.get('zipCode')?.hasError('required')
+                          "
+                        >
+                          Zip Code is Required.
+                        </div>
+                        <div
+                          *ngIf="
+                            addressInfoForm
+                              .get('zipCode')
+                              ?.hasError('maxLength')
+                          "
+                        >
+                          Invalid Zip Code.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Province -->
+                <div class="row gx-5">
+                  <div class="col col-md">
+                    <div class="form-group">
+                      <label>Province</label>
+                      <input
+                        type="text"
+                        class="form-control border-bottom"
+                        formControlName="Province"
+                      />
+                      <mat-error
+                        *ngIf="
+                          addressInfoForm.get('Province')?.invalid &&
+                          addressInfoForm.get('Province')?.touched
+                        "
+                      >
+                        Province Code is Required
+                      </mat-error>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="button"
+                  matStepperNext
+                  [disabled]="addressInfoForm.invalid"
+                >
+                  Next
+                </button>
+              </form>
+            </mat-step>
+            <!-- Step 2 Login Credentials -->
+            <mat-step
+              [stepControl]="loginCredentialForm"
+              label="Login Credentials"
+            >
+              <form [formGroup]="loginCredentialForm">
+                <!-- Email -->
+                <div class="row gx-5">
+                  <div class="form-group">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      class="form-control border-bottom"
+                      placeholder="email@example.com"
+                      formControlName="email"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="
+                        loginCredentialForm.get('email')?.invalid &&
+                        loginCredentialForm.get('email')?.touched
+                      "
+                      >{{ getErrorMessage() }}</mat-error
+                    >
+                  </div>
+                </div>
+                <!-- Username -->
+                <div class="row gx-5">
+                  <div class="form-group">
+                    <label>Username</label>
+                    <input
+                      type="text"
+                      class="form-control border-bottom"
+                      formControlName="username"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="
+                        loginCredentialForm.get('username')?.invalid &&
+                        loginCredentialForm.get('username')?.touched
+                      "
+                    >
+                      Username is Required
+                    </mat-error>
+                  </div>
+                </div>
+
+                <!-- Password -->
+                <div class="row gx-5">
+                  <div class="form-group">
+                    <label>Password</label>
+                    <input
+                      [type]="showPassword ? 'text' : 'password'"
+                      class="form-control border-bottom"
+                      formControlName="password"
+                      required
+                    />
+                    <mat-icon matSuffix (click)="togglePasswordVisibility()"
+                      >visibility</mat-icon
+                    >
+                    <div
+                      class="validation"
+                      *ngIf="
+                        loginCredentialForm.get('password')?.invalid &&
+                        loginCredentialForm.get('password')?.dirty
+                      "
+                    >
+                      <div
+                        *ngIf="
+                          loginCredentialForm
+                            .get('password')
+                            ?.hasError('required')
+                        "
+                      >
+                        Password is required.
+                      </div>
+                      <div
+                        *ngIf="
+                          loginCredentialForm
+                            .get('password')
+                            ?.hasError('minlength')
+                        "
+                      >
+                        Password must be 8 characters and above.
+                      </div>
+                      <div
+                        *ngIf="
+                          loginCredentialForm
+                            .get('password')
+                            ?.hasError('hasNumber')
+                        "
+                      >
+                        It must contain a number.
+                      </div>
+                      <div
+                        *ngIf="
+                          loginCredentialForm
+                            .get('password')
+                            ?.hasError('hasLowercase')
+                        "
+                      >
+                        It must contain a lowercase letter.
+                      </div>
+                      <div
+                        *ngIf="
+                          loginCredentialForm
+                            .get('password')
+                            ?.hasError('hasUppercase')
+                        "
+                      >
+                        It must contain an uppercase letter.
+                      </div>
+                      <div
+                        *ngIf="
+                          loginCredentialForm
+                            .get('password')
+                            ?.hasError('hasSymbol')
+                        "
+                      >
+                        It must contain a symbol.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Confirm Password -->
+                <div class="row gx-5">
+                  <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input
+                      [type]="showConfirmPassword ? 'text' : 'password'"
+                      class="form-control border-bottom"
+                      formControlName="confirmPass"
+                      required
+                    />
+
+                    <mat-icon
+                      matSuffix
+                      (click)="toggleConfirmPasswordVisibility()"
+                      >visibility</mat-icon
+                    >
+                    <div
+                      class="validation"
+                      *ngIf="
+                        loginCredentialForm.get('confirmPass')?.invalid &&
+                        (loginCredentialForm.get('confirmPass')?.dirty ||
+                          loginCredentialForm.get('confirmPass')?.touched)
+                      "
+                    >
+                      <div
+                        *ngIf="
+                          loginCredentialForm
+                            .get('confirmPass')
+                            ?.hasError('required')
+                        "
+                      >
+                        Password is required.
+                      </div>
+                      <div
+                        *ngIf="
+                          loginCredentialForm
+                            .get('confirmPass')
+                            ?.hasError('passwordMismatch')
+                        "
+                      >
+                        Passwords do not match.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <button class="button" [disabled]="loginCredentialForm.invalid">
+                Sign Up
+              </button>
+            </mat-step>
+          </mat-stepper>
+        </div>
+      </form>
+    </div>
+  </div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <path
+      fill="#ffffff"
+      fill-opacity="1"
+      d="M0,224L48,197.3C96,171,192,117,288,101.3C384,85,480,107,576,144C672,181,768,235,864,224C960,213,1056,139,1152,122.7C1248,107,1344,149,1392,170.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+    ></path>
+  </svg>
+</div>

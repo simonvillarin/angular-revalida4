@@ -1,0 +1,16 @@
+.container {
+  margin-top: 3rem;
+}
+
+h2 {
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.5rem;
+}

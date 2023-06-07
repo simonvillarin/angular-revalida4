@@ -1,0 +1,100 @@
+<app-header></app-header>
+
+<div class="container">
+  <div class="filter">
+    <div>
+      <div class="title">Price</div>
+      <mat-slider min="200" max="500">
+        <input value="300" matSliderStartThumb />
+        <input value="400" matSliderEndThumb />
+      </mat-slider>
+    </div>
+    <div>
+      <div class="title">Category</div>
+      <div class="checkbox-container">
+        <mat-checkbox color="primary">Chassis</mat-checkbox>
+        <mat-checkbox color="primary">Processor</mat-checkbox>
+        <mat-checkbox color="primary">Storage</mat-checkbox>
+        <mat-checkbox color="primary">Motherboard</mat-checkbox>
+        <mat-checkbox color="primary">Cooler</mat-checkbox>
+        <mat-checkbox color="primary">Graphics Card</mat-checkbox>
+        <mat-checkbox color="primary">Power Supply</mat-checkbox>
+        <mat-checkbox color="primary">Memory</mat-checkbox>
+      </div>
+    </div>
+    <div>
+      <div class="title">Brands</div>
+      <div class="checkbox-container">
+        <mat-checkbox color="primary">ASRock</mat-checkbox>
+        <mat-checkbox color="primary">ASUS</mat-checkbox>
+        <mat-checkbox color="primary">Gigabyte</mat-checkbox>
+        <mat-checkbox color="primary">MSI</mat-checkbox>
+        <mat-checkbox color="primary">NZXT</mat-checkbox>
+      </div>
+    </div>
+  </div>
+  <div class="card-container">
+    <app-card
+      [img]="img"
+      [productName]="productName"
+      [price]="price"
+    ></app-card>
+    <app-card
+      [img]="img"
+      [productName]="productName"
+      [price]="price"
+    ></app-card>
+    <app-card
+      [img]="img"
+      [productName]="productName"
+      [price]="price"
+    ></app-card>
+    <app-card
+      [img]="img"
+      [productName]="productName"
+      [price]="price"
+    ></app-card>
+    <app-card
+      [img]="img"
+      [productName]="productName"
+      [price]="price"
+    ></app-card>
+    <app-card
+      [img]="img"
+      [productName]="productName"
+      [price]="price"
+    ></app-card>
+    <app-card
+      [img]="img"
+      [productName]="productName"
+      [price]="price"
+    ></app-card>
+    <app-card
+      [img]="img"
+      [productName]="productName"
+      [price]="price"
+    ></app-card>
+    <app-card
+      [img]="img"
+      [productName]="productName"
+      [price]="price"
+    ></app-card>
+    <app-card
+      [img]="img"
+      [productName]="productName"
+      [price]="price"
+    ></app-card>
+    <app-card
+      [img]="img"
+      [productName]="productName"
+      [price]="price"
+    ></app-card>
+    <app-card
+      [img]="img"
+      [productName]="productName"
+      [price]="price"
+    ></app-card>
+  </div>
+</div>
+
+<app-footer></app-footer>

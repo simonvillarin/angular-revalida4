@@ -1,0 +1,261 @@
+<div class="wrapper">
+  <div class="sidebar" [class.show-sidebar]="isShowMenu">
+    <div class="logo">Logo</div>
+    <nav>
+      <div class="link" routerLink="/dashboard" routerLinkActive="link-active">
+        <mat-icon fontIcon="dashboard"></mat-icon>Dashboard
+      </div>
+      <div class="link" routerLink="/products" routerLinkActive="link-active">
+        <mat-icon fontIcon="inventory"></mat-icon>Product List
+      </div>
+      <div class="link" routerLink="/users" routerLinkActive="link-active">
+        <mat-icon fontIcon="person"></mat-icon>User List
+      </div>
+    </nav>
+  </div>
+  <main>
+    <header>
+      <div class="left-nav">
+        <div class="icon icon-menu" (click)="toggleMenu()">
+          <i class="bi bi-list" *ngIf="!isShowMenu"></i>
+          <i class="bi bi-x" *ngIf="isShowMenu"></i>
+        </div>
+        <div class="location">Dashboard</div>
+      </div>
+      <div class="icon" (click)="logout()">
+        <mat-icon fontIcon="person"></mat-icon><span>Logout</span>
+      </div>
+    </header>
+    <div class="main-container">
+      <!-- Form -->
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">User's Information</h5>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row gx-5">
+              <div class="col col-md-4">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    class="form-control border-bottom"
+                    placeholder="Enter first name"
+                  />
+                </div>
+              </div>
+              <div class="col col-md-4">
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    class="form-control border-bottom"
+                    placeholder="Enter last name"
+                  />
+                </div>
+              </div>
+              <div class="col col-md-4">
+                <div class="form-group">
+                  <label>Middle Name</label>
+                  <input
+                    type="text"
+                    class="form-control border-bottom"
+                    placeholder="Enter middle name"
+                  />
+                </div>
+              </div>
+              <div class="col col-md">
+                <div class="form-group">
+                  <label>Birthday</label>
+                  <input type="date" class="form-control border-bottom" />
+                </div>
+              </div>
+              <div class="col col-md">
+                <div class="form-group">
+                  <label>Interest</label>
+                  <input
+                    class="form-control border-bottom"
+                    type="text"
+                    #interestInput
+                    placeholder="New Interest..."
+                    [formControl]="interestCtrl"
+                    [matChipInputFor]="chipGrid"
+                    [matAutocomplete]="auto"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="add($event)"
+                  />
+                  <mat-chip-grid #chipGrid aria-label="Interest selection">
+                    <mat-chip-row
+                      *ngFor="let interest of interests"
+                      (removed)="remove(interest)"
+                    >
+                      {{ interest }}
+                      <button
+                        matChipRemove
+                        [attr.aria-label]="'remove ' + interest"
+                      >
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+                    </mat-chip-row>
+                  </mat-chip-grid>
+                  <mat-autocomplete
+                    #auto="matAutocomplete"
+                    (optionSelected)="selected($event)"
+                  >
+                    <mat-option
+                      *ngFor="let interest of filteredInterests | async"
+                      [value]="interest"
+                    >
+                      {{ interest }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </div>
+              </div>
+            </div>
+            <div class="row gx-5">
+              <div class="col col-md-4">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    class="form-control border-bottom"
+                    placeholder="example@email.com"
+                  />
+                </div>
+              </div>
+              <div class="col col-md-4">
+                <div class="form-group">
+                  <label>Username</label>
+                  <input
+                    type="text"
+                    class="form-control border-bottom"
+                    placeholder="Enter username"
+                  />
+                </div>
+              </div>
+              <div class="col col-md-4">
+                <div class="form-group">
+                  <label>Role</label>
+                  <select class="form-select" aria-label="Birthday">
+                    <option hidden>Select Role</option>
+                    <option value="1">Admin</option>
+                    <option value="2">Customer</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col col-md">
+                <div class="form-group">
+                  <label>Password</label>
+                  <input
+                    type="password"
+                    class="form-control border-bottom"
+                    placeholder="Enter Password"
+                  />
+                </div>
+              </div>
+              <div class="col col-md">
+                <div class="form-group">
+                  <label>Confirm Password</label>
+                  <input
+                    type="password"
+                    class="form-control border-bottom"
+                    placeholder="Confirm Password"
+                  />
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-success">Add</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- User lists table -->
+
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Users List</h5>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control border-bottom"
+              id="item-name"
+              placeholder="Search Item"
+            />
+          </div>
+          <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource">
+              <!-- Position Column -->
+              <ng-container matColumnDef="firstName">
+                <th mat-header-cell *matHeaderCellDef>First Name</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.firstName }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="lastName">
+                <th mat-header-cell *matHeaderCellDef>Last Name</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.lastName }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="middleName">
+                <th mat-header-cell *matHeaderCellDef>Middle Name</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.middleName }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="birthdate">
+                <th mat-header-cell *matHeaderCellDef>Birthdate</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.birthdate | date }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="username">
+                <th mat-header-cell *matHeaderCellDef>Username</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.username }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="listOfInterest">
+                <th mat-header-cell *matHeaderCellDef>List of Interest</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.listOfInterest }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="role">
+                <th mat-header-cell *matHeaderCellDef>Role</th>
+                <td mat-cell *matCellDef="let element">{{ element.role }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element">
+                  <button class="btn btn-success">Edit</button>
+                  <button class="btn btn-danger">Delete</button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+
+            <mat-paginator
+              [pageSizeOptions]="[5, 10, 20]"
+              showFirstLastButtons
+              aria-label="Select page of periodic elements"
+            >
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

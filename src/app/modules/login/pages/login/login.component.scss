@@ -1,0 +1,142 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgb(76, 175, 80);
+}
+
+svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  border-radius: 0.25rem;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+  z-index: 10;
+}
+
+h1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.75rem;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+}
+
+form {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+label {
+  margin: 0;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.form-control {
+  height: 40px;
+  border-radius: 0px;
+  border: none;
+  font-weight: 300;
+}
+
+.form-control:focus {
+  box-shadow: inset 0px -10px 10px -10px rgba(198, 253, 211, 0.75);
+}
+
+// form validation
+.validation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: red;
+}
+
+.forgot-password {
+  text-align: right;
+  cursor: pointer;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+button {
+  margin-top: 0.5rem;
+  padding: 0.875rem;
+  margin-bottom: 1rem;
+  color: rgb(255, 255, 255);
+  background-color: rgb(76, 175, 80);
+  border-radius: 0.25rem;
+}
+
+.no-acc {
+  text-align: center;
+}
+
+.no-acc span {
+  color: rgb(76, 175, 80);
+  cursor: pointer;
+}
+
+.no-acc span:hover {
+  text-decoration: underline;
+}
+
+.ball1 {
+  border-radius: 50%;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+}
+
+.ball1 {
+  width: 10rem;
+  height: 10rem;
+  top: 10%;
+  left: 8%;
+  transform: translate(-8%, -10%);
+  animation: float1 3s infinite alternate;
+}
+
+@keyframes float1 {
+  0% {
+    top: 20%;
+    left: 12%;
+    transform: translate(-12%, -20%);
+  }
+  25% {
+    top: 40%;
+    left: 10%;
+    transform: translate(-10%, -40%);
+  }
+  50% {
+    top: 30%;
+    left: 15%;
+    transform: translate(-15%, -30%);
+  }
+  100% {
+    top: 12%;
+    left: 8%;
+    transform: translate(-8%, -12%);
+  }
+}

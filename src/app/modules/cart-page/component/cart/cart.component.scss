@@ -1,0 +1,97 @@
+.container {
+    max-width: 100%;
+}
+
+.title {
+    padding-top: 30px;
+    margin: 10px 20px 0px 20px;
+    border-bottom: 1px solid rgb(222, 221, 221);
+}
+
+.tabCont h1 {
+    font-weight: 400;
+    color: #484a47;
+    padding-left: 35px;
+    font-size: xx-large;
+}
+
+.container .items {
+    border: 1px solid rgb(222, 221, 221);
+    margin: 20px;
+}
+
+.container .items .row{
+    padding-top: 10px;
+}
+
+.container .items .row img{
+    width: 70px;
+}
+
+.input-group input {
+    max-width: 35px;
+    height: 30px;
+    padding: 5px;
+    text-align: center;
+}
+
+.input-group input:focus {
+    box-shadow: none;
+}
+
+.input-group button {
+    max-width: 50px;
+    height: 30px;
+    padding: 5px 10px 5px 10px;
+    border: none;
+    border-radius: 0px;
+}
+
+.deleteBtn {
+    border: none;
+    background-color: transparent;
+}
+
+.deleteBtn i {
+    font-size: 1.5em;
+    color: rgb(23, 105, 34);
+}
+
+.deleteBtn i:hover {
+    font-size: 1.6em;
+}
+
+.form-check input {
+    border-radius: 0px;
+}
+
+.form-check input:focus {
+    box-shadow: none;
+}
+
+//Div 2
+.checkoutCont {
+    border: 2px solid rgb(203, 250, 200);
+    background-color: rgb(233, 253, 233);
+    height: 65px;
+    padding: 10px;
+}
+
+.selectAll {
+    padding: 10px;
+}
+
+.selectAll input {
+    margin-right: 10px;
+}
+
+.selectAll input:focus {
+    box-shadow: none;
+}
+
+.checkoutBtn {
+    border-radius: 0px;
+    max-width: 150px;
+    height: 35px;
+    margin-left: 5px;
+}
