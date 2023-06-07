@@ -10,6 +10,7 @@ import {
   hasLowercaseValidator,
   hasNumberValidator,
   hasUppercaseValidator,
+  hasSymbolValidator
 } from '../../../validators/custom.validator';
 import { LoginService } from '../../services/login.service';
 
@@ -39,6 +40,7 @@ export class LoginComponent implements OnInit {
           hasLowercaseValidator(),
           hasNumberValidator(),
           hasUppercaseValidator(),
+          hasSymbolValidator(),
         ],
       ],
     });
