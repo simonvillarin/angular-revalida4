@@ -1,33 +1,33 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { activateGuard } from './core/guards/activate/activate.guard';
-import { deactivateGuard } from './core/guards/deactivate/deactivate.guard';
+import { userExistsGuard } from './core/guards/user-exists/user-exists.guard';
+import { userNotFoundGuard } from './core/guards/user-not-found/user-not-found.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {
-    path: 'login',
+    path: 'home',
+    loadChildren: () =>
+      import('./modules/main-page/main-page.module').then(
+        (m) => m.MainPageModule
+      ),
+    canActivate: [userExistsGuard],
+  },
+  {
+    path: '',
     loadChildren: () =>
       import('./modules/login/login.module').then((m) => m.LoginModule),
-    canDeactivate: [deactivateGuard],
+    canActivate: [userNotFoundGuard],
   },
   {
     path: '',
     loadChildren: () =>
       import('./modules/signup/signup.module').then((m) => m.SignupModule),
-    canDeactivate: [deactivateGuard],
-  },
-  {
-    path: '',
-    loadChildren: () =>
-      import('./modules/main-page/main-page.module').then(
-        (m) => m.MainPageModule
-      ),
-    canActivate: [activateGuard],
+    canActivate: [userNotFoundGuard],
   },
   {
     path: '',
@@ -35,7 +35,7 @@ const routes: Routes = [
       import('./modules/category/category.module').then(
         (m) => m.CategoryModule
       ),
-    canActivate: [activateGuard],
+    canActivate: [userExistsGuard],
   },
   {
     path: '',
@@ -43,7 +43,7 @@ const routes: Routes = [
       import('./modules/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
       ),
-    canActivate: [activateGuard],
+    canActivate: [userExistsGuard],
   },
   {
     path: '',
@@ -51,7 +51,7 @@ const routes: Routes = [
       import('./modules/product-list/product-list.module').then(
         (m) => m.ProductListModule
       ),
-    canActivate: [activateGuard],
+    canActivate: [userExistsGuard],
   },
   {
     path: '',
@@ -59,13 +59,13 @@ const routes: Routes = [
       import('./modules/user-list/user-list.module').then(
         (m) => m.UserListModule
       ),
-    canActivate: [activateGuard],
+    canActivate: [userExistsGuard],
   },
   {
     path: '',
     loadChildren: () =>
       import('./modules/orders/orders.module').then((m) => m.OrdersModule),
-    canActivate: [activateGuard],
+    canActivate: [userExistsGuard],
   },
   {
     path: '',
@@ -73,7 +73,7 @@ const routes: Routes = [
       import('./modules/order-details/order-details.module').then(
         (m) => m.OrderDetailsModule
       ),
-    canActivate: [activateGuard],
+    canActivate: [userExistsGuard],
   },
   {
     path: '',
@@ -81,7 +81,7 @@ const routes: Routes = [
       import('./modules/cart-page/cart-page.module').then(
         (m) => m.CartPageModule
       ),
-    canActivate: [activateGuard],
+    canActivate: [userExistsGuard],
   },
   {
     path: '',
