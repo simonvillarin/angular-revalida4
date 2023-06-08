@@ -6,9 +6,17 @@
     <div class="col p-0">
         <div class="ratingCont">
             <div>
-                <label class="ratingAveLbl">{{ aveUserRating }}/</label><label>5</label>
+                <label class="ratingAveLbl">{{ aveUserRating }}/</label>
+                <label>{{ totalStar }}</label>
             </div>
-            <rating [max]="5" [(ngModel)]="aveUserRating" [readonly]="true" class="ratingIcon"></rating>
+            <span
+                *ngFor="let ratingId of ratingArray; index as i" 
+                [id]="'star_'+i"
+            >
+                <mat-icon class="aveIcon">
+                {{ aveIconStatus(i) }}
+                </mat-icon>
+            </span>
             <p class="ratingCountLbl">{{ userCount }} Ratings</p>
         </div>
         <div class="prodFilterCont">
@@ -20,11 +28,17 @@
                 <div *ngIf="rateReview?.prodName === prodName" class="userReviewCont">
                     <div class="row">
                         <div class="col">
-                            <rating 
-                                [max]="5" 
-                                [ngModel]=rateReview?.rating 
-                                [readonly]="true"
-                            ></rating>
+                            <div >
+                                <span 
+                                    class="iconBtn"
+                                    *ngFor="let ratingId of ratingArray; index as i" 
+                                    [id]="'star_'+i"
+                                >
+                                  <mat-icon class="rateIcon">
+                                    {{ iconStatus(rateReview.rating, i) }}
+                                  </mat-icon>
+                                </span>
+                            </div>
                         </div>
                         <div class="col d-flex justify-content-end">
                             <p >{{ rateReview?.date }}</p>

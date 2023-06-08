@@ -13,6 +13,9 @@ export class ProductPageComponent implements OnInit{
   userCount: number = 0;
   totalRating: number = 0;
   aveUserRating: any;
+  totalStar: number = 5;
+  ratings: number[] = [];
+  ratingArray: number[] = [];
   prodName: string = "Lenovo DB60 Slim USB Portable DVD Burner DB60-WW";
 
   products: any = [
@@ -87,6 +90,7 @@ export class ProductPageComponent implements OnInit{
       if ( this.prodName === rateReview.prodName) {
         this.totalRating += rateReview.rating;
         this.userCount++;
+        this.ratings.push(rateReview.rating)
       }
       console.log(this.userCount)
     });
@@ -94,18 +98,30 @@ export class ProductPageComponent implements OnInit{
     if (this.userCount > 0) {
       this.aveUserRating = (this.totalRating / this.userCount).toFixed(1);
     }
-    // End--- Product Ratings and Review 
+
+    for (let index = 0; index < this.totalStar; index++) {
+      this.ratingArray.push(index);
+    }
   }
+
+  aveIconStatus(index: number) {
+    if (index < this.aveUserRating) {
+      return 'star';
+    } else {
+      return 'star_border';
+    }
+  }
+  // End--- Product Ratings and Review 
 
   changeTab(tab: string) {
     this.activeTab = tab;
   }
 
   addToCart() {
-    this.router.navigate(['user/cart/page'])
+    this.router.navigate(['cart'])
   }
 
   buyNow() {
-    this.router.navigate(['user/checkout'])
+    this.router.navigate(['checkout'])
   }
 }

@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ProductPageComponent } from './component/product-page/product-page.component';
 import { ProductRoutingModule } from './product-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { RatingModule } from 'ngx-bootstrap/rating';
 import { RatingComponent } from './component/rating/rating.component';
 import { FormsModule } from '@angular/forms';
-
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 @NgModule({
@@ -19,7 +20,9 @@ import { FormsModule } from '@angular/forms';
     ProductRoutingModule,
     SharedModule,
     FormsModule,
-    RatingModule
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
   ]
 })
 export class ProductModule { }

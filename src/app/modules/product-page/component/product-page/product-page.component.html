@@ -17,9 +17,16 @@
                 <h2>{{ prod.prodName }}</h2>
                 <hr/>
                 <div class="rating">
-                    <rating [max]="5" [(ngModel)]="aveUserRating" [readonly]="true"></rating>
+                    <span
+                        *ngFor="let ratingId of ratingArray; index as i" 
+                        [id]="'star_'+i"
+                    >
+                        <mat-icon>
+                        {{ aveIconStatus(i) }}
+                        </mat-icon>
+                    </span>
                     <!-- Count Ratings -->
-                    <label class="ratingCountLbl">{{ userCount }} Ratings</label>
+                    <p class="ratingCountLbl">{{ userCount }} Ratings</p>
                 </div>
                 <h1>₱{{ prod.prodPrice }}</h1>
             </div>
@@ -29,9 +36,21 @@
                 </div>
                 <div class="col">
                     <div class="input-group">
-                        <button class="btn btn-outline-secondary" type="button" (click)="decrease()">-</button>
-                        <input type="number" class="form-control" aria-label="" [value]="quantity">
-                        <button class="btn btn-outline-secondary" type="button" (click)="increase()">+</button>
+                        <button 
+                            class="btn btn-outline-secondary" 
+                            type="button" (click)="decrease()"
+                        >-</button>
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            aria-label="" 
+                            [value]="quantity"
+                        >
+                        <button 
+                            class="btn btn-outline-secondary" 
+                            type="button" 
+                            (click)="increase()"
+                        >+</button>
                     </div>
                 </div>
             </div>

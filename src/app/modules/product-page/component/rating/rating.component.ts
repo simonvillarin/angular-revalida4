@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-rating',
@@ -12,5 +12,29 @@ export class RatingComponent{
   @Input() totalRating: number = 0;
   @Input() aveUserRating: any;
   @Input() prodName: string = "";
+  totalStar: number = 5;
+  ratingArray: number[] = [];
 
+  aveIconStatus(index: number) {
+    if (index < this.aveUserRating) {
+      return 'star';
+    } else {
+      return 'star_border';
+    }
+  }
+
+  iconStatus(rating: number, index: number) {
+    if (rating >= index + 1) {
+      return 'star';
+    } else {
+      return 'star_border';
+    }
+  }
+  
+  ngOnInit(): void {
+    for (let index = 0; index < this.totalStar; index++) {
+      this.ratingArray.push(index);
+    }
+  }
+  
 }

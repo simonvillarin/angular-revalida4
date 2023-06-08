@@ -14,15 +14,27 @@
     margin: 5px 25px 5px 0px
 }
 
-rating {
+.iconBtn {
+    margin: 0px;
+    padding: 0px;
+    width: 5px;
+
+}
+
+.rateIcon {
     color: #FFC107;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .ratingIcon {
-    margin-left: 6px;
+    margin-left: 11px;
     margin-bottom: 10px;
     font-size: 30px;
+}
+
+.aveIcon {
+    color: #FFC107;
+    font-size: 20px;
 }
 
 .ratingCont {

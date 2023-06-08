@@ -41,21 +41,6 @@
             <div *ngIf="password?.errors?.['required']">
               Password is required.
             </div>
-            <div *ngIf="password?.errors?.['minlength']">
-              Password must be 8 characters and above.
-            </div>
-            <div *ngIf="password?.errors?.['hasUppercase']">
-              It must contain an uppercase letter.
-            </div>
-            <div *ngIf="password?.errors?.['hasLowercase']">
-              It must contain a lowercase letter.
-            </div>
-            <div *ngIf="password?.errors?.['hasNumber']">
-              It must contain a number.
-            </div>
-            <div *ngIf="password?.errors?.['hasSymbol']">
-              It must contain any special characters.
-            </div>
           </div>
         </div>
         <div class="forgot-password">Forgot Password?</div>
