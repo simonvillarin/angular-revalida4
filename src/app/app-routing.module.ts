@@ -89,6 +89,7 @@ const routes: Routes = [
       import('./modules/error-page/error-page.module').then(
         (m) => m.ErrorPageModule
       ),
+    canActivate: [activateGuard],
   },
   {
     path: '',
@@ -96,6 +97,7 @@ const routes: Routes = [
       import('./modules/product-page/product.module').then(
         (m) => m.ProductModule
       ),
+    canActivate: [activateGuard],
   }
 ];
 
