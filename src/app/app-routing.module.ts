@@ -85,20 +85,18 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => 
+    loadChildren: () =>
       import('./modules/error-page/error-page.module').then(
         (m) => m.ErrorPageModule
       ),
-    canActivate: [activateGuard],
   },
   {
     path: '',
-    loadChildren: () => 
+    loadChildren: () =>
       import('./modules/product-page/product.module').then(
         (m) => m.ProductModule
       ),
-    canActivate: [activateGuard],
-  }
+  },
 ];
 
 @NgModule({
