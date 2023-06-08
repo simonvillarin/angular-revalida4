@@ -6,11 +6,6 @@ import {
   FormControl,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import {
-  hasLowercaseValidator,
-  hasNumberValidator,
-  hasUppercaseValidator,
-} from '../../../validators/custom.validator';
 import { LoginService } from '../../services/login.service';
 
 @Component({
@@ -30,8 +25,8 @@ export class LoginComponent implements OnInit {
     private loginService: LoginService
   ) {
     this.loginForm = fb.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+      username: ['', Validators.required],
+      password: ['', Validators.required],
     });
   }
 
