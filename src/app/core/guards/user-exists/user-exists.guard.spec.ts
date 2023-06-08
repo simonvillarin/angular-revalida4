@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
 
-import { activateGuard } from './activate.guard';
+import { userExistsGuard } from './user-exists.guard';
 
-describe('activateGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) =>
-    TestBed.runInInjectionContext(() => activateGuard(...guardParameters));
+describe('userExistsGuard', () => {
+  const executeGuard: CanActivateFn = (...guardParameters) => 
+      TestBed.runInInjectionContext(() => userExistsGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
