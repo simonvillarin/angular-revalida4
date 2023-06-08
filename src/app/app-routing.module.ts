@@ -83,6 +83,14 @@ const routes: Routes = [
       ),
     canActivate: [userExistsGuard],
   },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./modules/product-page/product-page.module').then(
+        (m) => m.ProductPageModule
+      ),
+    canActivate: [userExistsGuard],
+  }
 ];
 
 @NgModule({

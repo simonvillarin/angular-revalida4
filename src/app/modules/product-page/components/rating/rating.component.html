@@ -1,0 +1,107 @@
+<!-- Ratings And Review -->
+<div class="row border ratingReviewCont">
+    <div class="col-12">
+        <h3>Ratings and Reviews</h3>
+    </div>
+    <div class="col p-0">
+        <div class="ratingCont">
+            <div>
+                <label class="ratingAveLbl">{{ aveUserRating }}/</label>
+                <label>{{ totalStar }}</label>
+                <label class="ratingCountLbl">({{ userCount }} Ratings)</label>
+            </div>
+            
+            <span
+                *ngFor="let ratingId of ratingArray; index as i" 
+                [id]="'star_'+i"
+            >
+                <mat-icon class="aveIcon">
+                {{ aveIconStatus(i) }}
+                </mat-icon>
+            </span>
+            
+        </div>
+        <div class="prodFilterCont">
+            <h3>Product Reviews</h3>
+        </div>
+        <!-- User Reviews -->
+        <div>
+            <div *ngFor="let rateReview of userRatingsReview">
+                <div *ngIf="rateReview?.prodName === prodName" class="userReviewCont">
+                    <div class="row">
+                        <div class="col">
+                            <div >
+                                <span 
+                                    class="iconBtn"
+                                    *ngFor="let ratingId of ratingArray; index as i" 
+                                    [id]="'star_'+i"
+                                >
+                                  <mat-icon class="rateIcon">
+                                    {{ iconStatus(rateReview.rating, i) }}
+                                  </mat-icon>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <p >{{ rateReview?.date }}</p>
+                        </div>
+                    </div>
+                    <p>{{ rateReview?.username }}</p>
+                    <p class="comment">{{ rateReview?.comment }}</p>
+                    <div class="reviewImgCont">
+                        <div class="row ms-1">
+                            <div class="col-2 me-1 border" *ngFor="let img of rateReview?.images">
+                                <img 
+                                [src]="img" 
+                                alt="review image" 
+                                class="img-fluid"
+                                data-bs-toggle="modal"
+                                [attr.data-bs-target]="'#imageModal' + rateReview?.id"
+                                >
+                                <div 
+                                    class="modal fade" 
+                                    [id]="'imageModal' + rateReview?.id" 
+                                    tabindex="-1" 
+                                    aria-labelledby="imageModalLabel" 
+                                    aria-hidden="true"
+                                >
+                                <div class="modal-dialog modal-dialog-centered modal-l">
+                                    <div class="modal-content">
+                                    <div class="modal-body text-center">
+                                        <img 
+                                            [src]="img" 
+                                            alt="review image" 
+                                            class="img-fluid"
+                                        >
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center">
+            <nav aria-label="Page navigation">
+                <ul class="pagination m-2">
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link">1</a></li>
+                    <li class="page-item"><a class="page-link">2</a></li>
+                    <li class="page-item"><a class="page-link">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
