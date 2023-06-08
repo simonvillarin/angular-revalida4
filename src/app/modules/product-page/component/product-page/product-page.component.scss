@@ -1,0 +1,176 @@
+.container {
+    background-color: rgb(233, 253, 233);
+    max-width: 100%;
+    padding-bottom: 20px;
+}
+
+.title {
+    border-bottom: 1px solid rgb(222, 221, 221);
+    margin-bottom: 15px;
+    padding: 20px;
+}
+
+.prodCont {
+    background-color: white;
+    margin: 15px;
+    padding: 15px;
+}
+
+.col1 div {
+    border: 1px solid rgb(206, 206, 206);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 10px;
+    max-width: 350px;
+}
+
+.col1 div img{
+    max-width: 250px;
+    height: 280px;
+    border-radius: 10px;
+}
+
+.col1 div img:hover{
+    opacity: 0.8;
+}
+
+.col2 {
+    margin-top: 20px;
+}
+
+.col2 h1 {
+    font-weight: 800;
+    color: green;
+    margin-top: 30px;
+}
+
+.col2 h1:hover {
+    color: rgb(27, 171, 27);
+}
+
+.col2 h2:hover {
+    color: gray;
+}
+
+.input-group input {
+    max-width: 35px;
+    height: 30px;
+    padding: 5px;
+    text-align: center;
+}
+
+.input-group input:focus {
+    box-shadow: none;
+}
+
+.input-group button {
+    max-width: 50px;
+    height: 30px;
+    padding: 5px 10px 5px 10px;
+    border: none;
+    border-radius: 0px;
+}
+
+.col2 .row .col-3 label {
+    color: gray;
+    margin-top: 6px;
+}
+
+.col2 .btnCont {
+    padding: 0px;
+}
+
+.col2 .btnCont button {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 160px;
+}
+
+.col2 .row .col-sm button i{
+    font-size: 1.2em;
+}
+
+.buyNowBtn {
+    background-color: rgb(29, 132, 29);
+    color: rgb(244, 249, 253);
+    border: 1px solid rgb(29, 132, 29);
+}
+
+.buyNowBtn:hover {
+    background-color: rgb(12, 169, 12);
+    color: rgb(244, 249, 253);
+}
+
+.addToCartBtn {
+    margin-right: 10px;
+    background-color: rgb(244, 249, 253);
+    color: rgb(29, 132, 29);
+    border: 1px solid rgb(29, 132, 29);
+}
+
+.addToCartBtn:hover {
+    background-color: rgb(231, 248, 234);
+    color: rgb(10, 135, 10);
+    border: 1px solid rgb(82, 234, 82);
+}
+
+.descLbl {
+    margin-right: 30px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+// Nav-tabs
+.descCont {
+    border: 1px solid #cccccd;
+    background-color: #ffffff;
+    margin: 15px;
+    margin-top: 45px;
+}
+
+.col-md-4 ul .nav-link {
+    background-color: rgb(233, 249, 233);
+    border-bottom: 1px solid #cccccd;
+    border-right: 1px solid #cccccd;
+    border-radius: 0;
+    color: black;
+    font-weight: 500;
+    font-size: medium;
+}
+  
+.col-md-4 ul .nav-link.active {
+    background-color: rgb(255, 255, 255);
+    border-right: none;
+    color: green;
+}
+
+.col-md-4 ul .nav-link:hover {
+    color: rgb(30, 179, 30);
+}
+
+.col-md-8 .tab-content-height {
+    padding: 0px;
+    height: 100%;
+}
+
+.tab-pane {
+    padding: 15px;
+}
+
+.tab-content .tab-pane .list li::before {
+    content: "\25CF";
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+
+// Rating
+rating {
+    color: #FFC107;
+    font-size: 20px;
+}
+
+.ratingCountLbl{
+    margin-left: 10px;
+    color: rgb(37, 199, 37);
+}
