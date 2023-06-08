@@ -58,10 +58,6 @@
           </div>
         </div>
       </div>
-      <div class="icon">
-        <i class="bi bi-cart2"></i>
-        <div class="cart-count">10</div>
-      </div>
       <div class="icon icon-person" (click)="toggleDropdown()">
         <i class="bi bi-person"></i>
         <div class="dropdown" [class.show-dropdown]="isShowDropdown">
@@ -70,6 +66,10 @@
           <div routerLink="/profile">Profile</div>
           <div (click)="logout()">Logout</div>
         </div>
+      </div>
+      <div class="icon">
+        <i class="bi bi-cart2"></i>
+        <div class="cart-count">10</div>
       </div>
     </div>
   </div>
