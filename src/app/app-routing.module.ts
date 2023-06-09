@@ -106,6 +106,13 @@ const routes: Routes = [
         (m) => m.ProfileModule
       ),
     canActivate: [userExistsGuard], 
+  },
+  {
+    path: '',
+    loadChildren: () => 
+      import('./modules/forgot-password/forgot-password.module').then(
+        (m) => m.ForgotPasswordModule
+      ),
   }
 ];
 

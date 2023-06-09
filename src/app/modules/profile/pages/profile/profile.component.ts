@@ -21,6 +21,8 @@ export class ProfileComponent implements OnInit{
       bday: "1992-11-23"
     }
   ]
+
+  constructor(private router: Router) {}
   
   ngOnInit(): void {
       
@@ -38,5 +40,9 @@ export class ProfileComponent implements OnInit{
   cancel() {
     this.showEditForm = false;
     this.showProfileCont = true;
+  }
+
+  navigateforgotPassword() {
+    this.router.navigate(['forgot/password']);
   }
 }
