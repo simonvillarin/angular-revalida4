@@ -84,6 +84,6 @@ export class CartComponent {
 
   // Checkout Navigation
   checkout() {
-    this.router.navigate(['user/checkout']);
+    this.router.navigate(['checkout']);
   }
 }

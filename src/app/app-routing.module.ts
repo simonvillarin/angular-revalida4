@@ -98,7 +98,14 @@ const routes: Routes = [
         (m) => m.ProductPageModule
       ),
     canActivate: [userExistsGuard],
-
+  },
+  {
+    path: '',
+    loadChildren: () => 
+      import('./modules/profile/profile.module').then(
+        (m) => m.ProfileModule
+      ),
+    canActivate: [userExistsGuard], 
   }
 ];
 

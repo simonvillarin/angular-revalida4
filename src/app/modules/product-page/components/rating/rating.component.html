@@ -10,7 +10,6 @@
                 <label>{{ totalStar }}</label>
                 <label class="ratingCountLbl">({{ userCount }} Ratings)</label>
             </div>
-            
             <span
                 *ngFor="let ratingId of ratingArray; index as i" 
                 [id]="'star_'+i"
@@ -19,7 +18,6 @@
                 {{ aveIconStatus(i) }}
                 </mat-icon>
             </span>
-            
         </div>
         <div class="prodFilterCont">
             <h3>Product Reviews</h3>

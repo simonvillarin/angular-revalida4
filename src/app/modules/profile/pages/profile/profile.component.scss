@@ -1,0 +1,37 @@
+.container {
+    height: 500px;
+}
+
+.profileCont {
+    border: 1px solid rgb(223, 222, 222);
+    margin: 20px 0px 20px 0px;
+    padding: 20px 40px 20px 40px;
+    width: 100%;
+}
+
+.col-md-4 {
+    margin-bottom: 20px;
+}
+
+.col-md-4 label{
+    font-size: 12px;
+}
+
+.col-md-4 p{
+    font-weight: 500;
+}
+
+// Button
+.btnCont .btn{
+    border-radius: 0px;
+    margin: 30px 0px 30px 10px;
+}
+
+.btnCont .editBtn{
+    background-color: rgb(10, 142, 10);
+    color: azure;
+}
+
+.btnCont .changePassBtn{
+    background-color: rgb(110, 224, 110);
+}
