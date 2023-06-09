@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Product } from '../../models/product';
 
 @Component({
   selector: 'app-card',
@@ -7,15 +8,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./card.component.scss'],
 })
 export class CardComponent {
-  @Input() img: string = '';
-  @Input() productName: string = '';
-  @Input() price: string = '';
- 
-  constructor(
-    private router: Router
-  ) {}
+  @Input() product: Product | undefined;
+
+  constructor(private router: Router) {}
 
   addToCartProduct() {
-    this.router.navigate([`cart`])
+    this.router.navigate([`cart`]);
   }
 }

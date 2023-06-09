@@ -12,36 +12,34 @@
     <div>
       <div class="title">Category</div>
       <div class="checkbox-container">
-        <mat-checkbox 
-          color="primary" 
+        <mat-checkbox
+          color="primary"
           *ngFor="let category of categories"
           [checked]="selectedCategory === category"
           (change)="updateSelectedCategory(category, $event.checked)"
-        >{{ category }}</mat-checkbox>
+          >{{ category }}</mat-checkbox
+        >
       </div>
     </div>
     <div>
       <div class="title">Brands</div>
       <div class="checkbox-container">
-        <mat-checkbox 
+        <mat-checkbox
           color="primary"
           *ngFor="let brand of brands"
           [checked]="selectedBrands.includes(brand)"
           (change)="updateSelectedBrand(brand, $event.checked)"
-        >{{ brand }}</mat-checkbox>
+          >{{ brand }}</mat-checkbox
+        >
       </div>
     </div>
   </div>
   <div class="card-container">
-    <div *ngIf="filteredProducts.length === 0" class="text-center mt-5 pt-5">
+    <!-- <div *ngIf="filteredProducts.length === 0" class="text-center mt-5 pt-5">
       No results found.
-    </div>
-    <div *ngFor="let product of filteredProducts">
-      <app-card
-          [img]="product?.img || ''"
-          [productName]="product?.productName || ''"
-          [price]="(product?.price || 0).toString()"
-      ></app-card>
+    </div> -->
+    <div *ngFor="let product of productList">
+      <app-card [product]="product" *ngIf="product.isAvailable"></app-card>
     </div>
   </div>
 </div>

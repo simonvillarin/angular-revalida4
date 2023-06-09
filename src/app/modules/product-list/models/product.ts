@@ -10,4 +10,5 @@ export interface Product {
   ratings: number;
   soldItems: number;
   img: string;
+  isAvailable: boolean;
 }

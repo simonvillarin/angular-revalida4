@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  @Input() cartItems: number = 0;
   isShowMenu: boolean = false;
   isShowDropdown: boolean = false;
   isShowSearch: boolean = false;

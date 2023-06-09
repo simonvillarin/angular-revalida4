@@ -1,17 +1,26 @@
 .myCard {
   position: relative;
-  width: 280px;
-  padding: 1.5rem;
-  margin: 1.5rem;
+  width: 100%;
   border: 1px solid rgb(229, 229, 229);
   border-radius: 0.25rem;
 }
 
 .img {
+  height: 15rem;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+.img > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.content {
+  padding: 0 1.5rem 1.5rem;
 }
 
 .product-name,
@@ -22,7 +31,6 @@
 }
 
 .product-name {
-  width: 80%;
   font-size: 1rem;
   margin-top: 1rem;
   margin-bottom: 0.75rem;
@@ -35,7 +43,7 @@
 
 .commands {
   display: grid;
-  grid-template-columns: 1.6fr 0.4fr;
+  grid-template-columns: 1fr 3rem;
   gap: 0.5rem;
 }
 
@@ -61,6 +69,10 @@ button {
   border: 1px solid rgb(76, 175, 80);
   color: rgb(76, 175, 80);
   background-color: transparent;
+}
+
+.view > i {
+  font-size: 1rem;
 }
 
 .view:hover {

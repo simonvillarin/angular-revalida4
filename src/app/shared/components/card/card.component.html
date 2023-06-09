@@ -1,10 +1,10 @@
-<div class="myCard">
+<div class="myCard" *ngIf="product">
   <div class="img">
-    <img src="{{ img }}" alt="card-image" width="160px" height="200px"/>
+    <img src="{{ product.img }}" alt="card-image" />
   </div>
   <div class="content">
-    <div class="product-name">{{ productName }}</div>
-    <div class="price">₱ {{ price }}</div>
+    <div class="product-name">{{ product.productName }}</div>
+    <div class="price">₱ {{ product.price }}</div>
     <div class="commands">
       <button class="add" (click)="addToCartProduct()">
         <span><i class="bi bi-cart2"></i></span> ADD TO CART
