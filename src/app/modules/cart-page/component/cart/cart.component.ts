@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
-export class CartComponent {
+export class CartComponent implements OnInit{
   quantity: number = 0;
   products: any[] = [
     {
@@ -25,7 +25,12 @@ export class CartComponent {
     }
   ]
 
-  constructor(private router: Router){}
+  constructor(
+    private router: Router,
+  ){}
+
+  ngOnInit(): void {
+  }
 
   // Quantity Function
   increase(prod: any) {

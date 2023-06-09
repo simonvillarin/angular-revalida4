@@ -1,12 +1,12 @@
 <div class="myCard">
   <div class="img">
-    <img src="{{ img }}" alt="card-image" />
+    <img src="{{ img }}" alt="card-image" width="160px" height="200px"/>
   </div>
   <div class="content">
     <div class="product-name">{{ productName }}</div>
     <div class="price">₱ {{ price }}</div>
     <div class="commands">
-      <button class="add">
+      <button class="add" (click)="addToCartProduct()">
         <span><i class="bi bi-cart2"></i></span> ADD TO CART
       </button>
       <button class="view" title="View">

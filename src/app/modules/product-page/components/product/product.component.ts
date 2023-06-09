@@ -70,7 +70,9 @@ export class ProductComponent implements OnInit{
     }
   ]
   
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+  ) {}
 
   // Product Quantity
   increase() {
@@ -83,7 +85,7 @@ export class ProductComponent implements OnInit{
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     // Start--- Product Ratings and Review 
     this.userRatingsReview.forEach(rateReview => {
       if ( this.prodName === rateReview.prodName) {
