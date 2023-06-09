@@ -1,4 +1,7 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from "@angular/forms";
+import { Observable, catchError, map, of } from "rxjs";
+import { SignupService } from "../signup/services/signup.service";
 
 //Validate Password (login)
 export const hasNumberValidator = (): ValidatorFn => {
@@ -70,3 +73,14 @@ export const birthdateValidator = (): ValidatorFn => {
       };
 }
 
+// Email
+
+// export const emailExistsValidator = (signupService: SignupService): AsyncValidatorFn => {
+//     return (control: AbstractControl): Observable<ValidationErrors | null> => {
+//       const email = control.value;
+//       return signupService.checkEmailExists(email).pipe(
+//         map(exists => (exists ? { serverError: 'Email already exists' } : null)),
+//         catchError(() => of(null))
+//       );
+//     };
+//   };

@@ -33,7 +33,7 @@
           <h5 class="card-title">User's Information</h5>
         </div>
         <div class="card-body">
-          <form>
+          <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
             <div class="row gx-5">
               <div class="col col-md-4">
                 <div class="form-group">
@@ -42,7 +42,24 @@
                     type="text"
                     class="form-control border-bottom"
                     placeholder="Enter first name"
+                    formControlName="firstName"
                   />
+                    <div
+                      class="validation"
+                        *ngIf="userForm.get('firstName')?.invalid &&
+                        userForm.get('firstName')?.dirty ||
+                        userForm.get('firstName')?.touched"
+                        >
+                        <div *ngIf="userForm.get('firstName')?.hasError('required')">
+                          First Name is Required
+                        </div>
+                        <div *ngIf="userForm.get('firstName')?.hasError('maxlength')">
+                          Max length is 80
+                        </div>
+                        <div *ngIf="userForm.get('firstName')?.hasError('minlength')">
+                          Minimum length is 2
+                        </div>
+                    </div>
                 </div>
               </div>
               <div class="col col-md-4">
@@ -52,7 +69,24 @@
                     type="text"
                     class="form-control border-bottom"
                     placeholder="Enter last name"
+                    formControlName="lastName"
                   />
+                    <div
+                      class="validation"
+                        *ngIf="userForm.get('lastName')?.invalid &&
+                        userForm.get('lastName')?.dirty ||
+                        userForm.get('lastName')?.touched"
+                        >
+                        <div *ngIf="userForm.get('lastName')?.hasError('required')">
+                          Last Name is Required
+                        </div>
+                        <div *ngIf="userForm.get('lastName')?.hasError('maxlength')">
+                          Max length is 80
+                        </div>
+                        <div *ngIf="userForm.get('lastName')?.hasError('minlength')">
+                          Minimum length is 2
+                        </div>
+                    </div>
                 </div>
               </div>
               <div class="col col-md-4">
@@ -62,54 +96,27 @@
                     type="text"
                     class="form-control border-bottom"
                     placeholder="Enter middle name"
+                    formControlName="middleName"
                   />
                 </div>
               </div>
               <div class="col col-md">
                 <div class="form-group">
                   <label>Birthday</label>
-                  <input type="date" class="form-control border-bottom" />
-                </div>
-              </div>
-              <div class="col col-md">
-                <div class="form-group">
-                  <label>Interest</label>
-                  <input
-                    class="form-control border-bottom"
-                    type="text"
-                    #interestInput
-                    placeholder="New Interest..."
-                    [formControl]="interestCtrl"
-                    [matChipInputFor]="chipGrid"
-                    [matAutocomplete]="auto"
-                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                    (matChipInputTokenEnd)="add($event)"
-                  />
-                  <mat-chip-grid #chipGrid aria-label="Interest selection">
-                    <mat-chip-row
-                      *ngFor="let interest of interests"
-                      (removed)="remove(interest)"
-                    >
-                      {{ interest }}
-                      <button
-                        matChipRemove
-                        [attr.aria-label]="'remove ' + interest"
-                      >
-                        <mat-icon>cancel</mat-icon>
-                      </button>
-                    </mat-chip-row>
-                  </mat-chip-grid>
-                  <mat-autocomplete
-                    #auto="matAutocomplete"
-                    (optionSelected)="selected($event)"
-                  >
-                    <mat-option
-                      *ngFor="let interest of filteredInterests | async"
-                      [value]="interest"
-                    >
-                      {{ interest }}
-                    </mat-option>
-                  </mat-autocomplete>
+                  <input type="date" 
+                         class="form-control border-bottom"
+                         formControlName="birthDate" 
+                    />
+                    <div
+                      class="validation"
+                        *ngIf="userForm.get('birthDate')?.invalid &&
+                        userForm.get('birthDate')?.dirty ||
+                        userForm.get('birthDate')?.touched"
+                        >
+                        <div *ngIf="userForm.get('birthDate')?.hasError('required')">
+                          Birthdate is Required
+                        </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -121,7 +128,21 @@
                     type="email"
                     class="form-control border-bottom"
                     placeholder="example@email.com"
+                    formControlName="email"
                   />
+                   <div
+                      class="validation"
+                        *ngIf="userForm.get('email')?.invalid &&
+                        userForm.get('email')?.dirty ||
+                        userForm.get('email')?.touched"
+                        >
+                        <div *ngIf="userForm.get('email')?.hasError('required')">
+                          Email is Required
+                        </div>
+                        <div *ngIf="userForm.get('email')?.hasError('email')">
+                          Invalid Email Format
+                        </div>
+                    </div>
                 </div>
               </div>
               <div class="col col-md-4">
@@ -131,37 +152,111 @@
                     type="text"
                     class="form-control border-bottom"
                     placeholder="Enter username"
+                    formControlName="userName"
                   />
+                  <div
+                      class="validation"
+                        *ngIf="userForm.get('userName')?.invalid &&
+                        userForm.get('userName')?.dirty ||
+                        userForm.get('userName')?.touched"
+                        >
+                        <div *ngIf="userForm.get('userName')?.hasError('required')">
+                          User Name is Required
+                        </div>
+                    </div>
                 </div>
               </div>
               <div class="col col-md-4">
                 <div class="form-group">
                   <label>Role</label>
-                  <select class="form-select" aria-label="Birthday">
+                  <select class="form-select" 
+                          aria-label="Role"
+                          formControlName="role"
+                        >
                     <option hidden>Select Role</option>
                     <option value="1">Admin</option>
                     <option value="2">Customer</option>
                   </select>
+                  <div
+                      class="validation"
+                        *ngIf="userForm.get('role')?.invalid &&
+                        userForm.get('role')?.dirty ||
+                        userForm.get('role')?.touched"
+                        >
+                        <div *ngIf="userForm.get('role')?.hasError('required')">
+                          Role is Required
+                        </div>
+                    </div>
                 </div>
               </div>
               <div class="col col-md">
                 <div class="form-group">
                   <label>Password</label>
-                  <input
-                    type="password"
-                    class="form-control border-bottom"
-                    placeholder="Enter Password"
-                  />
+                  <div class="input-group">
+                    <input
+                      [type]="showPassword ? 'text' : 'password'"
+                      class="form-control border-bottom"
+                      formControlName="password"
+                      required
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text" (click)="togglePasswordVisibility()">
+                        <mat-icon>visibility</mat-icon>
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                      class="validation"
+                        *ngIf="userForm.get('password')?.invalid &&
+                        userForm.get('password')?.dirty ||
+                        userForm.get('password')?.touched"
+                        >
+                        <div *ngIf="userForm.get('password')?.hasError('required')">
+                          Password is Required
+                        </div>
+                        <div *ngIf="userForm.get('password')?.hasError('minlength')">
+                          Password must 8 characters above
+                        </div>
+                        <div *ngIf="userForm.get('password')?.hasError('hasLowercase')">
+                          Password must contain lowercase
+                        </div>
+                        <div *ngIf="userForm.get('password')?.hasError('hasUppercase')">
+                          Password must contain uppercase
+                        </div>
+                        <div *ngIf="userForm.get('password')?.hasError('hasNumber')">
+                          Password must contain number
+                        </div><div *ngIf="userForm.get('password')?.hasError('hasSymbol')">
+                          Password must contain symbol
+                        </div>
+                    </div>
                 </div>
               </div>
               <div class="col col-md">
                 <div class="form-group">
                   <label>Confirm Password</label>
-                  <input
-                    type="password"
-                    class="form-control border-bottom"
-                    placeholder="Confirm Password"
-                  />
+                  <div class="input-group">
+                    <input
+                     [type]="showConfirmPassword ? 'text' : 'password'"
+                      class="form-control border-bottom"
+                      formControlName="confirmPass"
+                      required
+                   />
+                    <mat-icon
+                      matSuffix
+                      (click)="toggleConfirmPasswordVisibility()"
+                      >visibility</mat-icon
+                    >
+                 </div>
+                  <div
+                  class="validation"
+                    *ngIf="userForm.get('password')?.invalid &&
+                    userForm.get('password')?.dirty ||
+                    userForm.get('password')?.touched"
+                    >
+                    <div *ngIf="userForm.get('password')?.hasError('required')">
+                      Password is Required
+                    </div>
+                </div>
                 </div>
               </div>
             </div>

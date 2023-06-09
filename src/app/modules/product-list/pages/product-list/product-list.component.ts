@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 export interface Product {
   itemName: string;
@@ -76,8 +77,41 @@ const ELEMENT_DATA: Product[] = [
 })
 export class ProductListComponent implements AfterViewInit {
   isShowMenu: boolean = false;
+  productForm: FormGroup;
+  selectedFileName: string | undefined;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+    private fb: FormBuilder,
+    private elementRef: ElementRef) {
+
+    this.productForm = this.fb.group({
+      itemName: ['', Validators.required],
+      category: ['', Validators.required],
+      price: ['', Validators.required],
+      brand: ['', Validators.required],
+      productImg: [''],
+      quantity: ['', Validators.required],
+      description: this.fb.array([]),
+    })
+  }
+
+  get description(): FormArray{
+    return this.productForm.get('description') as FormArray;
+  }
+  addDescription(): void{
+    this.description.push(this.fb.control(''));
+  }
+
+  removeDescription(index: number): void{
+    this.description.removeAt(index);
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    const fileName = file.name;
+    console.log('File name:', file);
+  }
+
 
   toggleMenu() {
     this.isShowMenu = !this.isShowMenu;
@@ -160,5 +194,18 @@ export class ProductListComponent implements AfterViewInit {
       this.showAddBrand = false;
     }
     console.log(this.brandOptions);
+  }
+
+  onSubmit(): void {
+    if (this.productForm.valid) {
+      const formValue = this.productForm.value;
+      console.log(formValue);
+    }
+
+    if (this.productForm.invalid) {
+      this.productForm.markAllAsTouched();
+      console.log('Invalid Form');
+      return;
+    }
   }
 }
