@@ -11,12 +11,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Observable, map, startWith } from 'rxjs';
 import {
   hasLowercaseValidator,
   hasNumberValidator,
@@ -40,6 +37,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
   isActionEdit = false;
   buttonAction: string = 'ADD';
   id: number = 0;
+  search: string = '';
 
   allInterests: string[] = [
     'Desktop PC',
@@ -184,6 +182,24 @@ export class UserListComponent implements OnInit, AfterViewInit {
     }
   }
 
+  rowMatchesSearch = (row: any): boolean => {
+    if (this.search === '') {
+      return true;
+    }
+
+    const values = Object.values(row);
+    for (const value of values) {
+      if (
+        value &&
+        value.toString().toLowerCase().includes(this.search.toLowerCase())
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   editUser = (id: number, user: User) => {
     this.buttonAction = 'EDIT';
     this.isActionEdit = true;
@@ -203,24 +219,23 @@ export class UserListComponent implements OnInit, AfterViewInit {
   };
 
   deleteUser = (id: number) => {
-    const user: any = {
+    const payload: any = {
       status: false,
     };
 
-    const _user: any = this.dataSource.data.filter(
-      (data) => data.userId === id
-    );
-    if (_user.status) {
-      this.userListService
-        .updateUser(id, user)
-        .subscribe((res) => console.log(res));
-      const index = this.dataSource.data.findIndex(
-        (user) => user.userId === id
-      );
-      this.dataSource.data[index].status = false;
-    } else {
-      console.log('User already deactivated');
-    }
+    this.userListService.getUserById(id).subscribe((data) => {
+      if (data.status) {
+        this.userListService
+          .updateUser(id, payload)
+          .subscribe((res) => console.log(res));
+        const index = this.dataSource.data.findIndex(
+          (user) => user.userId === id
+        );
+        this.dataSource.data[index].status = false;
+      } else {
+        console.log('User already deactivated');
+      }
+    });
   };
 
   reset = () => {
@@ -310,7 +325,14 @@ export class UserListComponent implements OnInit, AfterViewInit {
       this.dataSource.data[index].password =
         this.userForm.get('password')?.value;
       this.dataSource.data[index].role = this.userForm.get('role')?.value;
-      this.dataSource.data[index].status = this.userForm.get('status')?.value;
+
+      let status;
+      if (this.userForm.get('status')?.value === 'true') {
+        status = true;
+      } else {
+        status = false;
+      }
+      this.dataSource.data[index].status = status;
 
       this.buttonAction = 'ADD';
       this.isActionEdit = false;

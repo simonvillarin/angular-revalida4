@@ -364,6 +364,10 @@ table td {
   background-color: rgb(76, 175, 80);
 }
 
+.hidden-row {
+  display: none;
+}
+
 @media screen and (max-width: 768px) {
   .icon-menu {
     display: flex;

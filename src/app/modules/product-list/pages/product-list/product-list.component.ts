@@ -25,6 +25,9 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   buttonAction: string = 'ADD';
   id: number = 0;
   file: any;
+  search: string = '';
+  categories: string[] = [];
+  brands: string[] = [];
 
   ngOnInit(): void {
     this.getAllProducts();
@@ -34,6 +37,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this.productListService.getAllProducts().subscribe((data) => {
       const sortData = data.sort((a, b) => a.productId - b.productId);
       this.dataSource.data = sortData;
+      console.log(data);
     });
   };
 
@@ -155,6 +159,24 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     console.log(this.brandOptions);
   }
 
+  rowMatchesSearch = (row: any): boolean => {
+    if (this.search === '') {
+      return true;
+    }
+
+    const values = Object.values(row);
+    for (const value of values) {
+      if (
+        value &&
+        value.toString().toLowerCase().includes(this.search.toLowerCase())
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   editProduct = (id: number, product: any) => {
     this.buttonAction = 'EDIT';
     this.isActionEdit = true;
@@ -163,16 +185,30 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
     this.productForm.patchValue({
       itemName: product.productName,
-      brand: product.brand,
-      category: product.category,
       description: product.description,
       quantity: product.quantity,
       price: product.price,
       productImg: product.img,
     });
+
+    this.newOption = product.category;
+    this.newBrand = product.brand;
   };
 
-  deleteProduct = (id: number) => {};
+  deleteProduct = (id: number) => {
+    const product: any = this.dataSource.data.filter(
+      (data) => data.productId !== id
+    );
+    this.dataSource.data = product;
+
+    const payload = {
+      isAvailable: false,
+    };
+
+    this.productListService
+      .updateProduct(id, payload)
+      .subscribe((res) => console.log(res));
+  };
 
   reset = () => {
     this.productForm.reset();

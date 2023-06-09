@@ -347,6 +347,7 @@
               class="form-control border-bottom search"
               id="item-name"
               placeholder="Search Item"
+              [(ngModel)]="search"
             />
           </div>
         </div>
@@ -449,7 +450,18 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="
+                let row;
+                columns: displayedColumns;
+                let i = index;
+                trackBy: trackByFn
+              "
+              [ngClass]="{
+                'hidden-row': !rowMatchesSearch(row)
+              }"
+            ></tr>
           </table>
 
           <mat-paginator

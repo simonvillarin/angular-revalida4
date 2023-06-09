@@ -108,6 +108,7 @@
                 id="category"
                 aria-label="Category"
                 formControlName="category"
+                [value]="buttonAction"
               >
                 <option hidden>Select Category</option>
                 <option *ngFor="let option of categoryOptions" [value]="option">
@@ -361,6 +362,7 @@
               class="form-control border-bottom search"
               id="item-name"
               placeholder="Search Item"
+              [(ngModel)]="search"
             />
           </div>
         </div>
@@ -445,7 +447,10 @@
             <tr
               mat-row
               *matRowDef="let row; columns: displayedColumns"
-              [ngClass]="{ 'hidden-row': !row.isAvailable }"
+              [ngClass]="{
+                'hidden-row':
+                  row.isAvailable === 'true' || !rowMatchesSearch(row)
+              }"
             ></tr>
           </table>
 

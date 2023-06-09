@@ -26,4 +26,8 @@ export class ProductListService {
   updateProduct = (id: number, user: any) => {
     return this.http.put(`${this.BASE_URL}/product/${id}`, user);
   };
+
+  updateProductWithImage = (id: number, user: any) => {
+    return this.http.put(`${this.BASE_URL}/product/image/${id}`, user);
+  };
 }
