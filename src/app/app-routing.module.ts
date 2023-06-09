@@ -6,11 +6,19 @@ import { userNotFoundGuard } from './core/guards/user-not-found/user-not-found.g
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {
-    path: 'login',
+    path: 'home',
+    loadChildren: () =>
+      import('./modules/main-page/main-page.module').then(
+        (m) => m.MainPageModule
+      ),
+    canActivate: [userExistsGuard],
+  },
+  {
+    path: '',
     loadChildren: () =>
       import('./modules/login/login.module').then((m) => m.LoginModule),
     canActivate: [userNotFoundGuard],
@@ -20,14 +28,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/signup/signup.module').then((m) => m.SignupModule),
     canActivate: [userNotFoundGuard],
-  },
-  {
-    path: '',
-    loadChildren: () =>
-      import('./modules/main-page/main-page.module').then(
-        (m) => m.MainPageModule
-      ),
-    canActivate: [userExistsGuard],
   },
   {
     path: '',

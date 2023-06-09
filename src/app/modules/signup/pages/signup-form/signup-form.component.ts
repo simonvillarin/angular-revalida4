@@ -194,7 +194,6 @@ export class SignupFormComponent {
     }
   }
 
-
   // validator
   getErrorMessage(): string {
     const emailControl = this.loginCredentialForm.get('email');
@@ -209,7 +208,7 @@ export class SignupFormComponent {
     // }
     return '';
   }
-  
+
   // formatDate(date: Date | null): string {
   //   if (!date) return '';
   //   const year = date.getFullYear();
@@ -225,12 +224,6 @@ export class SignupFormComponent {
       middleName: this.personalInfoForm.value.middleName,
       birthdate: this.personalInfoForm.value.birthdate,
       listOfInterest: this.interests,
-      // house: this.addressInfoForm.value.houseNo,
-      // building: this.addressInfoForm.value.buildingName,
-      // street: this.addressInfoForm.value.streetName,
-      // city: this.addressInfoForm.value.brgy,
-      // province: this.addressInfoForm.value.Province,
-      // zipcode: this.addressInfoForm.value.zipCode,
       email: this.loginCredentialForm.value.email,
       username: this.loginCredentialForm.value.username,
       password: this.loginCredentialForm.value.password,
@@ -243,6 +236,7 @@ export class SignupFormComponent {
       // this.addressInfoForm.valid &&
       this.loginCredentialForm.valid
     ) {
+      console.log(user);
       this.signUpService
         .saveUser(user)
         .subscribe(() => console.log('User successfully added'));

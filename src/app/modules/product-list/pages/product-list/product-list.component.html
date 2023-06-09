@@ -27,223 +27,227 @@
       </div>
     </header>
     <div class="main-container">
-      <!-- Product Form -->
-      <div class="card no-border">
-        <div class="card-header">
-          <h5 class="card-title">Product Information</h5>
+      <div class="product-container">
+        <div class="product-header">
+          <h5 class="title">Product Information</h5>
         </div>
-        <div class="card-body">
-          <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-            <div class="row gx-5">
-              <div class="col col-md-4">
-                <!-- Item Name -->
-                <div class="form-group">
-                  <label for="item-name">Item Name</label>
-                  <input
-                    type="text"
-                    class="form-control border-bottom"
-                    formControlName="itemName"
-                    id="item-name"
-                    placeholder="Enter item name"
-                  />
-                    <div
-                      class="validation"
-                        *ngIf="productForm.get('itemName')?.invalid &&
-                        productForm.get('itemName')?.dirty ||
-                        productForm.get('itemName')?.touched"
-                        >
-                        <div *ngIf="productForm.get('itemName')?.hasError('required')">
-                          Item Name is Required
-                        </div>
-                    </div>
-
-                </div>
-                <!-- Item Brand -->
-                <div class="form-group">
-                  <label for="brand">Brand</label>
-                  <select
-                    (change)="onBrandSelected($event)"
-                    class="form-select"
-                    id="brand"
-                    aria-label="Brand"
-                    formControlName="brand"
-                  >
-                    <option hidden>Select Brand</option>
-                    <option
-                      *ngFor="let option of brandOptions"
-                      [value]="option"
-                    >
-                      {{ option }}
-                    </option>
-                    <option value="add">Add Brand</option>
-                  </select>
-                  <div
-                     class="validation"
-                    *ngIf="productForm.get('brand')?.invalid &&
-                     productForm.get('brand')?.dirty || 
-                     productForm.get('brand')?.touched  "
-                  >
-                    <div *ngIf="productForm.get('brand')?.hasError('required')">
-                       Brand is Required
-                    </div>
-                  </div>
-                  <input
-                    id="brand"
-                    class="form-control"
-                    type="text"
-                    *ngIf="showAddBrand"
-                    [(ngModel)]="newBrand"
-                    [ngModelOptions]="{ standalone: true }"
-                    placeholder="New Brand"
-                  />
-                  <button
-                    class="btn btn-primary"
-                    *ngIf="showAddBrand"
-                    data-bs-toggle="modal"
-                    data-bs-target="#brandModal"
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
-              <div class="col col-md-4">
-                <div class="form-group">
-                  <!-- Category -->
-                  <label for="category">Category</label>
-                  <select
-                    (change)="onOptionSelected($event)"
-                    class="form-select"
-                    id="category"
-                    aria-label="Category"
-                    formControlName="category"
-                  >
-                    <option hidden>Select Category</option>
-                    <option
-                      *ngFor="let option of categoryOptions"
-                      [value]="option"
-                    >
-                      {{ option }}
-                    </option>
-                    <option value="add">Add Category</option>
-                  </select>
-                  <div
-                     class="validation"
-                    *ngIf="productForm.get('category')?.invalid &&
-                     productForm.get('category')?.dirty || 
-                     productForm.get('category')?.touched  "
-                    >
-                    <div *ngIf="productForm.get('category')?.hasError('required')">
-                       Category is Required
-                    </div>
-                  </div>
-                  <input
-                    id="category"
-                    class="form-control"
-                    type="text"
-                    *ngIf="showAddOption"
-                    [(ngModel)]="newOption"
-                    [ngModelOptions]="{ standalone: true }"
-                    placeholder="New Category"
-                  />
-                  <button
-                    class="btn btn-primary"
-                    *ngIf="showAddOption"
-                    data-bs-toggle="modal"
-                    data-bs-target="#categoryModal"
-                  >
-                    Add
-                  </button>
-                </div>
-                <!-- Image -->
-                <div class="form-group">
-                  <label for="formFile" class="form-label">Product Image</label>
-                  <input class="form-control" 
-                    (change)="onFileSelected($event)"
-                    type="file" 
-                    id="formFile"  
-                    formControlName="productImg"/>
-                    <div
-                      class="validation"
-                      *ngIf="productForm.get('productImg')?.invalid &&
-                        productForm.get('productImg')?.dirty || 
-                        productForm.get('productImg')?.touched  "
-                      >
-                      <div *ngIf="productForm.get('productImg')?.hasError('required')">
-                        Product Image is Required
-                      </div>
-                    </div>
-                </div>
-              </div>
-              <div class="col col-md-4">
-                <!-- Price -->
-                <div class="form-group">
-                  <label for="price">Price</label>
-                  <input
-                    type="number"
-                    class="form-control border-bottom"
-                    id="price"
-                    placeholder="Enter price"
-                    formControlName="price"
-                  />
-                  <div
-                      class="validation"
-                      *ngIf="productForm.get('price')?.invalid &&
-                        productForm.get('price')?.dirty || 
-                        productForm.get('price')?.touched  "
-                      >
-                    <div *ngIf="productForm.get('price')?.hasError('required')">
-                      Price is Required
-                    </div>
-                  </div>
-                </div>
-                <!-- Quantity -->
-                <div class="form-group">
-                  <label for="qty">Quantity</label>
-                  <input
-                    type="number"
-                    class="form-control border-bottom"
-                    id="qty"
-                    placeholder="Enter quantity"
-                    formControlName="quantity"
-                  />
-                  <div
-                      class="validation"
-                      *ngIf="productForm.get('quantity')?.invalid &&
-                        productForm.get('quantity')?.dirty || 
-                        productForm.get('quantity')?.touched  "
-                      >
-                    <div *ngIf="productForm.get('quantity')?.hasError('required')">
-                      Quantity is Required
-                    </div>
-                 </div>
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+          <div class="input-container">
+            <div class="group">
+              <label for="item-name">Item Name</label>
+              <input
+                type="text"
+                class="form-control border-bottom"
+                formControlName="itemName"
+                id="item-name"
+                placeholder="Enter item name"
+              />
+              <div
+                class="validation"
+                *ngIf="
+                  (productForm.get('itemName')?.invalid &&
+                    productForm.get('itemName')?.dirty) ||
+                  productForm.get('itemName')?.touched
+                "
+              >
+                <div *ngIf="productForm.get('itemName')?.hasError('required')">
+                  Item Name is Required
                 </div>
               </div>
             </div>
-            <!-- Description -->
-            <div class="form-group" formArrayName="description">
+            <div class="group">
+              <label for="brand">Brand</label>
+              <select
+                (change)="onBrandSelected($event)"
+                class="form-select"
+                id="brand"
+                aria-label="Brand"
+                formControlName="brand"
+              >
+                <option hidden>Select Brand</option>
+                <option *ngFor="let option of brandOptions" [value]="option">
+                  {{ option }}
+                </option>
+                <option value="add">Add Brand</option>
+              </select>
+              <div
+                class="validation"
+                *ngIf="
+                  (productForm.get('brand')?.invalid &&
+                    productForm.get('brand')?.dirty) ||
+                  productForm.get('brand')?.touched
+                "
+              >
+                <div *ngIf="productForm.get('brand')?.hasError('required')">
+                  Brand is Required
+                </div>
+              </div>
+              <input
+                id="brand"
+                class="form-control"
+                type="text"
+                *ngIf="showAddBrand"
+                [(ngModel)]="newBrand"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="New Brand"
+              />
+              <button
+                class="btn btn-primary"
+                *ngIf="showAddBrand"
+                data-bs-toggle="modal"
+                data-bs-target="#brandModal"
+              >
+                Add
+              </button>
+            </div>
+            <div class="group">
+              <label for="category">Category</label>
+              <select
+                (change)="onOptionSelected($event)"
+                class="form-select"
+                id="category"
+                aria-label="Category"
+                formControlName="category"
+              >
+                <option hidden>Select Category</option>
+                <option *ngFor="let option of categoryOptions" [value]="option">
+                  {{ option }}
+                </option>
+                <option value="add">Add Category</option>
+              </select>
+              <div
+                class="validation"
+                *ngIf="
+                  (productForm.get('category')?.invalid &&
+                    productForm.get('category')?.dirty) ||
+                  productForm.get('category')?.touched
+                "
+              >
+                <div *ngIf="productForm.get('category')?.hasError('required')">
+                  Category is Required
+                </div>
+              </div>
+              <input
+                id="category"
+                class="form-control"
+                type="text"
+                *ngIf="showAddOption"
+                [(ngModel)]="newOption"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="New Category"
+              />
+              <button
+                class="btn btn-primary"
+                *ngIf="showAddOption"
+                data-bs-toggle="modal"
+                data-bs-target="#categoryModal"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+
+          <div class="input-container">
+            <div class="group" formArrayName="description">
               <label for="description">Description</label>
-              <div class="input-group" *ngFor="let desc of description.controls; let i = index">
+              <div
+                class="input-group"
+                *ngFor="let desc of description.controls; let i = index"
+              >
                 <input
                   type="text"
                   class="form-control border-bottom"
                   id="description"
                   placeholder="Enter description"
-                  [formControlName]=i
-                 />
+                  [formControlName]="i"
+                />
                 <span>
-                  <button class="btn btn-danger" 
-                          type="button" 
-                          (click)="removeDescription(i)">
-                          Remove
-                    </button> 
+                  <button
+                    class="remove"
+                    type="button"
+                    (click)="removeDescription(i)"
+                  >
+                    REMOVE
+                  </button>
                 </span>
               </div>
-              <button class="btn btn-primary" type="button" (click)="addDescription()">Add Description</button>
+              <button class="add" type="button" (click)="addDescription()">
+                ADD DESCRIPTION
+              </button>
             </div>
-            <!-- Button Add -->
-            <button type="submit" class="btn btn-success">Add</button>
-          </form>
-        </div>
+            <div class="group">
+              <label for="price">Price</label>
+              <input
+                type="number"
+                class="form-control border-bottom"
+                id="price"
+                placeholder="Enter price"
+                formControlName="price"
+              />
+              <div
+                class="validation"
+                *ngIf="
+                  (productForm.get('price')?.invalid &&
+                    productForm.get('price')?.dirty) ||
+                  productForm.get('price')?.touched
+                "
+              >
+                <div *ngIf="productForm.get('price')?.hasError('required')">
+                  Price is Required
+                </div>
+              </div>
+            </div>
+            <div class="group">
+              <label for="qty">Quantity</label>
+              <input
+                type="number"
+                class="form-control border-bottom"
+                id="qty"
+                placeholder="Enter quantity"
+                formControlName="quantity"
+              />
+              <div
+                class="validation"
+                *ngIf="
+                  (productForm.get('quantity')?.invalid &&
+                    productForm.get('quantity')?.dirty) ||
+                  productForm.get('quantity')?.touched
+                "
+              >
+                <div *ngIf="productForm.get('quantity')?.hasError('required')">
+                  Quantity is Required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="group product-image">
+            <label for="formFile">Product Image</label>
+            <input
+              class="form-control"
+              (change)="onFileSelected($event)"
+              type="file"
+              id="formFile"
+              formControlName="productImg"
+            />
+            <div
+              class="validation"
+              *ngIf="
+                (productForm.get('productImg')?.invalid &&
+                  productForm.get('productImg')?.dirty) ||
+                productForm.get('productImg')?.touched
+              "
+            >
+              <div *ngIf="productForm.get('productImg')?.hasError('required')">
+                Product Image is Required
+              </div>
+            </div>
+          </div>
+          <div class="button-group">
+            <button type="submit" class="submit">ADD</button>
+            <button type="button" class="clear">RESET</button>
+          </div>
+        </form>
       </div>
 
       <!-- Brand Modal -->
@@ -337,81 +341,80 @@
         </div>
       </div>
 
-      <!-- Material UI -->
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-title">Products List</h5>
-        </div>
-        <div class="card-body">
-          <div class="form-group">
+      <div class="table-container">
+        <div class="table-head">
+          <div class="table-title">
+            <div>Product List</div>
+          </div>
+          <div class="group">
             <input
               type="text"
-              class="form-control border-bottom"
+              class="form-control border-bottom search"
               id="item-name"
               placeholder="Search Item"
             />
           </div>
-          <div class="table-responsive">
-            <table mat-table [dataSource]="dataSource">
-              <!-- Name -->
-              <ng-container matColumnDef="itemName">
-                <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let element">
-                  {{ element.itemName }}
-                </td>
-              </ng-container>
-
-              <!-- Brand -->
-              <ng-container matColumnDef="itemBrand">
-                <th mat-header-cell *matHeaderCellDef>Brand</th>
-                <td mat-cell *matCellDef="let element">
-                  {{ element.itemBrand }}
-                </td>
-              </ng-container>
-
-              <!-- Category -->
-              <ng-container matColumnDef="category">
-                <th mat-header-cell *matHeaderCellDef>Category</th>
-                <td mat-cell *matCellDef="let element">
-                  {{ element.category }}
-                </td>
-              </ng-container>
-
-              <!-- Specs -->
-              <ng-container matColumnDef="itemDesc">
-                <th mat-header-cell *matHeaderCellDef>Specs</th>
-                <td mat-cell *matCellDef="let element">
-                  {{ element.itemDesc }}
-                </td>
-              </ng-container>
-
-              <!-- Price -->
-              <ng-container matColumnDef="price">
-                <th mat-header-cell *matHeaderCellDef>Price</th>
-                <td mat-cell *matCellDef="let element">{{ element.price }}</td>
-              </ng-container>
-
-              <!-- Actions -->
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Action</th>
-                <td mat-cell *matCellDef="let element">
-                  <button class="btn btn-success">Edit</button>
-                  <button class="btn btn-danger">Delete</button>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-            </table>
-
-            <mat-paginator
-              [pageSizeOptions]="[5, 10, 20]"
-              showFirstLastButtons
-              aria-label="Select page of periodic elements"
-            >
-            </mat-paginator>
-          </div>
         </div>
+        <table mat-table [dataSource]="dataSource">
+          <!-- Name -->
+          <ng-container matColumnDef="itemName">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.itemName }}
+            </td>
+          </ng-container>
+
+          <!-- Brand -->
+          <ng-container matColumnDef="itemBrand">
+            <th mat-header-cell *matHeaderCellDef>Brand</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.itemBrand }}
+            </td>
+          </ng-container>
+
+          <!-- Category -->
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef>Category</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.category }}
+            </td>
+          </ng-container>
+
+          <!-- Specs -->
+          <ng-container matColumnDef="itemDesc">
+            <th mat-header-cell *matHeaderCellDef>Specs</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.itemDesc }}
+            </td>
+          </ng-container>
+
+          <!-- Price -->
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef>Price</th>
+            <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+          </ng-container>
+
+          <!-- Actions -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="table-buttons">
+                <button class="edit"><i class="bi bi-pencil"></i></button>
+                <button class="delete"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+          aria-label="Select page of periodic elements"
+        >
+        </mat-paginator>
       </div>
     </div>
   </main>
