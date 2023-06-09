@@ -1,36 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Cart } from 'src/app/shared/models/cart';
+import { CartService } from 'src/app/shared/services/cart/cart.service';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  styleUrls: ['./cart.component.scss'],
 })
-export class CartComponent implements OnInit{
+export class CartComponent implements OnInit {
   quantity: number = 0;
-  products: any[] = [
-    {
-      "prodId": 1,
-      "prodName": "FSP Dagger PRO Gold SFX Gen5 850W 80+ Full Modular SDA2-850 Gen5 Power Supply",
-      "prodPrice": 7250.00,
-      "prodImg": "//cdn.shopify.com/s/files/1/2227/7667/files/FSPDaggerPROGoldSFXGen5850W80_FullModularSDA2-850Gen5PowerSupply_1024x1024.jpg?v=1683275183",
-      "prodQuantity": 1
-    },
-    {
-      "prodId": 2,
-      "prodName": "PCIE 4-port USB Card 3.0",
-      "prodPrice": 590.00,
-      "prodImg": "//cdn.shopify.com/s/files/1/2227/7667/products/PCIE_4-port_Usb_Card_3.0_1024x1024.jpg?v=1571552737",
-      "prodQuantity": 2
-    }
-  ]
+  cartItems: Cart[] = [];
 
-  constructor(
-    private router: Router,
-  ){}
+  constructor(private router: Router, private cartService: CartService) {}
 
   ngOnInit(): void {
+    this.getAllCartItems();
   }
+
+  getAllCartItems = () => {
+    const userLocalStorage = localStorage.getItem('user');
+    let userId;
+    if (userLocalStorage) {
+      const user = JSON.parse(userLocalStorage);
+      userId = user.userId;
+    }
+
+    this.cartService.getCartItemByUserId(userId).subscribe((data) => {
+      this.cartItems = data;
+      console.log(data);
+    });
+  };
 
   // Quantity Function
   increase(prod: any) {
@@ -38,7 +38,7 @@ export class CartComponent implements OnInit{
   }
 
   decrease(prod: any) {
-    if(prod.prodQuantity > 0) {
+    if (prod.prodQuantity > 0) {
       prod.prodQuantity--;
     }
   }
@@ -49,9 +49,9 @@ export class CartComponent implements OnInit{
 
   selectAllCartProd() {
     if (this.isSelectAll) {
-      this.selectedProds = [...this.products];
+      this.selectedProds = [...this.cartItems];
     } else {
-      this.selectedProds = []
+      this.selectedProds = [];
     }
   }
 

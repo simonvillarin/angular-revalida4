@@ -1,9 +1,10 @@
 export interface Cart {
-    user_id: number;
-    product_name: string;
-    category: string;
-    description: string[];
-    image: string;
-    quantity: number;
-    price: number;
+  cartId: number;
+  userId: number;
+  productName: string;
+  category: string;
+  description: string[];
+  img: string;
+  quantity: number;
+  price: number;
 }

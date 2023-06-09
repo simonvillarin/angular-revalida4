@@ -38,7 +38,7 @@
   <div class="row">
     <div class="col mb-5">
       <!-- Item on Cart -->
-      <div class="items" *ngFor="let prod of products">
+      <div class="items" *ngFor="let item of cartItems">
         <div class="row g-0 ms-4">
           <div class="col-md-2 me-2 text-center">
             <div class="row m-0 p-0">
@@ -50,14 +50,14 @@
                     type="checkbox"
                     value=""
                     id="flexCheckDefault"
-                    [checked]="isSelected(prod)"
-                    (change)="toggleSelectProd(prod)"
+                    [checked]="isSelected(item)"
+                    (change)="toggleSelectProd(item)"
                   />
                 </div>
               </div>
               <!-- Image -->
               <div class="col-9">
-                <img [src]="prod.prodImg" />
+                <img [src]="item.img" />
               </div>
             </div>
           </div>
@@ -66,10 +66,10 @@
             <div class="row">
               <!-- Item Name -->
               <div class="col-sm me-4 mb-2 text-truncate">
-                {{ prod.prodName }}
+                {{ item.productName }}
               </div>
               <!-- Item Price -->
-              <div class="col-sm">₱{{ prod.prodPrice }}</div>
+              <div class="col-sm">₱{{ item.price }}</div>
               <!-- Quantity -->
               <div class="col-sm-2 mt-2 p-0">
                 <div class="input-group">
@@ -77,21 +77,21 @@
                     class="btn btn-outline-secondary"
                     type="button"
                     aria-expanded=""
-                    (click)="decrease(prod)"
+                    (click)="decrease(item)"
                   >
                     -
                   </button>
                   <input
                     class="form-control"
                     [readonly]="true"
-                    [value]="prod.prodQuantity"
+                    [value]="item.quantity"
                   />
                   <button
                     class="btn btn-outline-secondary"
                     type="button"
                     data-bs-toggle=""
                     aria-expanded=""
-                    (click)="increase(prod)"
+                    (click)="increase(item)"
                   >
                     +
                   </button>

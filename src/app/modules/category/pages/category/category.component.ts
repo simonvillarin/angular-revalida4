@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from 'src/app/shared/services/product/product.service';
 import { Product } from 'src/app/shared/models/product';
+import { CartService } from 'src/app/shared/services/cart/cart.service';
 
 @Component({
   selector: 'app-category',
@@ -14,7 +15,11 @@ export class CategoryComponent implements OnInit {
   selectedBrands: string[] = [];
   selectProdByCategory: Product[] = [];
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(
+    private productService: ProductService,
+    private router: Router,
+    private cartService: CartService
+  ) {}
 
   categories: string[] = [
     'Chassis',
@@ -38,9 +43,9 @@ export class CategoryComponent implements OnInit {
   getAllProducts() {
     this.productService.getAllProducts().subscribe((data) => {
       this.productList = data;
+      this.cartService.cartItems = 1;
       // Filter the products based on the selected category and brand
       //this.filterProducts();
-      console.log(data);
     });
   }
 

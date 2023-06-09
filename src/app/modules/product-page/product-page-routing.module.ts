@@ -5,17 +5,14 @@ import { ProductComponent } from './components/product/product.component';
 
 const routes: Routes = [
   {
-    path: 'product',
-    component: ProductComponent
-  }
-]
+    path: 'product/:id',
+    component: ProductComponent,
+  },
+];
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [RouterModule]
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class ProductPageRoutingModule { }
+export class ProductPageRoutingModule {}
