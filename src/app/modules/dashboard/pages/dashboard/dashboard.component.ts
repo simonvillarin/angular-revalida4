@@ -50,7 +50,7 @@ const ELEMENT_DATA: PCParts[] = [
 export class DashboardComponent implements OnInit {
   isShowMenu: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   toggleMenu() {
     this.isShowMenu = !this.isShowMenu;
@@ -87,6 +87,12 @@ export class DashboardComponent implements OnInit {
           y: {
             beginAtZero: true,
           },
+        },
+        animation: {
+          duration: 3000,
+          easing: 'easeInOutBounce', 
+          delay: 500,
+          
         },
       },
     });

@@ -175,12 +175,12 @@
               </form>
             </mat-step>
             <!-- Address -->
-            <mat-step
+            <!-- <mat-step
               [stepControl]="addressInfoForm"
               label="Address Information"
             >
               <form [formGroup]="addressInfoForm">
-                <!-- House Number -->
+                !-- House Number --
                 <div class="row gx-5">
                   <div class="col col-md">
                     <div class="form-group">
@@ -201,10 +201,10 @@
                       </mat-error>
                     </div>
                   </div>
-                  <!-- Bldg Name -->
+                  !-- Bldg Name --
                   <div class="col col-md">
                     <div class="form-group">
-                      <label>Building Name</label>
+                      <label>Building Name | Subdivision Name</label>
                       <input
                         type="text"
                         class="form-control border-bottom"
@@ -214,7 +214,7 @@
                   </div>
                 </div>
                 <div class="row gx-5">
-                  <!-- Street -->
+                  !-- Street --
                   <div class="col col-md">
                     <div class="form-group">
                       <label>Street</label>
@@ -235,27 +235,8 @@
                   </div>
                 </div>
                 <div class="row gx-5">
-                  <!-- City -->
-                  <div class="col col-md">
-                    <div class="form-group">
-                      <label>City</label>
-                      <input
-                        type="text"
-                        class="form-control border-bottom"
-                        formControlName="city"
-                      />
-                      <mat-error
-                        *ngIf="
-                          addressInfoForm.get('city')?.invalid &&
-                          addressInfoForm.get('city')?.touched
-                        "
-                      >
-                        City is Required
-                      </mat-error>
-                    </div>
-                  </div>
-                  <!-- BRGY -->
-                  <div class="col col-md">
+                   !-- BRGY --
+                  <div class="col col-md-6">
                     <div class="form-group">
                       <label>Barangay</label>
                       <input
@@ -273,8 +254,49 @@
                       </mat-error>
                     </div>
                   </div>
-                  <!-- Zip Code -->
-                  <div class="col col-md">
+                  !-- City --
+                  <div class="col col-md-6">
+                    <div class="form-group">
+                      <label>City</label>
+                      <input
+                        type="text"
+                        class="form-control border-bottom"
+                        formControlName="city"
+                      />
+                      <mat-error
+                        *ngIf="
+                          addressInfoForm.get('city')?.invalid &&
+                          addressInfoForm.get('city')?.touched
+                        "
+                      >
+                        City is Required
+                      </mat-error>
+                    </div>
+                  </div>
+                
+                </div>
+                !-- Province --
+                <div class="row gx-5">
+                  <div class="col col-md-8">
+                    <div class="form-group">
+                      <label>Province</label>
+                      <input
+                        type="text"
+                        class="form-control border-bottom"
+                        formControlName="Province"
+                      />
+                      <mat-error
+                        *ngIf="
+                          addressInfoForm.get('Province')?.invalid &&
+                          addressInfoForm.get('Province')?.touched
+                        "
+                      >
+                        Province Code is Required
+                      </mat-error>
+                    </div>
+                  </div>
+                   !-- Zip Code --
+                  <div class="col col-md-4">
                     <div class="form-group">
                       <label>Zip Code</label>
                       <input
@@ -310,27 +332,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- Province -->
-                <div class="row gx-5">
-                  <div class="col col-md">
-                    <div class="form-group">
-                      <label>Province</label>
-                      <input
-                        type="text"
-                        class="form-control border-bottom"
-                        formControlName="Province"
-                      />
-                      <mat-error
-                        *ngIf="
-                          addressInfoForm.get('Province')?.invalid &&
-                          addressInfoForm.get('Province')?.touched
-                        "
-                      >
-                        Province Code is Required
-                      </mat-error>
-                    </div>
-                  </div>
-                </div>
                 <button
                   type="button"
                   class="button"
@@ -340,7 +341,7 @@
                   Next
                 </button>
               </form>
-            </mat-step>
+            </mat-step> -->
             <!-- Step 2 Login Credentials -->
             <mat-step
               [stepControl]="loginCredentialForm"
@@ -392,15 +393,19 @@
                 <div class="row gx-5">
                   <div class="form-group">
                     <label>Password</label>
-                    <input
-                      [type]="showPassword ? 'text' : 'password'"
-                      class="form-control border-bottom"
-                      formControlName="password"
-                      required
-                    />
-                    <mat-icon matSuffix (click)="togglePasswordVisibility()"
-                      >visibility</mat-icon
-                    >
+                    <div class="input-group">
+                      <input
+                        [type]="showPassword ? 'text' : 'password'"
+                        class="form-control border-bottom"
+                        formControlName="password"
+                        required
+                      />
+                      <div class="input-group-append">
+                        <span class="input-group-text" (click)="togglePasswordVisibility()">
+                          <mat-icon>visibility</mat-icon>
+                        </span>
+                      </div>
+                    </div>
                     <div
                       class="validation"
                       *ngIf="
@@ -469,18 +474,19 @@
                 <div class="row gx-5">
                   <div class="form-group">
                     <label>Confirm Password</label>
-                    <input
-                      [type]="showConfirmPassword ? 'text' : 'password'"
-                      class="form-control border-bottom"
-                      formControlName="confirmPass"
-                      required
-                    />
-
-                    <mat-icon
-                      matSuffix
-                      (click)="toggleConfirmPasswordVisibility()"
-                      >visibility</mat-icon
-                    >
+                   <div class="input-group">
+                      <input
+                       [type]="showConfirmPassword ? 'text' : 'password'"
+                        class="form-control border-bottom"
+                        formControlName="confirmPass"
+                        required
+                     />
+                      <mat-icon
+                        matSuffix
+                        (click)="toggleConfirmPasswordVisibility()"
+                        >visibility</mat-icon
+                      >
+                   </div>
                     <div
                       class="validation"
                       *ngIf="
@@ -518,6 +524,9 @@
           </mat-stepper>
         </div>
       </form>
+      <div class="no-acc">
+        Already have an account? <span routerLink="/login">Sign in</span>
+      </div>
     </div>
   </div>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">

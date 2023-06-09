@@ -230,3 +230,10 @@ label {
 .btn {
   width: 100%;
 }
+
+.validation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: red;
+}

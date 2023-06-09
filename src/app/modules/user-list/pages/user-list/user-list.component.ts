@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Observable, map, startWith } from 'rxjs';
+import { hasLowercaseValidator, hasNumberValidator, hasSymbolValidator, hasUppercaseValidator } from 'src/app/modules/validators/custom.validator';
 
 export interface User {
   firstName: string;
@@ -94,11 +95,12 @@ const ELEMENT_DATA: User[] = [
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements AfterViewInit {
+  userForm: FormGroup;
   isShowMenu: boolean = false;
-  interestCtrl = new FormControl('');
-  filteredInterests: Observable<string[]>;
-  separatorKeysCodes: number[] = [13, 188];
-  interests: string[] = [];
+  showPassword = false;
+  showConfirmPassword = false;
+  passwordMatch = true;
+
   allInterests: string[] = [
     'Desktop PC',
     'Notebooks',
@@ -108,14 +110,75 @@ export class UserListComponent implements AfterViewInit {
   ];
 
   @ViewChild('interestInput') interestInput!: ElementRef<HTMLInputElement>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private router: Router) {
-    this.filteredInterests = this.interestCtrl.valueChanges.pipe(
-      startWith(null),
-      map((interest: string | null) =>
-        interest ? this._filter(interest) : this.allInterests.slice()
-      )
-    );
+  constructor(private router: Router,
+              private fb: FormBuilder) {
+    this.userForm = this.fb.group({
+      firstName: ['', [
+            Validators.required,
+            Validators.maxLength(80),
+            Validators.minLength(2)
+      ]],
+      lastName: ['', [
+            Validators.required,
+            Validators.maxLength(80),
+            Validators.minLength(2)
+      ]],
+      middleName: [''],
+      birthDate: ['', Validators.required],
+      email: ['', [
+            Validators.required,
+            Validators.email,
+      ]],
+      userName: ['', [
+            Validators.required,
+      ]],
+      role: ['', Validators.required],
+      password: ['',[
+            Validators.required,
+            Validators.minLength(8),
+            hasNumberValidator(),
+            hasLowercaseValidator(),
+            hasUppercaseValidator(),
+            hasSymbolValidator(),
+      ]],
+      confirmPass: ['', Validators.required]
+    });
+
+    this.userForm.get('password')?.valueChanges.subscribe(() => {
+      this.checkPasswordMatch();
+    });
+    this.userForm.get('confirmPass')?.valueChanges.subscribe(() => {
+      this.checkPasswordMatch();
+    });
+  }
+
+  checkPasswordMatch(): void {
+    const confirmPasswordControl = this.userForm.get('confirmPass');
+    const password = this.userForm.get('password')?.value;
+    const confirmPassword = confirmPasswordControl?.value;
+    this.passwordMatch = password === confirmPassword;
+    if (confirmPasswordControl?.dirty || confirmPasswordControl?.touched) {
+      if (!this.passwordMatch) {
+        confirmPasswordControl.setErrors({ passwordMismatch: true });
+      } else {
+        confirmPasswordControl.setErrors(null);
+      }
+    }
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+    this.checkPasswordMatch();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
   toggleMenu() {
@@ -127,39 +190,6 @@ export class UserListComponent implements AfterViewInit {
     this.router.navigate(['/login']);
   };
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-    if (value && !this.interests.includes(value)) {
-      this.interests.push(value);
-    }
-    event.chipInput!.clear();
-
-    this.interestCtrl.setValue(null);
-  }
-
-  remove(interest: string): void {
-    const index = this.interests.indexOf(interest);
-    if (index >= 0) {
-      this.interests.splice(index, 1);
-    }
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    const value = event.option.viewValue;
-    if (value && !this.interests.includes(value)) {
-      this.interests.push(value);
-    }
-    this.interestInput.nativeElement.value = '';
-    this.interestCtrl.setValue(null);
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allInterests.filter((interest) =>
-      interest.toLowerCase().includes(filterValue)
-    );
-  }
 
   dataSource = new MatTableDataSource<User>(ELEMENT_DATA);
   displayedColumns: string[] = [
@@ -172,12 +202,6 @@ export class UserListComponent implements AfterViewInit {
     'role',
     'actions',
   ];
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
 
   options: string[] = ['Option 1', 'Option 2', 'Option 3'];
   showAddOption: boolean = false;
@@ -198,4 +222,18 @@ export class UserListComponent implements AfterViewInit {
       this.showAddOption = true;
     }
   }
+
+
+  onSubmit(): void {
+    if(this.userForm.valid){
+      console.log(this.userForm.value);
+    }
+
+    if(this.userForm.invalid){
+      this.userForm.markAllAsTouched();
+      console.log('Invalid Form');
+      return;
+    }
+  }
+
 }

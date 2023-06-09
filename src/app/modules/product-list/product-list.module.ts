@@ -7,7 +7,7 @@ import { ProductListRoutingModule } from './product-list-routing.module';
 import { MatTableModule} from '@angular/material/table';
 import { MatPaginatorModule} from '@angular/material/paginator';
 import { FormsModule } from '@angular/forms';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ProductListComponent],
@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
     MatPaginatorModule,
     MatTableModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class ProductListModule {

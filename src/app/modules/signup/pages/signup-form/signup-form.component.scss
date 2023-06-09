@@ -78,6 +78,22 @@ svg {
   box-shadow: inset 0px -10px 10px -10px rgba(198, 253, 211, 0.75);
 }
 
+.input-group {
+  display: flex;
+}
+
+.input-group-text {
+  background-color: white;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.input-group-text mat-icon {
+  font-size: 24px;
+}
+
+
 .form-group {
   margin-top: 1.3rem;
   max-width: 300px;
@@ -158,4 +174,17 @@ svg {
     left: 8%;
     transform: translate(-8%, -12%);
   }
+}
+
+.no-acc {
+  text-align: center;
+}
+
+.no-acc span {
+  color: rgb(76, 175, 80);
+  cursor: pointer;
+}
+
+.no-acc span:hover {
+  text-decoration: underline;
 }

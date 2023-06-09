@@ -12,6 +12,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {
   birthdateValidator,
+  // emailExistsValidator,
   hasLowercaseValidator,
   hasNumberValidator,
   hasSymbolValidator,
@@ -31,7 +32,7 @@ export class SignupFormComponent {
   signupForm: FormGroup;
   personalInfoForm: FormGroup;
   loginCredentialForm: FormGroup;
-  addressInfoForm: FormGroup;
+  // addressInfoForm: FormGroup;
 
   // Password Field
   showPassword = false;
@@ -68,18 +69,19 @@ export class SignupFormComponent {
       birthdate: ['', [Validators.required, birthdateValidator()]],
     });
 
-    this.addressInfoForm = this.fb.group({
-      houseNo: ['', Validators.required],
-      buildingName: [''],
-      streetName: ['', Validators.required],
-      brgy: ['', Validators.required],
-      city: ['', Validators.required],
-      zipCode: ['', [Validators.required, maxLengthValidator()]],
-      Province: ['', Validators.required],
-    });
+    // this.addressInfoForm = this.fb.group({
+    //   houseNo: ['', Validators.required],
+    //   buildingName: [''],
+    //   streetName: ['', Validators.required],
+    //   brgy: ['', Validators.required],
+    //   city: ['', Validators.required],
+    //   zipCode: ['', [Validators.required, maxLengthValidator()]],
+    //   Province: ['', Validators.required],
+    // });
 
     this.loginCredentialForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
+      //  [emailExistsValidator(signUpService)]
       username: ['', Validators.required],
       password: [
         '',
@@ -97,7 +99,7 @@ export class SignupFormComponent {
 
     this.signupForm = this.fb.group({
       personalInfoForm: this.personalInfoForm,
-      addressInfoForm: this.addressInfoForm,
+      // addressInfoForm: this.addressInfoForm,
       loginCredentialForm: this.loginCredentialForm,
     });
 
@@ -133,6 +135,7 @@ export class SignupFormComponent {
     this.interestInput.nativeElement.value = '';
   }
 
+  // interest
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value && !this.interests.includes(value)) {
@@ -167,6 +170,7 @@ export class SignupFormComponent {
     );
   }
 
+  // password
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
@@ -174,17 +178,6 @@ export class SignupFormComponent {
   toggleConfirmPasswordVisibility(): void {
     this.showConfirmPassword = !this.showConfirmPassword;
     this.checkPasswordMatch();
-  }
-
-  // validator
-  getErrorMessage(): string {
-    const emailControl = this.loginCredentialForm.get('email');
-    if (emailControl && emailControl.hasError('required')) {
-      return 'Email is Required';
-    }
-    return emailControl && emailControl.hasError('email')
-      ? 'Not a valid email'
-      : '';
   }
 
   checkPasswordMatch(): void {
@@ -201,6 +194,22 @@ export class SignupFormComponent {
     }
   }
 
+
+  // validator
+  getErrorMessage(): string {
+    const emailControl = this.loginCredentialForm.get('email');
+    if (emailControl && emailControl.hasError('required')) {
+      return 'Email is required';
+    }
+    if (emailControl && emailControl.hasError('email')) {
+      return 'Not a valid email';
+    }
+    // if (emailControl && emailControl.hasError('serverError')) {
+    //   return emailControl.getError('serverError');
+    // }
+    return '';
+  }
+  
   // formatDate(date: Date | null): string {
   //   if (!date) return '';
   //   const year = date.getFullYear();
@@ -216,12 +225,12 @@ export class SignupFormComponent {
       middleName: this.personalInfoForm.value.middleName,
       birthdate: this.personalInfoForm.value.birthdate,
       listOfInterest: this.interests,
-      house: this.addressInfoForm.value.houseNo,
-      building: this.addressInfoForm.value.buildingName,
-      street: this.addressInfoForm.value.streetName,
-      city: this.addressInfoForm.value.brgy,
-      province: this.addressInfoForm.value.Province,
-      zipcode: this.addressInfoForm.value.zipCode,
+      // house: this.addressInfoForm.value.houseNo,
+      // building: this.addressInfoForm.value.buildingName,
+      // street: this.addressInfoForm.value.streetName,
+      // city: this.addressInfoForm.value.brgy,
+      // province: this.addressInfoForm.value.Province,
+      // zipcode: this.addressInfoForm.value.zipCode,
       email: this.loginCredentialForm.value.email,
       username: this.loginCredentialForm.value.username,
       password: this.loginCredentialForm.value.password,
@@ -231,14 +240,14 @@ export class SignupFormComponent {
 
     if (
       this.personalInfoForm.valid &&
-      this.addressInfoForm.valid &&
+      // this.addressInfoForm.valid &&
       this.loginCredentialForm.valid
     ) {
       this.signUpService
         .saveUser(user)
         .subscribe(() => console.log('User successfully added'));
       this.personalInfoForm.reset();
-      this.addressInfoForm.reset();
+      // this.addressInfoForm.reset();
       this.loginCredentialForm.reset();
       this.router.navigate(['/login']);
     }

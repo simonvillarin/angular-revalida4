@@ -33,7 +33,7 @@
           <h5 class="card-title">Product Information</h5>
         </div>
         <div class="card-body">
-          <form>
+          <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
             <div class="row gx-5">
               <div class="col col-md-4">
                 <!-- Item Name -->
@@ -42,9 +42,21 @@
                   <input
                     type="text"
                     class="form-control border-bottom"
+                    formControlName="itemName"
                     id="item-name"
                     placeholder="Enter item name"
                   />
+                    <div
+                      class="validation"
+                        *ngIf="productForm.get('itemName')?.invalid &&
+                        productForm.get('itemName')?.dirty ||
+                        productForm.get('itemName')?.touched"
+                        >
+                        <div *ngIf="productForm.get('itemName')?.hasError('required')">
+                          Item Name is Required
+                        </div>
+                    </div>
+
                 </div>
                 <!-- Item Brand -->
                 <div class="form-group">
@@ -54,6 +66,7 @@
                     class="form-select"
                     id="brand"
                     aria-label="Brand"
+                    formControlName="brand"
                   >
                     <option hidden>Select Brand</option>
                     <option
@@ -64,6 +77,16 @@
                     </option>
                     <option value="add">Add Brand</option>
                   </select>
+                  <div
+                     class="validation"
+                    *ngIf="productForm.get('brand')?.invalid &&
+                     productForm.get('brand')?.dirty || 
+                     productForm.get('brand')?.touched  "
+                  >
+                    <div *ngIf="productForm.get('brand')?.hasError('required')">
+                       Brand is Required
+                    </div>
+                  </div>
                   <input
                     id="brand"
                     class="form-control"
@@ -92,6 +115,7 @@
                     class="form-select"
                     id="category"
                     aria-label="Category"
+                    formControlName="category"
                   >
                     <option hidden>Select Category</option>
                     <option
@@ -102,6 +126,16 @@
                     </option>
                     <option value="add">Add Category</option>
                   </select>
+                  <div
+                     class="validation"
+                    *ngIf="productForm.get('category')?.invalid &&
+                     productForm.get('category')?.dirty || 
+                     productForm.get('category')?.touched  "
+                    >
+                    <div *ngIf="productForm.get('category')?.hasError('required')">
+                       Category is Required
+                    </div>
+                  </div>
                   <input
                     id="category"
                     class="form-control"
@@ -123,7 +157,21 @@
                 <!-- Image -->
                 <div class="form-group">
                   <label for="formFile" class="form-label">Product Image</label>
-                  <input class="form-control" type="file" id="formFile" />
+                  <input class="form-control" 
+                    (change)="onFileSelected($event)"
+                    type="file" 
+                    id="formFile"  
+                    formControlName="productImg"/>
+                    <div
+                      class="validation"
+                      *ngIf="productForm.get('productImg')?.invalid &&
+                        productForm.get('productImg')?.dirty || 
+                        productForm.get('productImg')?.touched  "
+                      >
+                      <div *ngIf="productForm.get('productImg')?.hasError('required')">
+                        Product Image is Required
+                      </div>
+                    </div>
                 </div>
               </div>
               <div class="col col-md-4">
@@ -135,7 +183,18 @@
                     class="form-control border-bottom"
                     id="price"
                     placeholder="Enter price"
+                    formControlName="price"
                   />
+                  <div
+                      class="validation"
+                      *ngIf="productForm.get('price')?.invalid &&
+                        productForm.get('price')?.dirty || 
+                        productForm.get('price')?.touched  "
+                      >
+                    <div *ngIf="productForm.get('price')?.hasError('required')">
+                      Price is Required
+                    </div>
+                  </div>
                 </div>
                 <!-- Quantity -->
                 <div class="form-group">
@@ -145,19 +204,41 @@
                     class="form-control border-bottom"
                     id="qty"
                     placeholder="Enter quantity"
+                    formControlName="quantity"
                   />
+                  <div
+                      class="validation"
+                      *ngIf="productForm.get('quantity')?.invalid &&
+                        productForm.get('quantity')?.dirty || 
+                        productForm.get('quantity')?.touched  "
+                      >
+                    <div *ngIf="productForm.get('quantity')?.hasError('required')">
+                      Quantity is Required
+                    </div>
+                 </div>
                 </div>
               </div>
             </div>
             <!-- Description -->
-            <div class="form-group">
+            <div class="form-group" formArrayName="description">
               <label for="description">Description</label>
-              <input
-                type="text"
-                class="form-control border-bottom"
-                id="description"
-                placeholder="Enter description"
-              />
+              <div class="input-group" *ngFor="let desc of description.controls; let i = index">
+                <input
+                  type="text"
+                  class="form-control border-bottom"
+                  id="description"
+                  placeholder="Enter description"
+                  [formControlName]=i
+                 />
+                <span>
+                  <button class="btn btn-danger" 
+                          type="button" 
+                          (click)="removeDescription(i)">
+                          Remove
+                    </button> 
+                </span>
+              </div>
+              <button class="btn btn-primary" type="button" (click)="addDescription()">Add Description</button>
             </div>
             <!-- Button Add -->
             <button type="submit" class="btn btn-success">Add</button>
