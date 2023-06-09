@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit{
     this.showProfileCont = true;
   }
 
-  navigateforgotPassword() {
-    this.router.navigate(['forgot/password']);
+  navigateChangePassword() {
+    this.router.navigate(['change/password']);
   }
 }

@@ -110,6 +110,14 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => 
+      import('./modules/change-password/change-password.module').then(
+        (m) => m.ChangePasswordModule
+      ),
+    canActivate: [userExistsGuard], 
+  },
+  {
+    path: '',
+    loadChildren: () => 
       import('./modules/forgot-password/forgot-password.module').then(
         (m) => m.ForgotPasswordModule
       ),
