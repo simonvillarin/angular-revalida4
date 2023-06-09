@@ -57,6 +57,25 @@
             </div>
         </div>
         <div class="col-md-4">
+            <label for="inputUsername" class="form-label">Username</label>
+            <input 
+                type="text" 
+                class="form-control border-bottom" 
+                id="inputUsername"
+                formControlName="username"
+                required
+            >
+            <!-- Validation -->
+            <div
+                class="validation"
+                *ngIf="username?.invalid && (username?.dirty || username?.touched)"
+            >
+                <p *ngIf="username?.errors?.['required']">
+                    Username is required.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
             <label for="inputEmail" class="form-label">Email</label>
             <input 
                 type="text" 
@@ -116,6 +135,22 @@
                 *ngIf="bday?.invalid && (bday?.dirty || bday?.touched)"
             >
                 <p *ngIf="bday?.errors?.['required']">Birthday is required.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">List of Interest</label>
+            <input 
+                class="form-control border-bottom" 
+                id="inputBday"
+                formControlName="listOfInterest"
+                required
+            >
+            <!-- Validation -->
+            <div
+                class="validation"
+                *ngIf="listOfInterest?.invalid && (listOfInterest?.dirty || listOfInterest?.touched)"
+            >
+                <p *ngIf="listOfInterest?.errors?.['required']">List of interest is required.</p>
             </div>
         </div>
         <div class="btnCont">

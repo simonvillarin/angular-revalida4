@@ -3,6 +3,10 @@
         <h2 class="mb-4">Profile</h2>
         <div class="row" *ngFor="let data of user">
             <div class="col-md-4">
+                <label>Username</label>
+                <p>{{ data?.username }}</p>
+            </div>
+            <div class="col-md-4">
                 <label>Fullname</label>
                 <p>{{ data?.fname }} {{ data?.mname}} {{ data?.lname }}</p>
             </div>
@@ -17,6 +21,14 @@
             <div class="col-md-4">
                 <label>Birthday</label>
                 <p>{{ data?.bday }}</p>
+            </div>
+            <div class="col-md-4">
+                <label>List of Interest</label>
+                <div class="d-flex flex-wrap">
+                    <div class="col-3" *ngFor="let list of data?.listOfInterest">
+                        {{ list }}
+                    </div>
+                </div>
             </div>
         </div>
         <div class="btnCont">

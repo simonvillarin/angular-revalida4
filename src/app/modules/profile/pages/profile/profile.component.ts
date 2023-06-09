@@ -13,12 +13,18 @@ export class ProfileComponent implements OnInit{
 
   user: any[] = [
     { 
+      username: "chanchan22",
       fname: "Chanyeol",
       mname: "Oh",
       lname: "Park",
       email: "parkchan@gmail.com",
       mobileNo: "09123245231",
-      bday: "1992-11-23"
+      bday: "1992-11-23",
+      listOfInterest: [
+        "painting",
+        "dancing",
+        "singing",
+      ],
     }
   ]
 

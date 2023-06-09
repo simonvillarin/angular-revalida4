@@ -27,6 +27,7 @@ export class EditProfileComponent implements OnInit{
     private http: HttpClient
   ) {
     this.editForm = fb.group({
+      username: ['', Validators.required],
       fname: ['', Validators.required],
       mname: ['', Validators.required],
       lname: ['', Validators.required],
@@ -37,9 +38,13 @@ export class EditProfileComponent implements OnInit{
         mobileNumberIsValid(),
       ]],
       bday: ['', Validators.required],
+      listOfInterest: ['', Validators.required],
     });
   }
 
+  get username() {
+    return this.editForm.get('username') as FormControl;
+  }
   get fname() {
     return this.editForm.get('fname') as FormControl;
   }
@@ -57,6 +62,9 @@ export class EditProfileComponent implements OnInit{
   }
   get bday() {
     return this.editForm.get('bday') as FormControl;
+  }
+  get listOfInterest() {
+    return this.editForm.get('listOfInterest') as FormControl;
   }
 
   ngOnInit(): void {}
