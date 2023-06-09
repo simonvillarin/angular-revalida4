@@ -1,104 +1,42 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  ViewChild,
+  OnInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Observable, map, startWith } from 'rxjs';
-import { hasLowercaseValidator, hasNumberValidator, hasSymbolValidator, hasUppercaseValidator } from 'src/app/modules/validators/custom.validator';
-
-export interface User {
-  firstName: string;
-  lastName: string;
-  middleName?: string;
-  email: string;
-  birthdate: Date;
-  username: string;
-  password: string;
-  listOfInterest: string[];
-  role: string;
-}
-
-const ELEMENT_DATA: User[] = [
-  {
-    firstName: 'John',
-    lastName: 'Doe',
-    middleName: 'Kent',
-    email: 'johndoe@email.com',
-    birthdate: new Date('06-05-2023'),
-    username: 'johndoe',
-    password: 'pass123',
-    listOfInterest: ['Desktop', 'Computer Components', 'Accessories'],
-    role: 'User',
-  },
-  {
-    firstName: 'John',
-    lastName: 'Doe',
-    middleName: 'Kent',
-    email: 'johndoe@email.com',
-    birthdate: new Date('06-05-2023'),
-    username: 'johndoe',
-    password: 'pass123',
-    listOfInterest: ['Desktop', 'Computer Components', 'Accessories'],
-    role: 'User',
-  },
-  {
-    firstName: 'John',
-    lastName: 'Doe',
-    middleName: 'Kent',
-    email: 'johndoe@email.com',
-    birthdate: new Date('06-05-2023'),
-    username: 'johndoe',
-    password: 'pass123',
-    listOfInterest: ['Desktop', 'Computer Components', 'Accessories'],
-    role: 'User',
-  },
-  {
-    firstName: 'John',
-    lastName: 'Doe',
-    middleName: 'Kent',
-    email: 'johndoe@email.com',
-    birthdate: new Date('06-05-2023'),
-    username: 'johndoe',
-    password: 'pass123',
-    listOfInterest: ['Desktop', 'Computer Components', 'Accessories'],
-    role: 'User',
-  },
-  {
-    firstName: 'John',
-    lastName: 'Doe',
-    middleName: 'Kent',
-    email: 'johndoe@email.com',
-    birthdate: new Date('06-05-2023'),
-    username: 'johndoe',
-    password: 'pass123',
-    listOfInterest: ['Desktop', 'Computer Components', 'Accessories'],
-    role: 'User',
-  },
-  {
-    firstName: 'John',
-    lastName: 'Doe',
-    middleName: 'Kent',
-    email: 'johndoe@email.com',
-    birthdate: new Date('06-05-2023'),
-    username: 'johndoe',
-    password: 'pass123',
-    listOfInterest: ['Desktop', 'Computer Components', 'Accessories'],
-    role: 'User',
-  },
-];
+import {
+  hasLowercaseValidator,
+  hasNumberValidator,
+  hasSymbolValidator,
+  hasUppercaseValidator,
+} from 'src/app/modules/validators/custom.validator';
+import { User } from '../../models/user';
+import { UserListService } from '../../services/user-list.service';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
 })
-export class UserListComponent implements AfterViewInit {
+export class UserListComponent implements OnInit, AfterViewInit {
   userForm: FormGroup;
   isShowMenu: boolean = false;
   showPassword = false;
   showConfirmPassword = false;
+  isActionEdit = false;
   passwordMatch = true;
 
   allInterests: string[] = [
@@ -112,38 +50,57 @@ export class UserListComponent implements AfterViewInit {
   @ViewChild('interestInput') interestInput!: ElementRef<HTMLInputElement>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private router: Router,
-              private fb: FormBuilder) {
+  ngOnInit(): void {
+    this.getAllUsers();
+  }
+
+  getAllUsers = () => {
+    this.userListService.getAllUsers().subscribe((data) => {
+      this.dataSource.data = data;
+    });
+  };
+
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private userListService: UserListService
+  ) {
     this.userForm = this.fb.group({
-      firstName: ['', [
-            Validators.required,
-            Validators.maxLength(80),
-            Validators.minLength(2)
-      ]],
-      lastName: ['', [
-            Validators.required,
-            Validators.maxLength(80),
-            Validators.minLength(2)
-      ]],
+      firstName: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(80),
+          Validators.minLength(2),
+        ],
+      ],
+      lastName: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(80),
+          Validators.minLength(2),
+        ],
+      ],
       middleName: [''],
       birthDate: ['', Validators.required],
-      email: ['', [
-            Validators.required,
-            Validators.email,
-      ]],
-      userName: ['', [
-            Validators.required,
-      ]],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['', Validators.required],
+      userName: ['', [Validators.required]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          hasNumberValidator(),
+          hasLowercaseValidator(),
+          hasUppercaseValidator(),
+          hasSymbolValidator(),
+        ],
+      ],
+      confirmPass: ['', Validators.required],
       role: ['', Validators.required],
-      password: ['',[
-            Validators.required,
-            Validators.minLength(8),
-            hasNumberValidator(),
-            hasLowercaseValidator(),
-            hasUppercaseValidator(),
-            hasSymbolValidator(),
-      ]],
-      confirmPass: ['', Validators.required]
+      status: ['', Validators.required],
     });
 
     this.userForm.get('password')?.valueChanges.subscribe(() => {
@@ -190,16 +147,17 @@ export class UserListComponent implements AfterViewInit {
     this.router.navigate(['/login']);
   };
 
-
-  dataSource = new MatTableDataSource<User>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<User>();
   displayedColumns: string[] = [
     'firstName',
     'lastName',
     'middleName',
-    'birthdate',
+    'birthday',
+    'email',
+    'phoneNumber',
     'username',
-    'listOfInterest',
     'role',
+    'status',
     'actions',
   ];
 
@@ -223,17 +181,15 @@ export class UserListComponent implements AfterViewInit {
     }
   }
 
-
   onSubmit(): void {
-    if(this.userForm.valid){
-      console.log(this.userForm.value);
+    if (this.userForm.valid) {
+      console.log(this.userForm.get('firstName')?.value);
     }
 
-    if(this.userForm.invalid){
+    if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       console.log('Invalid Form');
       return;
     }
   }
-
 }

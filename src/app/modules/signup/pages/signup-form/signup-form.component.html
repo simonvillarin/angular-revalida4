@@ -69,7 +69,11 @@
                   <div class="col col-md">
                     <div class="form-group">
                       <label>Middle Name</label>
-                      <input type="text" class="form-control border-bottom" />
+                      <input
+                        type="text"
+                        class="form-control border-bottom"
+                        formControlName="middleName"
+                      />
                     </div>
                   </div>
                   <!-- Birthday -->
@@ -273,7 +277,7 @@
                       </mat-error>
                     </div>
                   </div>
-                
+
                 </div>
                 !-- Province --
                 <div class="row gx-5">
@@ -401,7 +405,10 @@
                         required
                       />
                       <div class="input-group-append">
-                        <span class="input-group-text" (click)="togglePasswordVisibility()">
+                        <span
+                          class="input-group-text"
+                          (click)="togglePasswordVisibility()"
+                        >
                           <mat-icon>visibility</mat-icon>
                         </span>
                       </div>
@@ -474,19 +481,19 @@
                 <div class="row gx-5">
                   <div class="form-group">
                     <label>Confirm Password</label>
-                   <div class="input-group">
+                    <div class="input-group">
                       <input
-                       [type]="showConfirmPassword ? 'text' : 'password'"
+                        [type]="showConfirmPassword ? 'text' : 'password'"
                         class="form-control border-bottom"
                         formControlName="confirmPass"
                         required
-                     />
+                      />
                       <mat-icon
                         matSuffix
                         (click)="toggleConfirmPasswordVisibility()"
                         >visibility</mat-icon
                       >
-                   </div>
+                    </div>
                     <div
                       class="validation"
                       *ngIf="
