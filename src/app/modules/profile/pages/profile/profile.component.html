@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="profileCont" [hidden]="!showProfileCont">
+        <h2 class="mb-4">Profile</h2>
+        <div class="row" *ngFor="let data of user">
+            <div class="col-md-4">
+                <label>Username</label>
+                <p>{{ data?.username }}</p>
+            </div>
+            <div class="col-md-4">
+                <label>Fullname</label>
+                <p>{{ data?.fname }} {{ data?.mname}} {{ data?.lname }}</p>
+            </div>
+            <div class="col-md-4">
+                <label>Email</label>
+                <p>{{ data?.email | emailMask }}</p>
+            </div>
+            <div class="col-md-4">
+                <label>Mobile no.</label>
+                <p>{{ data?.mobileNo | mobileMask}}</p>
+            </div>
+            <div class="col-md-4">
+                <label>Birthday</label>
+                <p>{{ data?.bday }}</p>
+            </div>
+            <div class="col-md-4">
+                <label>List of Interest</label>
+                <div class="d-flex flex-wrap">
+                    <div class="col-3" *ngFor="let list of data?.listOfInterest">
+                        {{ list }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btnCont">
+            <button type="button" class="btn editBtn" (click)="toggleEditMode()">Edit Profile</button>
+            <button type="button" class="btn changePassBtn" (click)="navigateChangePassword()">Change Password</button>
+        </div>
+    </div>
+
+    <div [hidden]="!showEditForm">
+        <!-- Edit form content -->
+        <app-edit-profile (editProfileCancel)="cancel()"></app-edit-profile>
+    </div>
+</div>

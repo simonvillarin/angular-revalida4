@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { ForgotPasswordComponent } from './forgot-password.component';
+import { ProfilePageComponent } from './component/profile-page/profile-page.component';
 
 const routes: Routes = [
   {
-    path: 'forgot/password',
-    component: ForgotPasswordComponent
+    path: 'profile',
+    component: ProfilePageComponent
   }
 ]
 
@@ -18,4 +18,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class ForgotPasswordRoutingModule { }
+export class PorfileRoutingModule { }

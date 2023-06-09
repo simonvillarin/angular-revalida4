@@ -1,0 +1,80 @@
+
+// Rating
+.ratingReviewCont {
+    background-color: #ffffff;
+    margin: 15px;
+    padding: 0px;
+}
+
+.ratingReviewCont .col-12 {
+    background-color: rgb(248, 243, 243);
+}
+
+.ratingReviewCont .col-12 h3{
+    margin: 5px 25px 5px 0px
+}
+
+.iconBtn {
+    margin: 0px;
+    padding: 0px;
+    width: 5px;
+
+}
+
+.rateIcon {
+    color: #FFC107;
+    font-size: 15px;
+}
+
+.ratingIcon {
+    margin-left: 11px;
+    margin-bottom: 10px;
+    font-size: 30px;
+}
+
+.aveIcon {
+    color: #FFC107;
+    font-size: 25px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+
+.ratingCont {
+    margin: 0px;
+    padding: 20px 20px 0px 20px;
+    border-bottom: 1px solid rgb(212, 211, 211);
+}
+
+.ratingCont div {
+    margin-bottom: 10px;
+}
+
+.ratingAveLbl {
+    margin-left: 8px;
+    font-size: x-large;
+    font-weight: 600;
+}
+
+.ratingCountLbl{
+    margin-left: 20px;
+    color: rgb(37, 199, 37);
+}
+
+.prodFilterCont {
+    border-bottom: 1px solid rgb(212, 211, 211);
+    padding-left: 15px;
+}
+
+.prodFilterCont h3{
+    margin: 5px 0px 5px 0px;
+}
+
+.userReviewCont {
+    border-bottom: 1px solid rgb(212, 211, 211);
+    padding: 20px;
+    margin: 0px;
+}
+
+.comment {
+    font-weight: 400;
+}
