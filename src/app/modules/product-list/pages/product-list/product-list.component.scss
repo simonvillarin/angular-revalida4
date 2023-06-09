@@ -250,6 +250,10 @@ i {
   align-items: center;
 }
 
+.table-wrapper {
+  overflow-y: auto;
+}
+
 .table-title > div {
   font-family: inherit;
   font-size: 1.5rem;
@@ -290,6 +294,11 @@ table td {
   border-bottom: 1px solid rgb(76, 175, 80);
 }
 
+.td-description,
+.td-img {
+  width: 5rem;
+}
+
 .table-buttons {
   display: flex;
   justify-content: center;
@@ -309,6 +318,14 @@ table td {
 
 .delete {
   background-color: rgb(238, 59, 59);
+}
+
+.add {
+  background-color: rgb(76, 175, 80);
+}
+
+.hidden-row {
+  display: none;
 }
 
 @media screen and (max-width: 768px) {

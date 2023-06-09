@@ -7,8 +7,6 @@ import { User } from '../models/user';
   providedIn: 'root',
 })
 export class UserListService {
-  users: User[] = [];
-
   constructor(private http: HttpClient) {}
 
   BASE_URL = 'http://localhost:8080/api/v1';
@@ -22,14 +20,10 @@ export class UserListService {
   };
 
   addUser = (user: User) => {
-    return this.http.post(`${this.BASE_URL}/users`, user);
+    return this.http.post(`${this.BASE_URL}/user`, user);
   };
 
   updateUser = (id: number, user: User) => {
     return this.http.put(`${this.BASE_URL}/user/${id}`, user);
-  };
-
-  deleteUser = (id: number) => {
-    return this.http.delete(`${this.BASE_URL}/user/${id}`);
   };
 }

@@ -1,117 +1,74 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProductListService } from '../../services/product-list.service';
+import { Product } from '../../models/product';
 
-export interface Product {
-  itemName: string;
-  itemBrand: string;
-  category: string;
-  itemImg: string;
-  itemDesc: string[];
-  price: number;
-  qty: number;
-}
-
-const ELEMENT_DATA: Product[] = [
-  {
-    itemName: 'Note150',
-    itemBrand: 'Acer',
-    category: 'Notebooks',
-    itemImg: 'Note150.svg',
-    itemDesc: ['4gb Ram', '4core', '17" display'],
-    price: 17500.0,
-    qty: 50,
-  },
-  {
-    itemName: 'Note150',
-    itemBrand: 'Acer',
-    category: 'Notebooks',
-    itemImg: 'Note150.svg',
-    itemDesc: ['4gb Ram', '4core', '17" display'],
-    price: 17500.0,
-    qty: 50,
-  },
-  {
-    itemName: 'Note150',
-    itemBrand: 'Acer',
-    category: 'Notebooks',
-    itemImg: 'Note150.svg',
-    itemDesc: ['4gb Ram', '4core', '17" display'],
-    price: 17500.0,
-    qty: 50,
-  },
-  {
-    itemName: 'Note150',
-    itemBrand: 'Acer',
-    category: 'Notebooks',
-    itemImg: 'Note150.svg',
-    itemDesc: ['4gb Ram', '4core', '17" display'],
-    price: 17500.0,
-    qty: 50,
-  },
-  {
-    itemName: 'Note150',
-    itemBrand: 'Acer',
-    category: 'Notebooks',
-    itemImg: 'Note150.svg',
-    itemDesc: ['4gb Ram', '4core', '17" display'],
-    price: 17500.0,
-    qty: 50,
-  },
-  {
-    itemName: 'Note150',
-    itemBrand: 'Acer',
-    category: 'Notebooks',
-    itemImg: 'Note150.svg',
-    itemDesc: ['4gb Ram', '4core', '17" display'],
-    price: 17500.0,
-    qty: 50,
-  },
-];
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
 })
-export class ProductListComponent implements AfterViewInit {
+export class ProductListComponent implements OnInit, AfterViewInit {
   isShowMenu: boolean = false;
   productForm: FormGroup;
   selectedFileName: string | undefined;
+  isActionEdit = false;
+  buttonAction: string = 'ADD';
+  id: number = 0;
+  file: any;
 
-  constructor(private router: Router,
+  ngOnInit(): void {
+    this.getAllProducts();
+  }
+
+  getAllProducts = () => {
+    this.productListService.getAllProducts().subscribe((data) => {
+      const sortData = data.sort((a, b) => a.productId - b.productId);
+      this.dataSource.data = sortData;
+    });
+  };
+
+  constructor(
+    private router: Router,
     private fb: FormBuilder,
-    private elementRef: ElementRef) {
-
+    private elementRef: ElementRef,
+    private productListService: ProductListService
+  ) {
     this.productForm = this.fb.group({
       itemName: ['', Validators.required],
-      category: ['', Validators.required],
-      price: ['', Validators.required],
       brand: ['', Validators.required],
-      productImg: [''],
-      quantity: ['', Validators.required],
+      category: ['', Validators.required],
       description: this.fb.array([]),
-    })
+      quantity: ['', Validators.required],
+      price: ['', Validators.required],
+      productImg: [''],
+    });
   }
 
-  get description(): FormArray{
+  get description(): FormArray {
     return this.productForm.get('description') as FormArray;
   }
-  addDescription(): void{
+  addDescription(): void {
     this.description.push(this.fb.control(''));
   }
 
-  removeDescription(index: number): void{
+  removeDescription(index: number): void {
     this.description.removeAt(index);
   }
 
   onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    const fileName = file.name;
-    console.log('File name:', file);
+    this.file = event.target.files[0];
+    console.log('File name:', this.file);
   }
-
 
   toggleMenu() {
     this.isShowMenu = !this.isShowMenu;
@@ -122,13 +79,15 @@ export class ProductListComponent implements AfterViewInit {
     this.router.navigate(['/login']);
   };
 
-  dataSource = new MatTableDataSource<Product>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<Product>();
   displayedColumns: string[] = [
     'itemName',
     'itemBrand',
     'category',
     'itemDesc',
+    'quantity',
     'price',
+    'image',
     'actions',
   ];
 
@@ -196,16 +155,67 @@ export class ProductListComponent implements AfterViewInit {
     console.log(this.brandOptions);
   }
 
-  onSubmit(): void {
-    if (this.productForm.valid) {
-      const formValue = this.productForm.value;
-      console.log(formValue);
-    }
+  editProduct = (id: number, product: any) => {
+    this.buttonAction = 'EDIT';
+    this.isActionEdit = true;
 
-    if (this.productForm.invalid) {
-      this.productForm.markAllAsTouched();
-      console.log('Invalid Form');
-      return;
+    console.log(product);
+
+    this.productForm.patchValue({
+      itemName: product.productName,
+      brand: product.brand,
+      category: product.category,
+      description: product.description,
+      quantity: product.quantity,
+      price: product.price,
+      productImg: product.img,
+    });
+  };
+
+  deleteProduct = (id: number) => {};
+
+  reset = () => {
+    this.productForm.reset();
+  };
+
+  onSubmit(): void {
+    const product: any = {
+      productName: this.productForm.get('itemName')?.value,
+      brand: this.productForm.get('brand')?.value,
+      category: this.productForm.get('category')?.value,
+      description: this.productForm.get('description')?.value,
+      quantity: this.productForm.get('quantity')?.value,
+      price: this.productForm.get('price')?.value,
+      img: '',
+      isAvailable: true,
+    };
+
+    console.log(this.file);
+
+    const formData = new FormData();
+    formData.append(
+      'product',
+      new Blob([JSON.stringify(product)], { type: 'application/json' })
+    );
+    formData.append('file', this.file);
+
+    if (this.isActionEdit == false) {
+      if (this.productForm.valid) {
+        this.productListService.addProduct(formData).subscribe((res: any) => {
+          product.img = res.imageLink;
+          console.log(res);
+        });
+        console.log(product);
+      }
+      this.dataSource.data = [...this.dataSource.data, product];
+
+      if (this.productForm.invalid) {
+        this.productForm.markAllAsTouched();
+        console.log('Invalid Form');
+        return;
+      }
+    } else {
     }
+    this.productForm.reset();
   }
 }

@@ -264,6 +264,10 @@ i {
   border-radius: 0.25rem;
 }
 
+.table-wrapper {
+  overflow-y: auto;
+}
+
 .table-title {
   display: flex;
   justify-content: center;
@@ -332,7 +336,9 @@ table td {
 }
 
 .active,
-.deactivated {
+.deactivated,
+.user,
+.admin {
   padding: 0.25rem;
   border-radius: 100vmax;
   color: rgb(255, 255, 255);
@@ -343,7 +349,19 @@ table td {
 }
 
 .deactivated {
-  color: rgb(238, 59, 59);
+  background-color: rgb(238, 59, 59);
+}
+
+.user {
+  background-color: goldenrod;
+}
+
+.admin {
+  background-color: orangered;
+}
+
+.add {
+  background-color: rgb(76, 175, 80);
 }
 
 @media screen and (max-width: 768px) {

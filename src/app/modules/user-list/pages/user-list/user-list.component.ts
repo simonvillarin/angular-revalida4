@@ -36,8 +36,10 @@ export class UserListComponent implements OnInit, AfterViewInit {
   isShowMenu: boolean = false;
   showPassword = false;
   showConfirmPassword = false;
-  isActionEdit = false;
   passwordMatch = true;
+  isActionEdit = false;
+  buttonAction: string = 'ADD';
+  id: number = 0;
 
   allInterests: string[] = [
     'Desktop PC',
@@ -56,7 +58,8 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
   getAllUsers = () => {
     this.userListService.getAllUsers().subscribe((data) => {
-      this.dataSource.data = data;
+      const sortData = data.sort((a, b) => a.userId - b.userId);
+      this.dataSource.data = sortData;
     });
   };
 
@@ -181,15 +184,137 @@ export class UserListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onSubmit(): void {
-    if (this.userForm.valid) {
-      console.log(this.userForm.get('firstName')?.value);
-    }
+  editUser = (id: number, user: User) => {
+    this.buttonAction = 'EDIT';
+    this.isActionEdit = true;
+    this.id = id;
 
-    if (this.userForm.invalid) {
-      this.userForm.markAllAsTouched();
-      console.log('Invalid Form');
-      return;
+    this.userForm.patchValue({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      middleName: user.middleName,
+      birthDate: user.birthdate,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      userName: user.username,
+      role: user.role,
+      status: user.status,
+    });
+  };
+
+  deleteUser = (id: number) => {
+    const user: any = {
+      status: false,
+    };
+
+    const _user: any = this.dataSource.data.filter(
+      (data) => data.userId === id
+    );
+    if (_user.status) {
+      this.userListService
+        .updateUser(id, user)
+        .subscribe((res) => console.log(res));
+      const index = this.dataSource.data.findIndex(
+        (user) => user.userId === id
+      );
+      this.dataSource.data[index].status = false;
+    } else {
+      console.log('User already deactivated');
     }
+  };
+
+  reset = () => {
+    this.userForm.reset();
+  };
+
+  onSubmit(): void {
+    if (this.isActionEdit == false) {
+      this.userForm.patchValue({
+        status: true,
+      });
+
+      const user: any = {
+        firstName: this.userForm.get('firstName')?.value,
+        lastName: this.userForm.get('lastName')?.value,
+        middleName: this.userForm.get('middleName')?.value,
+        birthdate: this.userForm.get('birthDate')?.value,
+        email: this.userForm.get('email')?.value,
+        phoneNumber: this.userForm.get('phoneNumber')?.value,
+        username: this.userForm.get('userName')?.value,
+        password: this.userForm.get('password')?.value,
+        role: this.userForm.get('role')?.value,
+        status: this.userForm.get('status')?.value,
+      };
+
+      if (this.userForm.valid) {
+        this.userListService.addUser(user).subscribe((res) => console.log(res));
+        this.dataSource.data = [...this.dataSource.data, user];
+      }
+
+      if (this.userForm.invalid) {
+        this.userForm.markAllAsTouched();
+        console.log('Invalid Form');
+        return;
+      }
+    } else {
+      let user: any;
+
+      if (this.userForm.get('password') == null) {
+        this.userForm.patchValue({
+          password: 'sample',
+          confirmPass: 'sample',
+        });
+
+        const user = {
+          firstName: this.userForm.get('firstName')?.value,
+          lastName: this.userForm.get('lastName')?.value,
+          middleName: this.userForm.get('middleName')?.value,
+          birthdate: this.userForm.get('birthDate')?.value,
+          phoneNumber: this.userForm.get('phoneNumber')?.value,
+          password: this.userForm.get('password')?.value,
+          role: this.userForm.get('role')?.value,
+          status: this.userForm.get('status')?.value,
+        };
+      } else {
+        user = {
+          firstName: this.userForm.get('firstName')?.value,
+          lastName: this.userForm.get('lastName')?.value,
+          middleName: this.userForm.get('middleName')?.value,
+          birthdate: this.userForm.get('birthDate')?.value,
+          phoneNumber: this.userForm.get('phoneNumber')?.value,
+          password: this.userForm.get('password')?.value,
+          role: this.userForm.get('role')?.value,
+          status: this.userForm.get('status')?.value,
+        };
+      }
+
+      this.userListService
+        .updateUser(this.id, user)
+        .subscribe((res) => console.log(res));
+      const index = this.dataSource.data.findIndex(
+        (user) => user.userId === this.id
+      );
+      this.dataSource.data[index].firstName =
+        this.userForm.get('firstName')?.value;
+      this.dataSource.data[index].lastName =
+        this.userForm.get('lastName')?.value;
+      this.dataSource.data[index].middleName =
+        this.userForm.get('middleName')?.value;
+      this.dataSource.data[index].birthdate =
+        this.userForm.get('birthDate')?.value;
+      this.dataSource.data[index].email = this.userForm.get('email')?.value;
+      this.dataSource.data[index].phoneNumber =
+        this.userForm.get('phoneNumber')?.value;
+      this.dataSource.data[index].username =
+        this.userForm.get('userName')?.value;
+      this.dataSource.data[index].password =
+        this.userForm.get('password')?.value;
+      this.dataSource.data[index].role = this.userForm.get('role')?.value;
+      this.dataSource.data[index].status = this.userForm.get('status')?.value;
+
+      this.buttonAction = 'ADD';
+      this.isActionEdit = false;
+    }
+    this.userForm.reset();
   }
 }
