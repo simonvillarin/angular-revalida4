@@ -92,6 +92,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     'quantity',
     'price',
     'image',
+    'status',
     'actions',
   ];
 
@@ -196,14 +197,14 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   };
 
   deleteProduct = (id: number) => {
-    const product: any = this.dataSource.data.filter(
-      (data) => data.productId !== id
-    );
-    this.dataSource.data = product;
-
     const payload = {
       isAvailable: false,
     };
+
+    const index = this.dataSource.data.findIndex(
+      (product) => product.productId === id
+    );
+    this.dataSource.data[index].isAvailable = false;
 
     this.productListService
       .updateProduct(id, payload)

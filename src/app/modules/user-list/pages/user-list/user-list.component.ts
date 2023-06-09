@@ -326,8 +326,9 @@ export class UserListComponent implements OnInit, AfterViewInit {
         this.userForm.get('password')?.value;
       this.dataSource.data[index].role = this.userForm.get('role')?.value;
 
-      let status;
-      if (this.userForm.get('status')?.value === 'true') {
+      let status = false;
+      console.log(this.userForm.get('status')?.value);
+      if (this.userForm.get('status')?.value) {
         status = true;
       } else {
         status = false;

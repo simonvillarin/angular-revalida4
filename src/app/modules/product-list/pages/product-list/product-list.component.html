@@ -422,6 +422,22 @@
               </td>
             </ng-container>
 
+            <!-- Price -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let element">
+                <div
+                  class="status"
+                  [ngClass]="{
+                    available: element.isAvailable,
+                    not: !element.isAvailable
+                  }"
+                >
+                  {{ element.isAvailable ? "ACTIVE" : "DEACTIVATED" }}
+                </div>
+              </td>
+            </ng-container>
+
             <!-- Actions -->
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef>Action</th>
@@ -448,8 +464,7 @@
               mat-row
               *matRowDef="let row; columns: displayedColumns"
               [ngClass]="{
-                'hidden-row':
-                  row.isAvailable === 'true' || !rowMatchesSearch(row)
+                'hidden-row': !rowMatchesSearch(row)
               }"
             ></tr>
           </table>
