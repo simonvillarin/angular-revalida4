@@ -1,6 +1,7 @@
 import { OrderService } from './../../../../shared/services/order/order.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProductListService } from 'src/app/modules/product-list/services/product-list.service';
 import { Cart } from 'src/app/shared/models/cart';
 import { Checkout } from 'src/app/shared/models/checkout';
 import { CartService } from 'src/app/shared/services/cart/cart.service';
@@ -18,6 +19,7 @@ export class CheckoutComponent implements OnInit {
     private checkoutService: CheckoutService,
     private orderService: OrderService,
     private cartService: CartService,
+    private productService: ProductListService,
     private router: Router
   ) {}
 
@@ -67,8 +69,6 @@ export class CheckoutComponent implements OnInit {
       totalPrice += this.cartItems[i].price * this.cartItems[i].quantity;
     }
 
-    console.log(totalPrice);
-
     for (let i = 0; i < this.cartItems.length; i++) {
       const currentDate = new Date();
       const year = currentDate.getFullYear();
@@ -94,6 +94,25 @@ export class CheckoutComponent implements OnInit {
 
       this.orderService.addOrder(payload).subscribe((res) => console.log(res));
     }
+
+    for (let i = 0; i < this.cartItems.length; i++) {
+      let quantity = this.cartItems[i].quantity;
+      let productId = this.cartItems[i].productId;
+      this.productService.getProductById(productId).subscribe((data) => {
+        const product = {
+          soldItems: totalQuantity,
+          soldPrice: totalPrice,
+          quantity: data.quantity - quantity,
+        };
+
+        console.log(product);
+
+        this.productService
+          .updateProduct(productId, product)
+          .subscribe((res) => console.log(res));
+      });
+    }
+
     for (let i = 0; i < this.cartItems.length; i++) {
       this.checkoutService
         .deleteCheckout(this.cartItems[i].cartId)

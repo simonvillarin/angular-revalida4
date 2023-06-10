@@ -9,6 +9,7 @@ export interface Product {
   numOfUserRated: number;
   ratings: number;
   soldItems: number;
+  soldPrice: number;
   img: string;
   isAvailable: boolean;
 }

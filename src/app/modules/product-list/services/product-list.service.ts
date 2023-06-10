@@ -19,15 +19,15 @@ export class ProductListService {
     return this.http.get<Product>(`${this.BASE_URL}/product/${id}`);
   };
 
-  addProduct = (user: any) => {
-    return this.http.post(`${this.BASE_URL}/product`, user);
+  addProduct = (product: any) => {
+    return this.http.post(`${this.BASE_URL}/product`, product);
   };
 
-  updateProduct = (id: number, user: any) => {
-    return this.http.put(`${this.BASE_URL}/product/${id}`, user);
+  updateProductWithImage = (id: number, product: any) => {
+    return this.http.put(`${this.BASE_URL}/product/image/${id}`, product);
   };
 
-  updateProductWithImage = (id: number, user: any) => {
-    return this.http.put(`${this.BASE_URL}/product/image/${id}`, user);
+  updateProduct = (id: number, product: any) => {
+    return this.http.put(`${this.BASE_URL}/product/${id}`, product);
   };
 }
