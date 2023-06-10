@@ -4,11 +4,10 @@ import { Observable } from 'rxjs';
 import { Order } from '../../models/order';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OrderService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   BASE_URL = 'http://localhost:8080/api/v1';
 
@@ -22,9 +21,9 @@ export class OrderService {
 
   addOrder = (order: Order) => {
     return this.http.post(`${this.BASE_URL}/order`, order);
-  }
+  };
 
   deleteOrder = (id: number) => {
-    return this.http.delete(`${this.BASE_URL}/order/${id}`)
-  }
+    return this.http.delete(`${this.BASE_URL}/order/${id}`);
+  };
 }

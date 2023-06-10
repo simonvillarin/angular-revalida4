@@ -4,11 +4,10 @@ import { Product } from '../../models/product';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   BASE_URL = 'http://localhost:8080/api/v1';
 
@@ -22,13 +21,13 @@ export class ProductService {
 
   addProduct = (product: Product) => {
     return this.http.post(`${this.BASE_URL}/product`, product);
-  }
+  };
 
   updateProduct = (id: number, product: Product) => {
     return this.http.put(`${this.BASE_URL}/product/${id}`, product);
-  }
+  };
 
   deleteProduct = (id: number) => {
-    return this.http.delete(`${this.BASE_URL}/product/${id}`)
-  }
+    return this.http.delete(`${this.BASE_URL}/product/${id}`);
+  };
 }

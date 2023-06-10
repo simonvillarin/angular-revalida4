@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Cart } from 'src/app/shared/models/cart';
 import { CartService } from 'src/app/shared/services/cart/cart.service';
+import { CheckoutService } from 'src/app/shared/services/checkout/checkout.service';
 
 @Component({
   selector: 'app-cart',
@@ -9,10 +10,13 @@ import { CartService } from 'src/app/shared/services/cart/cart.service';
   styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit {
-  quantity: number = 0;
   cartItems: Cart[] = [];
 
-  constructor(private router: Router, private cartService: CartService) {}
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    private checkoutService: CheckoutService
+  ) {}
 
   ngOnInit(): void {
     this.getAllCartItems();
@@ -28,20 +32,40 @@ export class CartComponent implements OnInit {
 
     this.cartService.getCartItemByUserId(userId).subscribe((data) => {
       this.cartItems = data;
-      console.log(data);
     });
   };
 
-  // Quantity Function
-  increase(prod: any) {
-    prod.prodQuantity++;
+  increase(item: any) {
+    item.quantity++;
+
+    const payload = {
+      quantity: item.quantity,
+    };
+
+    this.cartService
+      .updateCartItem(item.cartId, payload)
+      .subscribe((res) => console.log(res));
   }
 
-  decrease(prod: any) {
-    if (prod.prodQuantity > 0) {
-      prod.prodQuantity--;
+  decrease(item: any) {
+    if (item.quantity > 1) {
+      item.quantity--;
+
+      const payload = {
+        quantity: item.quantity,
+      };
+
+      this.cartService
+        .updateCartItem(item.cartId, payload)
+        .subscribe((data) => console.log(data));
     }
   }
+
+  deleteCartItem = (id: number) => {
+    const filter = this.cartItems.filter((cart) => cart.cartId !== id);
+    this.cartItems = filter;
+    this.cartService.deleteCartItem(id).subscribe((res) => console.log(res));
+  };
 
   // Select All function
   isSelectAll: boolean = false;
@@ -55,8 +79,8 @@ export class CartComponent implements OnInit {
     }
   }
 
-  isSelected(prod: any): boolean {
-    return this.selectedProds.includes(prod);
+  isSelected(item: any): boolean {
+    return this.selectedProds.includes(item);
   }
 
   toggleSelectProd(prod: any) {
@@ -71,7 +95,7 @@ export class CartComponent implements OnInit {
     let totalPrice = 0;
 
     for (const product of this.selectedProds) {
-      totalPrice += product.prodPrice * product.prodQuantity;
+      totalPrice += product.price * product.quantity;
     }
 
     return totalPrice;
@@ -81,7 +105,7 @@ export class CartComponent implements OnInit {
     let productCount = 0;
 
     for (const product of this.selectedProds) {
-      productCount += product.prodQuantity;
+      productCount += product.quantity;
     }
 
     return productCount;
@@ -89,6 +113,9 @@ export class CartComponent implements OnInit {
 
   // Checkout Navigation
   checkout() {
-    this.router.navigate(['checkout']);
+    if (this.selectedProds.length > 0) {
+      this.checkoutService.cartItems = this.selectedProds;
+      this.router.navigate(['checkout']);
+    }
   }
 }
