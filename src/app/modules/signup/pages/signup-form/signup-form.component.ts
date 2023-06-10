@@ -12,7 +12,6 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {
   birthdateValidator,
-  // emailExistsValidator,
   hasLowercaseValidator,
   hasNumberValidator,
   hasSymbolValidator,
@@ -32,7 +31,6 @@ export class SignupFormComponent {
   signupForm: FormGroup;
   personalInfoForm: FormGroup;
   loginCredentialForm: FormGroup;
-  // addressInfoForm: FormGroup;
 
   // Password Field
   showPassword = false;
@@ -43,7 +41,7 @@ export class SignupFormComponent {
   personalInfoValid = false;
 
   // Interest
-  separatorKeysCodes: number[] = [13, 188]; // Enter and comma keycodes
+  separatorKeysCodes: number[] = [13, 188];
   interestCtrl = new FormControl('');
   filteredInterests: Observable<string[]>;
   interests: string[] = [];
@@ -69,19 +67,8 @@ export class SignupFormComponent {
       birthdate: ['', [Validators.required, birthdateValidator()]],
     });
 
-    // this.addressInfoForm = this.fb.group({
-    //   houseNo: ['', Validators.required],
-    //   buildingName: [''],
-    //   streetName: ['', Validators.required],
-    //   brgy: ['', Validators.required],
-    //   city: ['', Validators.required],
-    //   zipCode: ['', [Validators.required, maxLengthValidator()]],
-    //   Province: ['', Validators.required],
-    // });
-
     this.loginCredentialForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      //  [emailExistsValidator(signUpService)]
       username: ['', Validators.required],
       password: [
         '',
@@ -99,7 +86,6 @@ export class SignupFormComponent {
 
     this.signupForm = this.fb.group({
       personalInfoForm: this.personalInfoForm,
-      // addressInfoForm: this.addressInfoForm,
       loginCredentialForm: this.loginCredentialForm,
     });
 
@@ -203,19 +189,8 @@ export class SignupFormComponent {
     if (emailControl && emailControl.hasError('email')) {
       return 'Not a valid email';
     }
-    // if (emailControl && emailControl.hasError('serverError')) {
-    //   return emailControl.getError('serverError');
-    // }
     return '';
   }
-
-  // formatDate(date: Date | null): string {
-  //   if (!date) return '';
-  //   const year = date.getFullYear();
-  //   const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  //   const day = date.getDate().toString().padStart(2, '0');
-  //   return `${month}/${day}/${year}`;
-  // }
 
   onSubmit(): void {
     const user: User = {
@@ -233,7 +208,6 @@ export class SignupFormComponent {
 
     if (
       this.personalInfoForm.valid &&
-      // this.addressInfoForm.valid &&
       this.loginCredentialForm.valid
     ) {
       console.log(user);
@@ -241,7 +215,6 @@ export class SignupFormComponent {
         .saveUser(user)
         .subscribe(() => console.log('User successfully added'));
       this.personalInfoForm.reset();
-      // this.addressInfoForm.reset();
       this.loginCredentialForm.reset();
       this.router.navigate(['/login']);
     }

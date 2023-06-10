@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductListService } from '../../services/product-list.service';
 import { Product } from '../../models/product';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-list',
@@ -182,34 +183,113 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this.buttonAction = 'EDIT';
     this.isActionEdit = true;
 
-    console.log(product);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to edit this product?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, edit it!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(product);
 
-    this.productForm.patchValue({
-      itemName: product.productName,
-      description: product.description,
-      quantity: product.quantity,
-      price: product.price,
-      productImg: product.img,
-    });
+        this.productForm.patchValue({
+          itemName: product.productName,
+          description: product.description,
+          quantity: product.quantity,
+          price: product.price,
+          productImg: product.img,
+        });
 
-    this.newOption = product.category;
-    this.newBrand = product.brand;
+        this.newOption = product.category;
+        this.newBrand = product.brand;
+        Swal.fire(
+          'Done!',
+          'Product successfully loaded.',
+          'success'
+        )
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'You have cancelled the transaction.',
+          'error'
+        )
+      }
+    })
   };
 
   deleteProduct = (id: number) => {
     const payload = {
       isAvailable: false,
     };
-
-    const index = this.dataSource.data.findIndex(
-      (product) => product.productId === id
-    );
-    this.dataSource.data[index].isAvailable = false;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to delete this product?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const index = this.dataSource.data.findIndex(
+          (product) => product.productId === id
+        );
+        this.dataSource.data[index].isAvailable = false;
+    
+        Swal.fire(
+          'Done!',
+          'Product successfully deleted.',
+          'success'
+        )
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'You have cancelled the transaction.',
+          'error'
+        )
+      }
+    })
 
     this.productListService
       .updateProduct(id, payload)
       .subscribe((res) => console.log(res));
   };
+
+  resetAlert() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You're about to reset the form.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, reset it!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Done!',
+          'The form has been reset.',
+          'success'
+        )
+        this.reset();
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'You have cancelled the transaction.',
+          'error'
+        )
+      }
+    })
+  }
 
   reset = () => {
     this.productForm.reset();
@@ -238,11 +318,36 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
     if (this.isActionEdit == false) {
       if (this.productForm.valid) {
-        this.productListService.addProduct(formData).subscribe((res: any) => {
-          product.img = res.imageLink;
-          console.log(res);
-        });
-        console.log(product);
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "Do you want to add new product?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, save it!',
+          cancelButtonText: 'No, cancel',
+          reverseButtons: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.productListService.addProduct(formData).subscribe((res: any) => {
+              product.img = res.imageLink;
+              console.log(res);
+            });
+            console.log(product);
+            Swal.fire(
+              'Done!',
+              'Product, Successfully Added!.',
+              'success'
+            )
+          } else if (
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            Swal.fire(
+              'Cancelled',
+              'You have cancelled the transaction.',
+              'error'
+            )
+          }
+        })
       }
       this.dataSource.data = [...this.dataSource.data, product];
 
