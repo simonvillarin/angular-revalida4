@@ -1,68 +1,54 @@
 <app-header></app-header>
 <div class="container">
-    <div class="title">
-        <h1>Checkout</h1>
-    </div>
-    <div class="row rowCont d-flex justify-content-center">
-        <div class="col-md-7 col1">
-            <div class="shippingAddressCont">
-                <div class="row pt-2 ps-2 pe-2">
-                    <div class="col-6">
-                        <p>Shipping address</p>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex justify-content-end">
-                            <button type="button" class="editAddressBtn">Edit</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="border-top p-2" *ngFor="let user of userData">
-                    <label>{{ user.name }}</label>&nbsp;&nbsp;<label>{{ user.mobileNo }}</label>
-                    <p>{{ user.address }}</p>
-                </div>
-            </div>
-            <!-- Item on Cart -->
-            <div class="items">
-                <div class="row g-0 ms-4 mb-3" *ngFor="let prod of products">
-                    <div class="col-2 me-4 text-center">
-                        <!-- Image -->
-                        <img [src]=prod.prodImg/>
-                     </div>
-                    <!-- Details -->
-                    <div class="col-8">
-                        <div class="row mt-3">
-                            <!-- Item Name -->
-                            <div class="col-sm-6 me-4 mb-2 text-truncate">{{ prod.prodName }}</div>
-                            <!-- Item Price -->
-                            <div class="col-sm-3" >₱{{ prod.prodPrice }}</div>
-                            <!-- Quantity -->
-                            <div class="col-sm">Qty: {{ prod.prodQuantity }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="title">Checkout</div>
+  <div class="wrapper">
+    <div class="left">
+      <div class="address-container">
+        <div class="address-header">
+          <div>Shipping address</div>
+          <button type="button" class="btn-edit">Edit</button>
         </div>
-        <div class="col-md-4 col2">
-            <div class="orderSummaryCont">
-                <h2>Order Summary</h2>
-                <div class="row border-bottom">
-                    <div class="col-7">
-                        <label>Subtotal (2 Items)</label>
-                    </div>
-                    <div class="col-4">
-                        <h3>₱{{ calculateTotalPrice() }}</h3>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-7">
-                        <h4>Total Payment:</h4>
-                    </div>
-                    <div class="col-4">
-                        <h3>₱{{ calculateTotalPrice() }}</h3>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-success placeOrderBtn">Place Order</button>
-            </div>
+        <div class="address">
+          <div><span>Receiver:</span></div>
+          <div><span>Mobile Number:</span></div>
+          <div><span>Address:</span></div>
         </div>
+      </div>
+      <!-- Item on Cart -->
+      <div class="item-container" *ngFor="let item of cartItems">
+        <div class="item">
+          <div class="image">
+            <!-- Image -->
+            <img [src]="item.img" />
+          </div>
+          <!-- Details -->
+          <!-- Item Name -->
+          <div>
+            {{ item.productName }}
+          </div>
+          <!-- Item Price -->
+          <div>₱ {{ item.price }}</div>
+          <!-- Quantity -->
+          <div>Qty: {{ item.quantity }}</div>
+        </div>
+      </div>
     </div>
+
+    <div class="summary-container">
+      <div class="summary-header">
+        <div class="summary-title">Order Summary</div>
+        <div class="sum sum-1">
+          <label>Subtotal (2 Items)</label>
+          <div>₱ 50.00</div>
+        </div>
+      </div>
+      <div class="sum">
+        <div>Total Payment:</div>
+        <div>₱ {{ calculateTotalPrice() }}</div>
+      </div>
+      <button type="button" class="btn-place-order" (click)="checkout()">
+        PLACE ORDER
+      </button>
+    </div>
+  </div>
 </div>

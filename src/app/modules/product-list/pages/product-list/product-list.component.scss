@@ -10,7 +10,7 @@
   top: 0;
   height: 100vh;
   padding: 0 1rem;
-  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
 
 .logo {
@@ -250,6 +250,10 @@ i {
   align-items: center;
 }
 
+.table-wrapper {
+  overflow-y: auto;
+}
+
 .table-title > div {
   font-family: inherit;
   font-size: 1.5rem;
@@ -308,6 +312,29 @@ table td {
 }
 
 .delete {
+  background-color: rgb(238, 59, 59);
+}
+
+.add {
+  background-color: rgb(76, 175, 80);
+}
+
+.hidden-row {
+  display: none;
+}
+
+.status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 100vmax;
+  color: rgb(255, 255, 255);
+  background-color: rgb(238, 59, 59);
+}
+
+.available {
+  background-color: rgb(76, 175, 80);
+}
+
+.not {
   background-color: rgb(238, 59, 59);
 }
 

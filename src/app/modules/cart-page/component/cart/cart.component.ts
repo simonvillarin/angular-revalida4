@@ -1,42 +1,71 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Cart } from 'src/app/shared/models/cart';
+import { CartService } from 'src/app/shared/services/cart/cart.service';
+import { CheckoutService } from 'src/app/shared/services/checkout/checkout.service';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  styleUrls: ['./cart.component.scss'],
 })
-export class CartComponent {
-  quantity: number = 0;
-  products: any[] = [
-    {
-      "prodId": 1,
-      "prodName": "FSP Dagger PRO Gold SFX Gen5 850W 80+ Full Modular SDA2-850 Gen5 Power Supply",
-      "prodPrice": 7250.00,
-      "prodImg": "//cdn.shopify.com/s/files/1/2227/7667/files/FSPDaggerPROGoldSFXGen5850W80_FullModularSDA2-850Gen5PowerSupply_1024x1024.jpg?v=1683275183",
-      "prodQuantity": 1
-    },
-    {
-      "prodId": 2,
-      "prodName": "PCIE 4-port USB Card 3.0",
-      "prodPrice": 590.00,
-      "prodImg": "//cdn.shopify.com/s/files/1/2227/7667/products/PCIE_4-port_Usb_Card_3.0_1024x1024.jpg?v=1571552737",
-      "prodQuantity": 2
-    }
-  ]
+export class CartComponent implements OnInit {
+  cartItems: Cart[] = [];
 
-  constructor(private router: Router){}
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    private checkoutService: CheckoutService
+  ) {}
 
-  // Quantity Function
-  increase(prod: any) {
-    prod.prodQuantity++;
+  ngOnInit(): void {
+    this.getAllCartItems();
   }
 
-  decrease(prod: any) {
-    if(prod.prodQuantity > 0) {
-      prod.prodQuantity--;
+  getAllCartItems = () => {
+    const userLocalStorage = localStorage.getItem('user');
+    let userId;
+    if (userLocalStorage) {
+      const user = JSON.parse(userLocalStorage);
+      userId = user.userId;
+    }
+
+    this.cartService.getCartItemByUserId(userId).subscribe((data) => {
+      this.cartItems = data;
+    });
+  };
+
+  increase(item: any) {
+    item.quantity++;
+
+    const payload = {
+      quantity: item.quantity,
+    };
+
+    this.cartService
+      .updateCartItem(item.cartId, payload)
+      .subscribe((res) => console.log(res));
+  }
+
+  decrease(item: any) {
+    if (item.quantity > 1) {
+      item.quantity--;
+
+      const payload = {
+        quantity: item.quantity,
+      };
+
+      this.cartService
+        .updateCartItem(item.cartId, payload)
+        .subscribe((data) => console.log(data));
     }
   }
+
+  deleteCartItem = (id: number) => {
+    const filter = this.cartItems.filter((cart) => cart.cartId !== id);
+    this.cartItems = filter;
+    this.cartService.deleteCartItem(id).subscribe((res) => console.log(res));
+  };
 
   // Select All function
   isSelectAll: boolean = false;
@@ -44,14 +73,14 @@ export class CartComponent {
 
   selectAllCartProd() {
     if (this.isSelectAll) {
-      this.selectedProds = [...this.products];
+      this.selectedProds = [...this.cartItems];
     } else {
-      this.selectedProds = []
+      this.selectedProds = [];
     }
   }
 
-  isSelected(prod: any): boolean {
-    return this.selectedProds.includes(prod);
+  isSelected(item: any): boolean {
+    return this.selectedProds.includes(item);
   }
 
   toggleSelectProd(prod: any) {
@@ -66,7 +95,7 @@ export class CartComponent {
     let totalPrice = 0;
 
     for (const product of this.selectedProds) {
-      totalPrice += product.prodPrice * product.prodQuantity;
+      totalPrice += product.price * product.quantity;
     }
 
     return totalPrice;
@@ -76,7 +105,7 @@ export class CartComponent {
     let productCount = 0;
 
     for (const product of this.selectedProds) {
-      productCount += product.prodQuantity;
+      productCount += product.quantity;
     }
 
     return productCount;
@@ -84,6 +113,13 @@ export class CartComponent {
 
   // Checkout Navigation
   checkout() {
-    this.router.navigate(['user/checkout']);
+    if (this.selectedProds.length > 0) {
+      for (let i = 0; i < this.selectedProds.length; i++) {
+        this.checkoutService
+          .addCheckout(this.selectedProds[i])
+          .subscribe((res) => console.log(res));
+      }
+      this.router.navigate(['checkout']);
+    }
   }
 }

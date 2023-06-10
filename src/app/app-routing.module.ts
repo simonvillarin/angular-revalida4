@@ -83,6 +83,45 @@ const routes: Routes = [
       ),
     canActivate: [userExistsGuard],
   },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./modules/product-page/product-page.module').then(
+        (m) => m.ProductPageModule
+      ),
+    canActivate: [userExistsGuard],
+  },
+  {
+    path: '',
+    loadChildren: () => 
+      import('./modules/product-page/product-page.module').then(
+        (m) => m.ProductPageModule
+      ),
+    canActivate: [userExistsGuard],
+  },
+  {
+    path: '',
+    loadChildren: () => 
+      import('./modules/profile/profile.module').then(
+        (m) => m.ProfileModule
+      ),
+    canActivate: [userExistsGuard], 
+  },
+  {
+    path: '',
+    loadChildren: () => 
+      import('./modules/change-password/change-password.module').then(
+        (m) => m.ChangePasswordModule
+      ),
+    canActivate: [userExistsGuard], 
+  },
+  {
+    path: '',
+    loadChildren: () => 
+      import('./modules/forgot-password/forgot-password.module').then(
+        (m) => m.ForgotPasswordModule
+      ),
+  }
 ];
 
 @NgModule({

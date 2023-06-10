@@ -92,7 +92,7 @@
                 placeholder="New Brand"
               />
               <button
-                class="btn btn-primary"
+                class="add"
                 *ngIf="showAddBrand"
                 data-bs-toggle="modal"
                 data-bs-target="#brandModal"
@@ -108,6 +108,7 @@
                 id="category"
                 aria-label="Category"
                 formControlName="category"
+                [value]="buttonAction"
               >
                 <option hidden>Select Category</option>
                 <option *ngFor="let option of categoryOptions" [value]="option">
@@ -137,7 +138,7 @@
                 placeholder="New Category"
               />
               <button
-                class="btn btn-primary"
+                class="add"
                 *ngIf="showAddOption"
                 data-bs-toggle="modal"
                 data-bs-target="#categoryModal"
@@ -244,8 +245,17 @@
             </div>
           </div>
           <div class="button-group">
-            <button type="submit" class="submit">ADD</button>
-            <button type="button" class="clear">RESET</button>
+            <button
+              type="submit"
+              class="submit"
+              [ngClass]="{
+                add: buttonAction === 'ADD',
+                edit: buttonAction === 'EDIT'
+              }"
+            >
+              {{ buttonAction }}
+            </button>
+            <button type="button" class="clear" (click)="reset()">RESET</button>
           </div>
         </form>
       </div>
@@ -352,69 +362,120 @@
               class="form-control border-bottom search"
               id="item-name"
               placeholder="Search Item"
+              [(ngModel)]="search"
             />
           </div>
         </div>
-        <table mat-table [dataSource]="dataSource">
-          <!-- Name -->
-          <ng-container matColumnDef="itemName">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.itemName }}
-            </td>
-          </ng-container>
+        <div class="table-wrapper">
+          <table mat-table [dataSource]="dataSource">
+            <!-- Name -->
+            <ng-container matColumnDef="itemName">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.productName }}
+              </td>
+            </ng-container>
 
-          <!-- Brand -->
-          <ng-container matColumnDef="itemBrand">
-            <th mat-header-cell *matHeaderCellDef>Brand</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.itemBrand }}
-            </td>
-          </ng-container>
+            <!-- Brand -->
+            <ng-container matColumnDef="itemBrand">
+              <th mat-header-cell *matHeaderCellDef>Brand</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.brand }}
+              </td>
+            </ng-container>
 
-          <!-- Category -->
-          <ng-container matColumnDef="category">
-            <th mat-header-cell *matHeaderCellDef>Category</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.category }}
-            </td>
-          </ng-container>
+            <!-- Category -->
+            <ng-container matColumnDef="category">
+              <th mat-header-cell *matHeaderCellDef>Category</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.category }}
+              </td>
+            </ng-container>
 
-          <!-- Specs -->
-          <ng-container matColumnDef="itemDesc">
-            <th mat-header-cell *matHeaderCellDef>Specs</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.itemDesc }}
-            </td>
-          </ng-container>
+            <!-- Specs -->
+            <ng-container matColumnDef="itemDesc">
+              <th mat-header-cell *matHeaderCellDef>Specs</th>
+              <td mat-cell *matCellDef="let element" class="td-description">
+                {{ element.description }}
+              </td>
+            </ng-container>
 
-          <!-- Price -->
-          <ng-container matColumnDef="price">
-            <th mat-header-cell *matHeaderCellDef>Price</th>
-            <td mat-cell *matCellDef="let element">{{ element.price }}</td>
-          </ng-container>
+            <!-- Quantity -->
+            <ng-container matColumnDef="quantity">
+              <th mat-header-cell *matHeaderCellDef>Quantity</th>
+              <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+            </ng-container>
 
-          <!-- Actions -->
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Action</th>
-            <td mat-cell *matCellDef="let element">
-              <div class="table-buttons">
-                <button class="edit"><i class="bi bi-pencil"></i></button>
-                <button class="delete"><i class="bi bi-trash"></i></button>
-              </div>
-            </td>
-          </ng-container>
+            <!-- Price -->
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef>Price</th>
+              <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+            </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
+            <!-- Price -->
+            <ng-container matColumnDef="image">
+              <th mat-header-cell *matHeaderCellDef>Image</th>
+              <td mat-cell *matCellDef="let element" class="td-img">
+                <a href="{{ element.img }}" target="_blank">{{
+                  element.img
+                }}</a>
+              </td>
+            </ng-container>
 
-        <mat-paginator
-          [pageSizeOptions]="[5, 10, 20]"
-          showFirstLastButtons
-          aria-label="Select page of periodic elements"
-        >
-        </mat-paginator>
+            <!-- Price -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let element">
+                <div
+                  class="status"
+                  [ngClass]="{
+                    available: element.isAvailable,
+                    not: !element.isAvailable
+                  }"
+                >
+                  {{ element.isAvailable ? "ACTIVE" : "DEACTIVATED" }}
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Actions -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="table-buttons">
+                  <button
+                    class="edit"
+                    (click)="editProduct(element.productId, element)"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button
+                    class="delete"
+                    (click)="deleteProduct(element.productId)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              [ngClass]="{
+                'hidden-row': !rowMatchesSearch(row)
+              }"
+            ></tr>
+          </table>
+
+          <mat-paginator
+            [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons
+            aria-label="Select page of periodic elements"
+          >
+          </mat-paginator>
+        </div>
       </div>
     </div>
   </main>

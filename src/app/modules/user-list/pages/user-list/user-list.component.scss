@@ -10,7 +10,7 @@
   top: 0;
   height: 100vh;
   padding: 0 1rem;
-  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
 
 .logo {
@@ -264,6 +264,10 @@ i {
   border-radius: 0.25rem;
 }
 
+.table-wrapper {
+  overflow-y: auto;
+}
+
 .table-title {
   display: flex;
   justify-content: center;
@@ -332,7 +336,9 @@ table td {
 }
 
 .active,
-.deactivated {
+.deactivated,
+.user,
+.admin {
   padding: 0.25rem;
   border-radius: 100vmax;
   color: rgb(255, 255, 255);
@@ -343,7 +349,23 @@ table td {
 }
 
 .deactivated {
-  color: rgb(238, 59, 59);
+  background-color: rgb(238, 59, 59);
+}
+
+.user {
+  background-color: goldenrod;
+}
+
+.admin {
+  background-color: orangered;
+}
+
+.add {
+  background-color: rgb(76, 175, 80);
+}
+
+.hidden-row {
+  display: none;
 }
 
 @media screen and (max-width: 768px) {

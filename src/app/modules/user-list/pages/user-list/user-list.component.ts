@@ -11,12 +11,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Observable, map, startWith } from 'rxjs';
 import {
   hasLowercaseValidator,
   hasNumberValidator,
@@ -36,8 +33,11 @@ export class UserListComponent implements OnInit, AfterViewInit {
   isShowMenu: boolean = false;
   showPassword = false;
   showConfirmPassword = false;
-  isActionEdit = false;
   passwordMatch = true;
+  isActionEdit = false;
+  buttonAction: string = 'ADD';
+  id: number = 0;
+  search: string = '';
 
   allInterests: string[] = [
     'Desktop PC',
@@ -56,7 +56,8 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
   getAllUsers = () => {
     this.userListService.getAllUsers().subscribe((data) => {
-      this.dataSource.data = data;
+      const sortData = data.sort((a, b) => a.userId - b.userId);
+      this.dataSource.data = sortData;
     });
   };
 
@@ -181,15 +182,162 @@ export class UserListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onSubmit(): void {
-    if (this.userForm.valid) {
-      console.log(this.userForm.get('firstName')?.value);
+  rowMatchesSearch = (row: any): boolean => {
+    if (this.search === '') {
+      return true;
     }
 
-    if (this.userForm.invalid) {
-      this.userForm.markAllAsTouched();
-      console.log('Invalid Form');
-      return;
+    const values = Object.values(row);
+    for (const value of values) {
+      if (
+        value &&
+        value.toString().toLowerCase().includes(this.search.toLowerCase())
+      ) {
+        return true;
+      }
     }
+
+    return false;
+  };
+
+  editUser = (id: number, user: User) => {
+    this.buttonAction = 'EDIT';
+    this.isActionEdit = true;
+    this.id = id;
+
+    this.userForm.patchValue({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      middleName: user.middleName,
+      birthDate: user.birthdate,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      userName: user.username,
+      role: user.role,
+      status: user.status,
+    });
+  };
+
+  deleteUser = (id: number) => {
+    const payload: any = {
+      status: false,
+    };
+
+    this.userListService.getUserById(id).subscribe((data) => {
+      if (data.status) {
+        this.userListService
+          .updateUser(id, payload)
+          .subscribe((res) => console.log(res));
+        const index = this.dataSource.data.findIndex(
+          (user) => user.userId === id
+        );
+        this.dataSource.data[index].status = false;
+      } else {
+        console.log('User already deactivated');
+      }
+    });
+  };
+
+  reset = () => {
+    this.userForm.reset();
+  };
+
+  onSubmit(): void {
+    if (this.isActionEdit == false) {
+      this.userForm.patchValue({
+        status: true,
+      });
+
+      const user: any = {
+        firstName: this.userForm.get('firstName')?.value,
+        lastName: this.userForm.get('lastName')?.value,
+        middleName: this.userForm.get('middleName')?.value,
+        birthdate: this.userForm.get('birthDate')?.value,
+        email: this.userForm.get('email')?.value,
+        phoneNumber: this.userForm.get('phoneNumber')?.value,
+        username: this.userForm.get('userName')?.value,
+        password: this.userForm.get('password')?.value,
+        role: this.userForm.get('role')?.value,
+        status: this.userForm.get('status')?.value,
+      };
+
+      if (this.userForm.valid) {
+        this.userListService.addUser(user).subscribe((res) => console.log(res));
+        this.dataSource.data = [...this.dataSource.data, user];
+      }
+
+      if (this.userForm.invalid) {
+        this.userForm.markAllAsTouched();
+        console.log('Invalid Form');
+        return;
+      }
+    } else {
+      let user: any;
+
+      if (this.userForm.get('password') == null) {
+        this.userForm.patchValue({
+          password: 'sample',
+          confirmPass: 'sample',
+        });
+
+        const user = {
+          firstName: this.userForm.get('firstName')?.value,
+          lastName: this.userForm.get('lastName')?.value,
+          middleName: this.userForm.get('middleName')?.value,
+          birthdate: this.userForm.get('birthDate')?.value,
+          phoneNumber: this.userForm.get('phoneNumber')?.value,
+          password: this.userForm.get('password')?.value,
+          role: this.userForm.get('role')?.value,
+          status: this.userForm.get('status')?.value,
+        };
+      } else {
+        user = {
+          firstName: this.userForm.get('firstName')?.value,
+          lastName: this.userForm.get('lastName')?.value,
+          middleName: this.userForm.get('middleName')?.value,
+          birthdate: this.userForm.get('birthDate')?.value,
+          phoneNumber: this.userForm.get('phoneNumber')?.value,
+          password: this.userForm.get('password')?.value,
+          role: this.userForm.get('role')?.value,
+          status: this.userForm.get('status')?.value,
+        };
+      }
+
+      this.userListService
+        .updateUser(this.id, user)
+        .subscribe((res) => console.log(res));
+      const index = this.dataSource.data.findIndex(
+        (user) => user.userId === this.id
+      );
+      this.dataSource.data[index].firstName =
+        this.userForm.get('firstName')?.value;
+      this.dataSource.data[index].lastName =
+        this.userForm.get('lastName')?.value;
+      this.dataSource.data[index].middleName =
+        this.userForm.get('middleName')?.value;
+      this.dataSource.data[index].birthdate =
+        this.userForm.get('birthDate')?.value;
+      this.dataSource.data[index].email = this.userForm.get('email')?.value;
+      this.dataSource.data[index].phoneNumber =
+        this.userForm.get('phoneNumber')?.value;
+      this.dataSource.data[index].username =
+        this.userForm.get('userName')?.value;
+      this.dataSource.data[index].password =
+        this.userForm.get('password')?.value;
+      this.dataSource.data[index].role = this.userForm.get('role')?.value;
+
+      let status = false;
+      console.log(this.userForm.get('status')?.value);
+      if (this.userForm.get('status')?.value) {
+        status = true;
+      } else {
+        status = false;
+      }
+      this.dataSource.data[index].status = status;
+
+      this.buttonAction = 'ADD';
+      this.isActionEdit = false;
+    }
+    this.userForm.reset();
   }
 }

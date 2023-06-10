@@ -1,0 +1,45 @@
+// Edit Form
+.editForm {
+    border: 1px solid rgb(223, 222, 222);
+    margin: 20px 0px 20px 0px;
+    padding: 20px 40px 20px 40px;
+    width: 100%;
+}
+
+.btnCont {
+    margin-top: 50px;
+}
+
+.saveBtn {
+    background-color: rgb(10, 142, 10);
+    color: azure;
+    border-radius: 0px;
+}
+
+.cancelBtn {
+    background-color: rgb(244, 124, 50);
+    border-radius: 0px;
+    margin-left: 10px;
+}
+
+.form-control {
+    height: 40px;
+    border-radius: 0px;
+    border: none;
+    font-weight: 300;
+}
+  
+.form-control:focus {
+    box-shadow: inset 0px -10px 10px -10px rgba(198, 253, 211, 0.75);
+}
+
+.editForm .row .col-md-4 {
+    padding: 0px 20px 0px 20px;
+}
+
+.validation {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    color: red;
+}

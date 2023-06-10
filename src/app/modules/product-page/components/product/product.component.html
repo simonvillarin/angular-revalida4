@@ -1,0 +1,112 @@
+<app-header></app-header>
+<div class="container" *ngFor="let prod of products">
+    <div class="title">
+        <h1>Product Details</h1>
+    </div>
+    <div class="row mt-4 prodCont">
+        <!-- Product Image -->
+        <div class="col-sm-5 col1">
+            <div class="text-center">
+                <img [src]=prod.prodImg/>
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-sm-7 col2">
+            <div>
+                <h2>{{ prod.prodName }}</h2>
+                <hr/>
+                <div class="rating">
+                    <span
+                        *ngFor="let ratingId of ratingArray; index as i" 
+                        [id]="'star_'+i"
+                    >
+                        <mat-icon>
+                        {{ aveIconStatus(i) }}
+                        </mat-icon>
+                    </span>
+                    <!-- Count Ratings -->
+                    <p class="ratingCountLbl">{{ userCount }} Ratings</p>
+                </div>
+                <h1>₱{{ prod.prodPrice }}</h1>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3">
+                    <label>Quantity:</label>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <button 
+                            class="btn btn-outline-secondary" 
+                            type="button" (click)="decrease()"
+                        >-</button>
+                        <input 
+                            class="form-control" 
+                            [readonly]="true"
+                            [value]="quantity"
+                        >
+                        <button 
+                            class="btn btn-outline-secondary" 
+                            type="button" 
+                            (click)="increase()"
+                        >+</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-5 btnCont">
+                <button type="button" class="addToCartBtn" (click)="addToCart()">
+                    <i class="bi bi-cart-plus"></i> ADD TO CART
+                </button>
+                <button type="button" class="buyNowBtn" (click)="buyNow()">BUY NOW</button>
+            </div>
+        </div>
+    </div>
+    <div class="row descCont">
+        <div class="col-md-4 p-0">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" 
+                        [ngClass]="{'active': activeTab === 'description'}" 
+                        (click)="activeTab = 'description'"
+                    >
+                        Description
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" 
+                        [ngClass]="{'active': activeTab === 'specifications'}" 
+                        (click)="activeTab = 'specifications'"
+                    >
+                        Specifications
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-8 p-0">
+            <div class="tab-content">
+                <div class="tab-pane fade" [ngClass]="{ 'show active': activeTab === 'description' }" id="description" >
+                    <ng-container>
+                        <ul class="list">
+                            <li>{{ prod.description }}</li>
+                        </ul>
+                    </ng-container>
+                </div>
+                <div class="tab-pane fade" [ngClass]="{ 'show active': activeTab === 'specifications' }" id="specifications">
+                    <ng-container>
+                        <ul class="list" *ngFor="let spec of prod.specifications">
+                            <li>{{ spec }}</li>
+                        </ul>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-rating
+        [userRatingsReview]="userRatingsReview"
+        [userCount]="userCount"
+        [totalRating]="totalRating"
+        [aveUserRating]="aveUserRating"
+        [prodName]="prodName"
+    ></app-rating>
+</div>

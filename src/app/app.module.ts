@@ -29,11 +29,11 @@ import { HeaderInterceptor } from './core/interceptor/header.interceptor';
     HttpClientModule,
   ],
   providers: [
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: HeaderInterceptor,
-    //   multi: true,
-    // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HeaderInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

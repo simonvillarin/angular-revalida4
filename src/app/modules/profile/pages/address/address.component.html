@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="addressCont" [hidden]="!showAddressCont">
+        <h2 class="mb-4">Address</h2>
+        <div class="row" *ngFor="let data of user">
+            <div class="col-md-3 cols">
+                <label>Fullname</label>
+                <p>{{ data?.fname }} {{ data?.mname}} {{ data?.lname }}</p>
+            </div>
+            <div class="col-md-5 cols">
+                <label>Address</label>
+                <p>
+                    {{ data?.houseNo }}, 
+                    {{ data?.building }}, 
+                    {{ data?.street }},
+                    {{ data?.barangay }}, 
+                    {{ data?.city }},
+                    {{ data?.province }},
+                </p>
+            </div>
+            <div class="col-md-4 cols">
+                <label>Mobile no.</label>
+                <p>{{ data?.mobileNo }}</p>
+            </div>
+        </div>
+        <div class="btnCont">
+            <button type="button" class="btn editBtn" (click)="toggleEditMode()">Edit Address</button>
+        </div>
+    </div>
+
+    <div class="editForm" [hidden]="!showEditForm">
+        <app-edit-address (editAddressCancel)="cancel()"></app-edit-address>
+    </div>
+</div>

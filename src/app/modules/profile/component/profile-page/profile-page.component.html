@@ -1,0 +1,31 @@
+<app-header></app-header>
+<div class="container" >
+    <div class="row" >
+      <div class="col m-0 p-0" >
+        <div class="tabCont">
+            <h4 class="mb-2">Manage Account</h4>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{ 'active': activeTab === 'profile' }" (click)="activeTab = 'profile'">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{ 'active': activeTab === 'address' }" (click)="activeTab = 'address'">My Address</a>
+                </li>
+            </ul>
+        </div>
+        <!-- Tab content -->
+        <div class="tab-content">
+            <div class="tab-pane fade" [ngClass]="{ 'show active': activeTab === 'profile' }" id="profile">
+                <ng-container>
+                    <app-profile ></app-profile> 
+                </ng-container>
+            </div>
+            <div class="tab-pane fade" [ngClass]="{ 'show active': activeTab === 'address' }" id="address">
+                <ng-container>
+                    <app-address></app-address>
+                </ng-container>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,136 @@
+<div class="editForm" >
+    <h2 class="mb-4">Edit Address</h2>
+    <form class="row g-3" [formGroup]="editForm" (ngSubmit)="onSubmit()" name="editForm">
+        <div class="col-md-4">
+            <label for="inputHouseNo" class="form-label">House No.</label>
+            <input 
+                type="text" 
+                class="form-control border-bottom" 
+                id="inputHouseNo" 
+                formControlName="houseNo"
+                required
+            >
+            <!-- Validation -->
+            <div
+                class="validation"
+                *ngIf="houseNo?.invalid && (houseNo?.dirty || houseNo?.touched)"
+            >
+                <p *ngIf="houseNo?.errors?.['required']">
+                    House number is required.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="inputBuilding" class="form-label">Building</label>
+            <input 
+                type="text" 
+                class="form-control border-bottom" 
+                id="inputBuilding"
+                formControlName="building"
+                required
+            >
+            <!-- Validation -->
+            <div
+                class="validation"
+                *ngIf="building?.invalid && (building?.dirty || building?.touched)"
+                >
+                <p *ngIf="building?.errors?.['required']">
+                    Building number is required.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="inputStreet" class="form-label">Street</label>
+            <input 
+                type="text" 
+                class="form-control border-bottom" 
+                id="inputStreet"
+                formControlName="street"
+                required
+            >
+            <!-- Validation -->
+            <div
+                class="validation"
+                *ngIf="street?.invalid && (street?.dirty || street?.touched)"
+            >
+                <p *ngIf="street?.errors?.['required']">
+                    Street is required.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="inputBarangay" class="form-label">Barangay</label>
+            <input 
+                type="" 
+                class="form-control border-bottom" 
+                id="inputBarangay"
+                formControlName="barangay"
+                required
+            >
+            <!-- Validation -->
+            <div
+                class="validation"
+                *ngIf="barangay?.invalid && (barangay?.dirty || barangay?.touched)"
+            >
+                <p *ngIf="barangay?.errors?.['required']">
+                    Barangay number is required.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="inputCity" class="form-label">City</label>
+            <input 
+                type="text" 
+                class="form-control border-bottom" 
+                id="inputCity"
+                formControlName="city"
+                required
+            >
+            <!-- Validation -->
+            <div
+                class="validation"
+                *ngIf="city?.invalid && (city?.dirty || city?.touched)"
+            >
+                <p *ngIf="city?.errors?.['required']">City is required.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="inputProvince" class="form-label">Province</label>
+            <input 
+                type="text" 
+                class="form-control border-bottom" 
+                id="inputProvince"
+                formControlName="province"
+                required
+            >
+            <!-- Validation -->
+            <div
+                class="validation"
+                *ngIf="province?.invalid && (province?.dirty || province?.touched)"
+            >
+                <p *ngIf="province?.errors?.['required']">Province is required.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="inputZipcode" class="form-label">ZipCode</label>
+            <input 
+                type="text" 
+                class="form-control border-bottom" 
+                id="inputZipcode"
+                formControlName="zipcode"
+                required
+            >
+            <!-- Validation -->
+            <div
+                class="validation"
+                *ngIf="zipcode?.invalid && (zipcode?.dirty || zipcode?.touched)"
+            >
+                <p *ngIf="zipcode?.errors?.['required']">Zipcode is required.</p>
+            </div>
+        </div>
+        <div class="btnCont">
+            <button type="submit" class="btn saveBtn">Save Changes</button>
+            <button type="button" class="btn cancelBtn" (click)="cancel()">Cancel</button>
+        </div>
+    </form>
+</div>

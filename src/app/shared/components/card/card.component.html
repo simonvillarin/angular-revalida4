@@ -1,15 +1,19 @@
-<div class="myCard">
-  <div class="img">
-    <img src="{{ img }}" alt="card-image" />
+<div class="myCard" *ngIf="product">
+  <div class="img" (click)="viewProduct(product.productId)">
+    <img src="{{ product.img }}" alt="card-image" />
   </div>
   <div class="content">
-    <div class="product-name">{{ productName }}</div>
-    <div class="price">₱ {{ price }}</div>
+    <div class="product-name">{{ product.productName }}</div>
+    <div class="price">₱ {{ product.price }}</div>
     <div class="commands">
-      <button class="add">
+      <button class="add" (click)="addToCartItem(product)">
         <span><i class="bi bi-cart2"></i></span> ADD TO CART
       </button>
-      <button class="view" title="View">
+      <button
+        class="view"
+        title="View"
+        (click)="viewProduct(product.productId)"
+      >
         <i class="bi bi-eye"></i>
       </button>
     </div>

@@ -1,58 +1,134 @@
 .container {
-    max-width: 100%;
+  min-height: calc(100vh - 4rem);
 }
 
 .title {
-    padding-top: 30px;
-    margin: 10px 20px 30px 20px;
-    border-bottom: 1px solid rgb(222, 221, 221);
+  margin: 2rem 0 1rem;
+  padding-bottom: 1rem;
+  font-size: 1.75rem;
+  font-weight: 300;
+  border-bottom: 1px solid rgb(220, 220, 220);
 }
 
-.shippingAddressCont {
-    border: 1px solid rgb(222, 221, 221);
-    margin-bottom: 20px;
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 0.5rem;
 }
 
-.shippingAddressCont .row .col-6 p{
-    font-weight: 500;
+.left {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 0.5rem;
 }
 
-.editAddressBtn {
-    background-color: transparent;
-    color: rgb(7, 205, 7);
-    font-size: medium;
+.address-container {
+  border: 1px solid rgb(220, 220, 220);
 }
 
-.rowCont {
-    margin: 10px;
+.address-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid rgb(220, 220, 220);
 }
 
-.rowCont .col1 {
-    margin-bottom: 10px;
-    margin-right: 10px;
-    padding: 0px;
+.address-header > div {
+  font-weight: 400;
 }
 
-.items {
-    border: 1px solid rgb(222, 221, 221);
-    margin-bottom: 10px;
+.btn-edit {
+  color: rgb(76, 175, 80);
+  background-color: transparent;
 }
 
-.rowCont .col2 {
-    padding: 0px;
-    margin-right: 10px;
+.address {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
 }
 
-.orderSummaryCont {
-    border: 1px solid rgb(222, 221, 221);
-    padding: 20px;
+span {
+  font-weight: 400;
 }
 
-.col2 .row .col-8 label {
-    color: rgb(137, 135, 135);
+.item-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 0.5rem;
 }
 
-.placeOrderBtn {
-    border-radius: 0px;
-    width: 100%;
+.item {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 0.8fr 0.8fr;
+  padding: 1rem;
+  gap: 1rem;
+  border: 1px solid rgb(220, 220, 220);
+  text-align: center;
+}
+
+.item > * {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  height: 8rem;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.summary-container {
+  height: 13rem;
+  padding: 1rem;
+  border: 1px solid rgb(220, 220, 220);
+}
+
+.summary-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-title {
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.sum {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.sum-1 {
+  border-bottom: 1px solid rgb(220, 220, 220);
+}
+
+.btn-place-order {
+  width: 100%;
+  padding: 0.625rem;
+  margin-top: 0.5rem;
+  color: rgb(255, 255, 255);
+  background-color: rgb(76, 175, 80);
+}
+
+.btn-place-order:hover {
+  background-color: rgb(32, 163, 37);
+}
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    grid-template-columns: 1.4fr 0.6fr;
+  }
 }

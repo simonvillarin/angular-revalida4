@@ -1,0 +1,38 @@
+.container {
+    // background-color: rgb(233, 253, 233);
+    max-width: 100%;
+}
+
+.tabCont {
+    background-color: white;
+    padding: 30px 0px 0px 0px;
+    margin: 0px;
+}
+
+.tabCont h4 {
+    font-weight: 400;
+    color: #484a47;
+    padding-left: 35px;
+    font-size: large;
+}
+
+.nav-tabs li {
+    display: inline-block;
+    cursor: pointer;
+    margin: 0px;
+    margin-left: 20px;
+}
+  
+.nav-tabs li a {
+    color: #0d0c0c;
+    font-size: small;
+    text-decoration: none;
+    margin: 0px;
+    border: none;
+}
+  
+.nav-tabs li a.active{
+    background-color:  transparent;
+    border: none;
+    color: #318b2d;
+}
