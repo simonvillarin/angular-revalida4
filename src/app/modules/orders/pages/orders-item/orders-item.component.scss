@@ -11,5 +11,58 @@
 .orders-container {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
+}
+
+.orders-container > div {
+  margin-bottom: 0.5rem;
+}
+
+.total-container {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 2rem;
+  border-bottom: 1px solid rgb(220, 220, 220);
+}
+
+.total-container > div {
+  display: flex;
+  gap: 3rem;
+}
+
+.total-price {
+  font-weight: 400;
+}
+
+.total-qty {
+  font-weight: 400;
+}
+
+.status {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   gap: 1rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid rgb(220, 220, 220);
+}
+
+button {
+  padding: 0.25rem 0.75rem;
+  background-color: goldenrod;
+  color: #fff;
+  border-radius: 100vmax;
+}
+
+@media screen and (min-width: 992px) {
+  .total-container {
+    justify-content: flex-end;
+  }
+
+  .total-price {
+    margin-right: 4rem;
+  }
+
+  .total-qty {
+    margin-right: 3rem;
+  }
 }

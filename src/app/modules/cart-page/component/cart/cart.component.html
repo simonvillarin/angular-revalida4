@@ -35,20 +35,18 @@
   <div class="title">My Cart</div>
   <div class="items-container" *ngFor="let item of cartItems">
     <div class="item">
-      <div class="check-img">
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="flexCheckDefault"
-            [checked]="isSelected(item)"
-            (change)="toggleSelectProd(item)"
-          />
-        </div>
-        <div class="image">
-          <img [src]="item.img" />
-        </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value=""
+          id="flexCheckDefault"
+          [checked]="isSelected(item)"
+          (change)="toggleSelectProd(item)"
+        />
+      </div>
+      <div class="image">
+        <img [src]="item.img" />
       </div>
       <div>
         {{ item.productName }}

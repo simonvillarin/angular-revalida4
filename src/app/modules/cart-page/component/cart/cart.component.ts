@@ -115,8 +115,20 @@ export class CartComponent implements OnInit {
   checkout() {
     if (this.selectedProds.length > 0) {
       for (let i = 0; i < this.selectedProds.length; i++) {
+        const payload = {
+          userId: this.selectedProds[i].userId,
+          productId: this.selectedProds[i].productId,
+          cartId: this.selectedProds[i].cartId,
+          productName: this.selectedProds[i].productName,
+          category: this.selectedProds[i].category,
+          description: this.selectedProds[i].description,
+          img: this.selectedProds[i].img,
+          quantity: this.selectedProds[i].quantity,
+          price: this.selectedProds[i].price,
+        };
+
         this.checkoutService
-          .addCheckout(this.selectedProds[i])
+          .addCheckout(payload)
           .subscribe((res) => console.log(res));
       }
       this.router.navigate(['checkout']);

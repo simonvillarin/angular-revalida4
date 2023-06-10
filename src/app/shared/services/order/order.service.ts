@@ -16,6 +16,10 @@ export class OrderService {
     return this.http.get<Order[]>(`${this.BASE_URL}/orders/${userId}`);
   };
 
+  getOrderByOrderTracking = (orderTracking: number) => {
+    return this.http.get(`${this.BASE_URL}/orders/tracking/${orderTracking}`);
+  };
+
   addOrder = (order: any) => {
     return this.http.post(`${this.BASE_URL}/order`, order);
   };

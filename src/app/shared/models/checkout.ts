@@ -1,7 +1,7 @@
-export interface Order {
-  orderId: number;
-  orderTracking: number;
+export interface Checkout {
+  checkoutId: number;
   userId: number;
+  cartId: number;
   productId: number;
   productName: string;
   category: string;
@@ -9,5 +9,4 @@ export interface Order {
   img: string;
   quantity: number;
   price: number;
-  orderDate: string;
 }

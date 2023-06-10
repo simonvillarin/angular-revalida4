@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Cart } from '../../models/cart';
 import { HttpClient } from '@angular/common/http';
+import { Checkout } from '../../models/checkout';
 
 @Injectable({
   providedIn: 'root',
@@ -11,11 +11,11 @@ export class CheckoutService {
 
   BASE_URL = 'http://localhost:8080/api/v1';
 
-  getCheckoutByUserId = (id: number): Observable<Cart[]> => {
-    return this.http.get<Cart[]>(`${this.BASE_URL}/checkout/${id}`);
+  getCheckoutByUserId = (id: number): Observable<Checkout[]> => {
+    return this.http.get<Checkout[]>(`${this.BASE_URL}/checkout/${id}`);
   };
 
-  addCheckout = (checkout: Cart) => {
+  addCheckout = (checkout: any) => {
     return this.http.post(`${this.BASE_URL}/checkout`, checkout);
   };
 

@@ -1,10 +1,22 @@
 <app-header></app-header>
 <div class="container">
   <div class="title">My Orders</div>
-  <div class="orders-container">
-    <app-pending-orders
-      *ngFor="let item of orders"
-      [order]="item"
-    ></app-pending-orders>
+  <div class="orders-container" *ngFor="let i of orderItems">
+    <div>
+      <div class="status">
+        <button>Pending</button>
+      </div>
+      <div *ngFor="let item of i.item">
+        <app-pending-orders [order]="item"></app-pending-orders>
+        {{ getQuantity(item.totalQuantity) }}
+        {{ getPrice(item.totalPrice) }}
+      </div>
+      <div class="total-container">
+        <div>
+          <div class="total-price">Total Price: ₱ {{ totalPrice }}</div>
+          <div class="total-qty">Total Qty: {{ totalQuantity }}</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
