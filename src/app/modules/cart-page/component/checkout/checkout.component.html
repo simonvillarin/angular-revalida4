@@ -8,44 +8,46 @@
           <div>Shipping address</div>
           <button type="button" class="btn-edit">Edit</button>
         </div>
-        <div class="address" *ngFor="let user of userData">
-          <div><span>Receiver:</span> {{ user.name }}</div>
-          <div><span>Mobile Number:</span> {{ user.mobileNo }}</div>
-          <div><span>Address:</span> {{ user.address }}</div>
+        <div class="address">
+          <div><span>Receiver:</span></div>
+          <div><span>Mobile Number:</span></div>
+          <div><span>Address:</span></div>
         </div>
       </div>
       <!-- Item on Cart -->
-      <div class="item-container" *ngFor="let prod of products">
+      <div class="item-container" *ngFor="let item of cartItems">
         <div class="item">
           <div class="image">
             <!-- Image -->
-            <img [src]="prod.prodImg" />
+            <img [src]="item.img" />
           </div>
           <!-- Details -->
           <!-- Item Name -->
           <div>
-            {{ prod.prodName }}
+            {{ item.productName }}
           </div>
           <!-- Item Price -->
-          <div>₱ {{ prod.prodPrice }}</div>
+          <div>₱ {{ item.price }}</div>
           <!-- Quantity -->
-          <div>Qty: {{ prod.prodQuantity }}</div>
+          <div>Qty: {{ item.quantity }}</div>
         </div>
       </div>
     </div>
 
     <div class="summary-container">
-      <h2>Order Summary</h2>
-      <div>
-        <label>Subtotal (2 Items)</label>
-        <div>₱{{ calculateTotalPrice() }}</div>
+      <div class="summary-header">
+        <div class="summary-title">Order Summary</div>
+        <div class="sum sum-1">
+          <label>Subtotal (2 Items)</label>
+          <div>₱ 50.00</div>
+        </div>
       </div>
-      <div>
+      <div class="sum">
         <div>Total Payment:</div>
-        <div>₱{{ calculateTotalPrice() }}</div>
+        <div>₱ {{ calculateTotalPrice() }}</div>
       </div>
-      <button type="button" class="btn btn-success placeOrderBtn">
-        Place Order
+      <button type="button" class="btn-place-order" (click)="checkout()">
+        PLACE ORDER
       </button>
     </div>
   </div>

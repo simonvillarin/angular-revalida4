@@ -16,6 +16,7 @@ img {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 1.5rem;
+  padding: 1rem;
 }
 
 .item-container > * {
@@ -27,9 +28,15 @@ img {
 
 .status {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
   padding: 0.5rem;
-  border-bottom: 1px solid rgb(209, 206, 206);
+  border-bottom: 1px solid rgb(220, 220, 220);
+}
+
+.status > div {
+  font-weight: 400;
 }
 
 button {

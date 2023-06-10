@@ -2,8 +2,9 @@
 <div class="container">
   <div class="title">My Orders</div>
   <div class="orders-container">
-    <app-pending-orders></app-pending-orders>
-    <app-pending-orders></app-pending-orders>
-    <app-pending-orders></app-pending-orders>
+    <app-pending-orders
+      *ngFor="let item of orders"
+      [order]="item"
+    ></app-pending-orders>
   </div>
 </div>

@@ -28,6 +28,7 @@ export class CardComponent {
 
     const payload = {
       userId: userId,
+      productId: product.productId,
       productName: product.productName,
       category: product.category,
       description: product.description,

@@ -1,4 +1,6 @@
+import { OrderService } from './../../../../shared/services/order/order.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Cart } from 'src/app/shared/models/cart';
 import { CheckoutService } from 'src/app/shared/services/checkout/checkout.service';
 
@@ -9,40 +11,66 @@ import { CheckoutService } from 'src/app/shared/services/checkout/checkout.servi
 })
 export class CheckoutComponent implements OnInit {
   cartItems: Cart[] = [];
-  userData: any[] = [
-    {
-      name: 'Sandra Gesite',
-      mobileNo: '09875756432',
-      address: 'Any St.,Palanan, Makati City, Metro Manila',
-    },
-  ];
 
-  products: any[] = [
-    {
-      prodId: 1,
-      prodName:
-        'FSP Dagger PRO Gold SFX Gen5 850W 80+ Full Modular SDA2-850 Gen5 Power Supply',
-      prodPrice: 7250.0,
-      prodImg:
-        '//cdn.shopify.com/s/files/1/2227/7667/files/FSPDaggerPROGoldSFXGen5850W80_FullModularSDA2-850Gen5PowerSupply_1024x1024.jpg?v=1683275183',
-      prodQuantity: 1,
-    },
-    {
-      prodId: 2,
-      prodName: 'PCIE 4-port USB Card 3.0',
-      prodPrice: 590.0,
-      prodImg:
-        '//cdn.shopify.com/s/files/1/2227/7667/products/PCIE_4-port_Usb_Card_3.0_1024x1024.jpg?v=1571552737',
-      prodQuantity: 2,
-    },
-  ];
-
-  constructor(private checkoutService: CheckoutService) {}
+  constructor(
+    private checkoutService: CheckoutService,
+    private orderService: OrderService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    console.log(this.checkoutService.getCartItems());
+    this.getCheckoutByUserId();
   }
 
+  getCheckoutByUserId = () => {
+    let userId;
+    const userLocalStorage = localStorage.getItem('user');
+    if (userLocalStorage) {
+      const user = JSON.parse(userLocalStorage);
+      userId = user.userId;
+    }
+
+    this.checkoutService
+      .getCheckoutByUserId(userId)
+      .subscribe((data) => (this.cartItems = data));
+  };
+
   // Calculate Total
-  calculateTotalPrice() {}
+  calculateTotalPrice() {
+    let totalPrice = 0;
+    this.cartItems.map((item) => (totalPrice += item.price));
+    return totalPrice + 50;
+  }
+
+  checkout = () => {
+    for (let i = 0; i < this.cartItems.length; i++) {
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = currentDate.getDate().toString().padStart(2, '0');
+
+      const formattedDate = `${year}-${month}-${day}`;
+
+      const payload = {
+        userId: this.cartItems[i].userId,
+        productId: this.cartItems[i].productId,
+        productName: this.cartItems[i].productName,
+        category: this.cartItems[i].category,
+        description: this.cartItems[i].description,
+        img: this.cartItems[i].img,
+        quantity: this.cartItems[i].quantity,
+        price: this.cartItems[i].price,
+        orderDate: formattedDate,
+      };
+
+      this.orderService.addOrder(payload).subscribe((res) => console.log(res));
+    }
+    for (let i = 0; i < this.cartItems.length; i++) {
+      this.checkoutService
+        .deleteCheckout(this.cartItems[i].cartId)
+        .subscribe((res) => console.log(res));
+    }
+    this.cartItems = [];
+    this.router.navigate(['orders']);
+  };
 }

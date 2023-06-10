@@ -114,7 +114,11 @@ export class CartComponent implements OnInit {
   // Checkout Navigation
   checkout() {
     if (this.selectedProds.length > 0) {
-      this.checkoutService.cartItems = this.selectedProds;
+      for (let i = 0; i < this.selectedProds.length; i++) {
+        this.checkoutService
+          .addCheckout(this.selectedProds[i])
+          .subscribe((res) => console.log(res));
+      }
       this.router.navigate(['checkout']);
     }
   }
