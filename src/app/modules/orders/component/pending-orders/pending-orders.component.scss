@@ -15,35 +15,16 @@ img {
 .item-container {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  gap: 1.5rem;
+  gap: 1rem;
   padding: 1rem;
+  border-bottom: 1px solid rgb(220, 220, 220);
 }
 
 .item-container > * {
   width: 100%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-}
-
-.status {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.5rem;
-  border-bottom: 1px solid rgb(220, 220, 220);
-}
-
-.status > div {
-  font-weight: 400;
-}
-
-button {
-  padding: 0.25rem 0.75rem;
-  background-color: goldenrod;
-  color: #fff;
-  border-radius: 100vmax;
 }
 
 @media screen and (min-width: 992px) {
@@ -53,5 +34,17 @@ button {
 
   .item-container > * {
     justify-content: center;
+  }
+
+  .total-container {
+    justify-content: flex-end;
+  }
+
+  .total-price {
+    margin-right: 4rem;
+  }
+
+  .total-qty {
+    margin-right: 3rem;
   }
 }
