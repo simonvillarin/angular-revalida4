@@ -2,6 +2,8 @@ import { OrderService } from './../../../../shared/services/order/order.service'
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductListService } from 'src/app/modules/product-list/services/product-list.service';
+import { User } from 'src/app/modules/user-list/models/user';
+import { UserListService } from 'src/app/modules/user-list/services/user-list.service';
 import { Cart } from 'src/app/shared/models/cart';
 import { Checkout } from 'src/app/shared/models/checkout';
 import { CartService } from 'src/app/shared/services/cart/cart.service';
@@ -14,6 +16,7 @@ import { CheckoutService } from 'src/app/shared/services/checkout/checkout.servi
 })
 export class CheckoutComponent implements OnInit {
   cartItems: Checkout[] = [];
+  user: any;
   showSpinner: boolean = false;
 
   constructor(
@@ -21,12 +24,25 @@ export class CheckoutComponent implements OnInit {
     private orderService: OrderService,
     private cartService: CartService,
     private productService: ProductListService,
+    private userService: UserListService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.getCheckoutByUserId();
+    this.getAddress();
   }
+
+  getAddress = () => {
+    let userId;
+    const local = localStorage.getItem('user');
+    if (local) {
+      userId = JSON.parse(local).userId;
+    }
+    this.userService
+      .getUserById(userId)
+      .subscribe((data) => (this.user = data));
+  };
 
   deleteAll = () => {
     this.checkoutService.deleteAll().subscribe(() => {});

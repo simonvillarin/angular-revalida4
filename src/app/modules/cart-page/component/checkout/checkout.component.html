@@ -8,9 +8,32 @@
           <div>Shipping address</div>
         </div>
         <div class="address">
-          <div><span>Receiver:</span></div>
-          <div><span>Mobile Number:</span></div>
-          <div><span>Address:</span></div>
+          <div>
+            <span>Receiver: {{ user.firstName + " " + user.lastName }}</span>
+          </div>
+          <div>
+            <span>Mobile Number: {{ user.phoneNumber }}</span>
+          </div>
+          <div>
+            <span
+              >Address:
+              {{
+                user.house +
+                  ", " +
+                  user.building +
+                  ", " +
+                  user.street +
+                  ", " +
+                  user.barangay +
+                  ", " +
+                  user.city +
+                  ", " +
+                  user.province +
+                  ", " +
+                  user.zipcode
+              }}</span
+            >
+          </div>
         </div>
       </div>
       <!-- Item on Cart -->
