@@ -47,6 +47,10 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this.fetchCategoryOptions();
   }
 
+  localString = (num: number) => {
+    return num.toLocaleString();
+  };
+
   fetchBrandOptions() {
     this.http
       .get<Brand[]>('http://localhost:3000/brands')

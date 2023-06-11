@@ -1,136 +1,165 @@
-<div class="editForm" >
-    <h2 class="mb-4">Edit Address</h2>
-    <form class="row g-3" [formGroup]="editForm" (ngSubmit)="onSubmit()" name="editForm">
-        <div class="col-md-4">
-            <label for="inputHouseNo" class="form-label">House No.</label>
-            <input 
-                type="text" 
-                class="form-control border-bottom" 
-                id="inputHouseNo" 
-                formControlName="houseNo"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="houseNo?.invalid && (houseNo?.dirty || houseNo?.touched)"
-            >
-                <p *ngIf="houseNo?.errors?.['required']">
-                    House number is required.
-                </p>
-            </div>
+<div class="editForm">
+  <form
+    class="row g-3"
+    [formGroup]="userForm"
+    (ngSubmit)="onSubmit()"
+    name="editForm"
+  >
+    <div class="input-container">
+      <div class="group">
+        <label>House No.</label>
+        <input
+          type="text"
+          class="form-control border-bottom"
+          placeholder="Enter house no"
+          formControlName="houseNo"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('houseNo')?.invalid &&
+              userForm.get('houseNo')?.dirty) ||
+            userForm.get('houseNo')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('houseNo')?.hasError('required')">
+            House no is Required
+          </div>
         </div>
-        <div class="col-md-4">
-            <label for="inputBuilding" class="form-label">Building</label>
-            <input 
-                type="text" 
-                class="form-control border-bottom" 
-                id="inputBuilding"
-                formControlName="building"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="building?.invalid && (building?.dirty || building?.touched)"
-                >
-                <p *ngIf="building?.errors?.['required']">
-                    Building number is required.
-                </p>
-            </div>
+      </div>
+      <div class="group">
+        <label>Building Name</label>
+        <input
+          type="text"
+          class="form-control border-bottom"
+          placeholder="Enter building name"
+          formControlName="building"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('building')?.invalid &&
+              userForm.get('building')?.dirty) ||
+            userForm.get('building')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('building')?.hasError('required')">
+            Building name is Required
+          </div>
         </div>
-        <div class="col-md-4">
-            <label for="inputStreet" class="form-label">Street</label>
-            <input 
-                type="text" 
-                class="form-control border-bottom" 
-                id="inputStreet"
-                formControlName="street"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="street?.invalid && (street?.dirty || street?.touched)"
-            >
-                <p *ngIf="street?.errors?.['required']">
-                    Street is required.
-                </p>
-            </div>
+      </div>
+      <div class="group">
+        <label>Street Name</label>
+        <input
+          type="text"
+          class="form-control border-bottom"
+          placeholder="Enter street name"
+          formControlName="street"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('street')?.invalid &&
+              userForm.get('street')?.dirty) ||
+            userForm.get('street')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('street')?.hasError('required')">
+            Street name is Required
+          </div>
         </div>
-        <div class="col-md-4">
-            <label for="inputBarangay" class="form-label">Barangay</label>
-            <input 
-                type="" 
-                class="form-control border-bottom" 
-                id="inputBarangay"
-                formControlName="barangay"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="barangay?.invalid && (barangay?.dirty || barangay?.touched)"
-            >
-                <p *ngIf="barangay?.errors?.['required']">
-                    Barangay number is required.
-                </p>
-            </div>
+      </div>
+    </div>
+    <div class="input-container">
+      <div class="group">
+        <label>Barangay</label>
+        <input
+          type="text"
+          class="form-control border-bottom"
+          placeholder="Enter barangay"
+          formControlName="barangay"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('barangay')?.invalid &&
+              userForm.get('barangay')?.dirty) ||
+            userForm.get('barangay')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('barangay')?.hasError('required')">
+            Barangay is Required
+          </div>
         </div>
-        <div class="col-md-4">
-            <label for="inputCity" class="form-label">City</label>
-            <input 
-                type="text" 
-                class="form-control border-bottom" 
-                id="inputCity"
-                formControlName="city"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="city?.invalid && (city?.dirty || city?.touched)"
-            >
-                <p *ngIf="city?.errors?.['required']">City is required.</p>
-            </div>
+      </div>
+      <div class="group">
+        <label>City</label>
+        <input
+          type="text"
+          class="form-control border-bottom"
+          placeholder="Enter city"
+          formControlName="city"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('city')?.invalid && userForm.get('city')?.dirty) ||
+            userForm.get('city')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('city')?.hasError('required')">
+            City is Required
+          </div>
         </div>
-        <div class="col-md-4">
-            <label for="inputProvince" class="form-label">Province</label>
-            <input 
-                type="text" 
-                class="form-control border-bottom" 
-                id="inputProvince"
-                formControlName="province"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="province?.invalid && (province?.dirty || province?.touched)"
-            >
-                <p *ngIf="province?.errors?.['required']">Province is required.</p>
-            </div>
+      </div>
+      <div class="group">
+        <label>Province</label>
+        <input
+          type="text"
+          class="form-control border-bottom"
+          placeholder="Enter province"
+          formControlName="province"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('province')?.invalid &&
+              userForm.get('province')?.dirty) ||
+            userForm.get('province')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('province')?.hasError('required')">
+            Province is Required
+          </div>
         </div>
-        <div class="col-md-4">
-            <label for="inputZipcode" class="form-label">ZipCode</label>
-            <input 
-                type="text" 
-                class="form-control border-bottom" 
-                id="inputZipcode"
-                formControlName="zipcode"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="zipcode?.invalid && (zipcode?.dirty || zipcode?.touched)"
-            >
-                <p *ngIf="zipcode?.errors?.['required']">Zipcode is required.</p>
-            </div>
+      </div>
+    </div>
+    <div class="input-container">
+      <div class="group">
+        <label>Zipcode</label>
+        <input
+          type="number"
+          class="form-control border-bottom"
+          placeholder="Enter zipcode"
+          formControlName="zipcode"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('zipcode')?.invalid &&
+              userForm.get('zipcode')?.dirty) ||
+            userForm.get('zipcode')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('zipcode')?.hasError('required')">
+            Zipcode is Required
+          </div>
         </div>
-        <div class="btnCont">
-            <button type="submit" class="btn saveBtn">Save Changes</button>
-            <button type="button" class="btn cancelBtn" (click)="cancel()">Cancel</button>
-        </div>
-    </form>
+      </div>
+    </div>
+    <div class="button-group">
+      <button type="submit" class="submit">EDIT</button>
+      <button type="button" class="clear" (click)="reset()">RESET</button>
+    </div>
+  </form>
 </div>

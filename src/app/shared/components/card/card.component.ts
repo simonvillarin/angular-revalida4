@@ -52,4 +52,8 @@ export class CardComponent {
     this.showCheck = true;
     setTimeout(() => (this.showCheck = false), 2000);
   };
+
+  localString = (num: number) => {
+    return num.toLocaleString();
+  };
 }

@@ -220,6 +220,10 @@ export class ProductComponent implements OnInit {
     }
   }
 
+  localString = (num: any) => {
+    return num.toLocaleString();
+  };
+
   aveIconStatus(index: number) {
     if (index < this.aveUserRating) {
       return 'star';

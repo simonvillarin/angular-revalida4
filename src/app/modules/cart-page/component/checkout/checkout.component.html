@@ -6,7 +6,6 @@
       <div class="address-container">
         <div class="address-header">
           <div>Shipping address</div>
-          <button type="button" class="btn-edit">Edit</button>
         </div>
         <div class="address">
           <div><span>Receiver:</span></div>
@@ -27,7 +26,7 @@
             {{ item.productName }}
           </div>
           <!-- Item Price -->
-          <div>₱ {{ item.price }}</div>
+          <div>₱ {{ localString(item.price) }}</div>
           <!-- Quantity -->
           <div>Qty: {{ item.quantity }}</div>
         </div>
@@ -44,9 +43,10 @@
       </div>
       <div class="sum">
         <div>Total Payment:</div>
-        <div>₱ {{ calculateTotalPrice() }}</div>
+        <div>₱ {{ localString(calculateTotalPrice()) }}</div>
       </div>
       <button type="button" class="btn-place-order" (click)="checkout()">
+        <span class="loader" *ngIf="showSpinner"></span>
         PLACE ORDER
       </button>
     </div>

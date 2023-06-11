@@ -5,7 +5,7 @@
     <div class="product-content">
       <div>
         <div class="product-title">{{ product?.productName }}</div>
-        <div class="rating">
+        <!-- <div class="rating">
           <div>
             <span
               *ngFor="let ratingId of ratingArray; index as i"
@@ -17,8 +17,8 @@
             </span>
           </div>
           <p class="ratingCountLbl">{{ userCount }} Ratings</p>
-        </div>
-        <div class="price">₱ {{ product?.price }}</div>
+        </div> -->
+        <div class="price">₱ {{ localString(product?.price) }}</div>
         <div class="qty">
           <div>Quantity:</div>
           <div class="button-group">

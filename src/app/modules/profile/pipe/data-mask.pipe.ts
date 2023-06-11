@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'mobileMask'
+  name: 'mobileMask',
 })
 export class MobileMaskPipe implements PipeTransform {
   transform(value: string): string {
@@ -9,18 +9,20 @@ export class MobileMaskPipe implements PipeTransform {
       return '';
     }
 
-    const maskedValue = value.replace(/(\d{3})(\d+)(\d{2})/, (_, prefix, middle, suffix) => {
-      const maskedMiddle = '*'.repeat(middle.length);
-      return prefix + maskedMiddle + suffix;
-    });
+    const maskedValue = value.replace(
+      /(\d{3})(\d+)(\d{2})/,
+      (_, prefix, middle, suffix) => {
+        const maskedMiddle = '*'.repeat(middle.length);
+        return prefix + maskedMiddle + suffix;
+      }
+    );
 
     return '+63 ' + maskedValue;
   }
 }
 
-
 @Pipe({
-  name: 'emailMask'
+  name: 'emailMask',
 })
 export class EmailMaskPipe implements PipeTransform {
   transform(value: string): string {
@@ -39,6 +41,10 @@ export class EmailMaskPipe implements PipeTransform {
     const visibleCharacters = 1;
     const maskedCharacters = length - visibleCharacters;
 
-    return str.substring(0, visibleCharacters) + '*'.repeat(maskedCharacters) + str.substring(length - visibleCharacters);
+    return (
+      str.substring(0, visibleCharacters) +
+      '*'.repeat(maskedCharacters) +
+      str.substring(length - visibleCharacters)
+    );
   }
 }

@@ -357,43 +357,36 @@ export class UserListComponent implements OnInit, AfterViewInit {
           status: status,
         };
 
-        if (password == '') {
-          this.userForm.patchValue({
-            password: 'sample',
-            confirmPass: 'sample',
-          });
+        if (
+          email != data.email &&
+          username != data.username &&
+          phoneNumber != data.phoneNumber
+        ) {
+          user.email = email;
+          user.username = username;
+          user.phoneNumber = phoneNumber;
+        } else if (email != data.email && username != data.username) {
+          user.email = email;
+          user.username = username;
+        } else if (email != data.email && phoneNumber != data.phoneNumber) {
+          user.email = email;
+          user.phoneNumber = phoneNumber;
+        } else if (
+          username != data.username &&
+          phoneNumber != data.phoneNumber
+        ) {
+          user.username = username;
+          user.phoneNumber = phoneNumber;
+        } else if (email != data.email) {
+          user.email = email;
+        } else if (username != data.username) {
+          user.username = username;
+        } else if (phoneNumber != data.phoneNumber) {
+          user.phoneNumber = phoneNumber;
+        }
 
-          if (
-            email != data.email &&
-            username != data.username &&
-            phoneNumber != data.phoneNumber
-          ) {
-            user.email = email;
-            user.username = username;
-            user.phoneNumber = phoneNumber;
-          } else if (email != data.email && username != data.username) {
-            user.email = email;
-            user.username = username;
-          } else if (email != data.email && phoneNumber != data.phoneNumber) {
-            user.email = email;
-            user.phoneNumber = phoneNumber;
-          } else if (
-            username != data.username &&
-            phoneNumber != data.phoneNumber
-          ) {
-            user.username = username;
-            user.phoneNumber = phoneNumber;
-          } else if (email != data.email) {
-            user.email = email;
-          } else if (username != data.username) {
-            user.username = username;
-          } else if (phoneNumber != data.phoneNumber) {
-            user.phoneNumber = phoneNumber;
-          }
-        } else {
-          if (password != data.password) {
-            user.password = password;
-          }
+        if (password != data.password) {
+          user.password = password;
         }
 
         Swal.fire({

@@ -14,6 +14,8 @@ import { CheckoutService } from 'src/app/shared/services/checkout/checkout.servi
 })
 export class CheckoutComponent implements OnInit {
   cartItems: Checkout[] = [];
+  showSpinner: boolean = false;
+
   constructor(
     private checkoutService: CheckoutService,
     private orderService: OrderService,
@@ -73,6 +75,8 @@ export class CheckoutComponent implements OnInit {
       totalPrice += this.cartItems[i].price * this.cartItems[i].quantity;
     }
 
+    totalPrice += 50;
+
     for (let i = 0; i < this.cartItems.length; i++) {
       const currentDate = new Date();
       const year = currentDate.getFullYear();
@@ -99,10 +103,6 @@ export class CheckoutComponent implements OnInit {
       this.orderService.addOrder(payload).subscribe((res) => console.log(res));
     }
 
-    setTimeout(() => {
-      this.router.navigate(['orders']);
-    }, 500);
-
     for (let i = 0; i < this.cartItems.length; i++) {
       let quantity = this.cartItems[i].quantity;
       let productId = this.cartItems[i].productId;
@@ -112,8 +112,6 @@ export class CheckoutComponent implements OnInit {
           soldPrice: data.soldPrice + totalPrice,
           quantity: data.quantity - quantity,
         };
-
-        console.log(product);
 
         this.productService
           .updateProduct(productId, product)
@@ -127,8 +125,19 @@ export class CheckoutComponent implements OnInit {
         .subscribe((res) => console.log(res));
     }
 
+    // this.showSpinner = true;
+    // setTimeout(() => {
+    //   this.showSpinner = false;
+    // });
+
+    this.router.navigate(['orders']);
+
     this.checkoutService.deleteAll().subscribe((res) => console.log(res));
     this.cartItems = [];
+  };
+
+  localString = (num: number) => {
+    return num.toLocaleString();
   };
 
   routeToProduct = (id: number) => {

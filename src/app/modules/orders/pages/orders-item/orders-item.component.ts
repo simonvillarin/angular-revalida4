@@ -1,3 +1,4 @@
+import { map } from 'rxjs';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Order } from 'src/app/shared/models/order';
@@ -12,8 +13,6 @@ export class OrdersItemComponent implements OnInit, AfterViewInit {
   orders: Order[] = [];
   orderItems: any[] = [];
   orderTrackings: any[] = [];
-  totalQuantity: number = 0;
-  totalPrice: number = 0;
 
   constructor(private orderService: OrderService, private router: Router) {}
 
@@ -42,22 +41,33 @@ export class OrdersItemComponent implements OnInit, AfterViewInit {
       for (let i = 0; i < this.orderTrackings.length; i++) {
         this.orderService
           .getOrderByOrderTracking(this.orderTrackings[i])
-          .subscribe((data) => {
+          .subscribe((data1: any) => {
+            let totalQuantity = 0;
+            let totalPrice = 0;
+            let date;
+
+            data1.map((d: any) => {
+              totalQuantity = d.totalQuantity;
+              totalPrice = d.totalPrice;
+              date = d.orderDate;
+            });
+
             const item = {
-              item: data,
+              item: data1,
+              totalQuantity: totalQuantity,
+              totalPrice: totalPrice,
+              date: date,
             };
+
             this.orderItems.push(item);
           });
       }
+      this.orderItems.reverse();
     });
   };
 
-  getQuantity = (qty: number) => {
-    this.totalQuantity = qty;
-  };
-
-  getPrice = (price: number) => {
-    this.totalPrice = price;
+  localString = (num: number) => {
+    return num.toLocaleString();
   };
 
   routeToProduct = (id: number) => {

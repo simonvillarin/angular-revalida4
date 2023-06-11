@@ -6,7 +6,7 @@
     <div class="col-md-4 me-4 mb-2">
       {{ order.productName }}
     </div>
-    <div class="price">₱ {{ order.price }}</div>
+    <div class="price">₱ {{ localString(order.price) }}</div>
     <div class="quantity">Qty: {{ order.quantity }}</div>
   </div>
 </div>

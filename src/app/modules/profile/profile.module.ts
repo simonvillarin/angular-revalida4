@@ -9,8 +9,7 @@ import { EmailMaskPipe, MobileMaskPipe } from './pipe/data-mask.pipe';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditAddressComponent } from './pages/edit-address/edit-address.component';
-
-
+import { SignupModule } from '../signup/signup.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +19,7 @@ import { EditAddressComponent } from './pages/edit-address/edit-address.componen
     MobileMaskPipe,
     EmailMaskPipe,
     EditProfileComponent,
-    EditAddressComponent
+    EditAddressComponent,
   ],
   imports: [
     CommonModule,
@@ -28,6 +27,7 @@ import { EditAddressComponent } from './pages/edit-address/edit-address.componen
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-  ]
+    SignupModule,
+  ],
 })
-export class ProfileModule { }
+export class ProfileModule {}

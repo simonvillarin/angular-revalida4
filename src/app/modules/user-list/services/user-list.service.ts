@@ -23,7 +23,7 @@ export class UserListService {
     return this.http.post(`${this.BASE_URL}/user`, user);
   };
 
-  updateUser = (id: number, user: User) => {
+  updateUser = (id: number, user: any) => {
     return this.http.put(`${this.BASE_URL}/user/${id}`, user);
   };
 }

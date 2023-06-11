@@ -75,6 +75,7 @@
       <div class="checkout">
         <div>₱ {{ calculateTotalPrice() }}</div>
         <button type="button" class="btn-checkout" (click)="checkout()">
+          <span class="loader" *ngIf="showSpinner"></span>
           CHECKOUT ({{ countSelectedProd() }})
         </button>
       </div>

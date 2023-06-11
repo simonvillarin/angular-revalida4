@@ -4,6 +4,7 @@
   <div class="orders-container" *ngFor="let i of orderItems">
     <div>
       <div class="status">
+        <div>{{ i.date }}</div>
         <button>Pending</button>
       </div>
       <div *ngFor="let item of i.item">
@@ -11,13 +12,15 @@
           [order]="item"
           (click)="routeToProduct(item.productId)"
         ></app-pending-orders>
-        {{ getQuantity(item.totalQuantity) }}
-        {{ getPrice(item.totalPrice) }}
       </div>
       <div class="total-container">
         <div>
-          <div class="total-price">Total Price: ₱ {{ totalPrice }}</div>
-          <div class="total-qty">Total Qty: {{ totalQuantity }}</div>
+          <div class="total-price">
+            Total Price: ₱ {{ localString(i.totalPrice) }}
+          </div>
+          <div class="total-qty">
+            Total Qty: {{ localString(i.totalQuantity) }}
+          </div>
         </div>
       </div>
     </div>

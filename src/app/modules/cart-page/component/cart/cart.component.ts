@@ -12,6 +12,7 @@ import { CheckoutService } from 'src/app/shared/services/checkout/checkout.servi
 export class CartComponent implements OnInit {
   cartItems: Cart[] = [];
   cartCount = 0;
+  showSpinner: boolean = false;
 
   constructor(
     private router: Router,
@@ -133,9 +134,11 @@ export class CartComponent implements OnInit {
           .addCheckout(payload)
           .subscribe((res) => console.log(res));
       }
+      this.showSpinner = true;
       setTimeout(() => {
         this.router.navigate(['checkout']);
-      }, 1000);
+        this.showSpinner = false;
+      }, 2000);
     }
   }
 

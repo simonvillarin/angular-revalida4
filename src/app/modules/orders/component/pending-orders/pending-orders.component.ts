@@ -11,4 +11,8 @@ export class PendingOrdersComponent {
   @Input() order: Order | undefined;
 
   constructor(private router: Router) {}
+
+  localString = (num: number) => {
+    return num.toLocaleString();
+  };
 }

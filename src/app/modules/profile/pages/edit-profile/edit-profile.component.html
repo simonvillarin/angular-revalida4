@@ -1,161 +1,255 @@
-<div class="editForm" >
-    <h2 class="mb-4">Edit Profile</h2>
-    <form class="row g-3" [formGroup]="editForm" (ngSubmit)="onSubmit()" name="editForm">
-        <div class="col-md-4">
-            <label for="inputFname" class="form-label">Firstname</label>
-            <input 
-                type="text" 
-                class="form-control border-bottom" 
-                id="inputFname" 
-                formControlName="fname"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="fname?.invalid && (fname?.dirty || fname?.touched)"
-            >
-                <p *ngIf="fname?.errors?.['required']">
-                    Firstname is required.
-                </p>
-            </div>
+<div class="editForm">
+  <form
+    class="row g-3"
+    [formGroup]="userForm"
+    (ngSubmit)="onSubmit()"
+    name="editForm"
+  >
+    <div class="alert alert-danger mb-3 p-3" role="alert" *ngIf="showAlert">
+      {{ alert }}
+    </div>
+    <div class="input-container">
+      <div class="group">
+        <label>First Name</label>
+        <input
+          type="text"
+          class="form-control border-bottom"
+          placeholder="Enter first name"
+          formControlName="firstName"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('firstName')?.invalid &&
+              userForm.get('firstName')?.dirty) ||
+            userForm.get('firstName')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('firstName')?.hasError('required')">
+            First Name is Required
+          </div>
+          <div *ngIf="userForm.get('firstName')?.hasError('maxlength')">
+            Max length is 80
+          </div>
+          <div *ngIf="userForm.get('firstName')?.hasError('minlength')">
+            Minimum length is 2
+          </div>
         </div>
-        <div class="col-md-4">
-            <label for="inputMname" class="form-label">MiddleName</label>
-            <input 
-                type="text" 
-                class="form-control border-bottom" 
-                id="inputMname"
-                formControlName="mname"
-                required
-            >
-            <!-- Validation -->
-            <!-- <div
-                class="validation"
-                *ngIf="mname?.invalid && (mname?.dirty || mname?.touched)"
-                >
-                <p *ngIf="mname?.errors?.['required']">MiddleName is required.</p>
-            </div> -->
+      </div>
+      <div class="group">
+        <label>Last Name</label>
+        <input
+          type="text"
+          class="form-control border-bottom"
+          placeholder="Enter last name"
+          formControlName="lastName"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('lastName')?.invalid &&
+              userForm.get('lastName')?.dirty) ||
+            userForm.get('lastName')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('lastName')?.hasError('required')">
+            Last Name is Required
+          </div>
+          <div *ngIf="userForm.get('lastName')?.hasError('maxlength')">
+            Max length is 80
+          </div>
+          <div *ngIf="userForm.get('lastName')?.hasError('minlength')">
+            Minimum length is 2
+          </div>
         </div>
-        <div class="col-md-4">
-            <label for="inputLname" class="form-label">Lastname</label>
-            <input 
-                type="text" 
-                class="form-control border-bottom" 
-                id="inputLname"
-                formControlName="lname"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="lname?.invalid && (lname?.dirty || lname?.touched)"
-            >
-                <p *ngIf="lname?.errors?.['required']">
-                    Lastname is required.
-                </p>
-            </div>
+      </div>
+      <div class="group">
+        <label>Middle Name</label>
+        <input
+          type="text"
+          class="form-control border-bottom"
+          placeholder="Enter middle name"
+          formControlName="middleName"
+        />
+      </div>
+    </div>
+    <div class="input-container1">
+      <div class="group">
+        <label>Birthday</label>
+        <input
+          type="date"
+          class="form-control border-bottom"
+          formControlName="birthDate"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('birthDate')?.invalid &&
+              userForm.get('birthDate')?.dirty) ||
+            userForm.get('birthDate')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('birthDate')?.hasError('required')">
+            Birthdate is Required
+          </div>
         </div>
-        <div class="col-md-4">
-            <label for="inputUsername" class="form-label">Username</label>
-            <input 
-                type="text" 
-                class="form-control border-bottom" 
-                id="inputUsername"
-                formControlName="username"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="username?.invalid && (username?.dirty || username?.touched)"
-            >
-                <p *ngIf="username?.errors?.['required']">
-                    Username is required.
-                </p>
-            </div>
+      </div>
+      <div class="group">
+        <label>Email</label>
+        <input
+          type="email"
+          class="form-control border-bottom"
+          placeholder="example@email.com"
+          formControlName="email"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('email')?.invalid && userForm.get('email')?.dirty) ||
+            userForm.get('email')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('email')?.hasError('required')">
+            Email is Required
+          </div>
+          <div *ngIf="userForm.get('email')?.hasError('email')">
+            Invalid Email Format
+          </div>
         </div>
-        <div class="col-md-4">
-            <label for="inputEmail" class="form-label">Email</label>
-            <input 
-                type="text" 
-                class="form-control border-bottom" 
-                id="inputEmail"
-                formControlName="email"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="email?.invalid && (email?.dirty || email?.touched)"
-            >
-                <p *ngIf="email?.errors?.['required']">Email is required.</p>
-                <p *ngIf="email?.errors?.['email']">
-                    Not an acceptable email type.
-                </p>
-            </div>
+      </div>
+      <div class="group">
+        <label>Phone Number</label>
+        <input
+          type="number"
+          class="form-control border-bottom"
+          placeholder="Enter phone number"
+          formControlName="phoneNumber"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('phoneNumber')?.invalid &&
+              userForm.get('phoneNumber')?.dirty) ||
+            userForm.get('phoneNumber')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('phoneNumber')?.hasError('required')">
+            Phone number is Required
+          </div>
         </div>
-        <div class="col-md-4">
-            <label for="inputMobileNo" class="form-label">Mobile no.</label>
-            <input 
-                type="" 
-                class="form-control border-bottom" 
-                id="inputMobileNo"
-                formControlName="mobileNo"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="mobileNo?.invalid && (mobileNo?.dirty || mobileNo?.touched)"
-            >
-                <p *ngIf="mobileNo?.errors?.['required']">
-                    Mobile number is required.
-                </p>
-                <p *ngIf="mobileNo?.errors?.['mobileNoIsValid']">
-                    Mobile number is not acceptable
-                </p>
-                <p *ngIf="mobileNo?.errors?.['mobileNoHasNoLetters']">
-                    It must not contain letters.
-                </p>
-            </div>
+      </div>
+    </div>
+    <div class="input-container">
+      <div class="group">
+        <label>Username</label>
+        <input
+          type="text"
+          class="form-control border-bottom"
+          placeholder="Enter username"
+          formControlName="userName"
+        />
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('userName')?.invalid &&
+              userForm.get('userName')?.dirty) ||
+            userForm.get('userName')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('userName')?.hasError('required')">
+            User Name is Required
+          </div>
         </div>
-        <div class="col-md-4">
-            <label for="inputBday" class="form-label">Birthday</label>
-            <input 
-                type="date" 
-                class="form-control border-bottom" 
-                id="inputBday"
-                formControlName="bday"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="bday?.invalid && (bday?.dirty || bday?.touched)"
-            >
-                <p *ngIf="bday?.errors?.['required']">Birthday is required.</p>
-            </div>
+      </div>
+      <div class="group">
+        <label>Password</label>
+        <div class="input-group">
+          <div>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              class="form-control border-bottom pass-input"
+              formControlName="password"
+              required
+            />
+            <i
+              class="bi bi-eye-slash"
+              (click)="togglePasswordVisibility()"
+              *ngIf="!showPassword"
+            ></i>
+            <i
+              class="bi bi-eye"
+              (click)="togglePasswordVisibility()"
+              *ngIf="showPassword"
+            ></i>
+          </div>
         </div>
-        <div class="col-md-4">
-            <label class="form-label">List of Interest</label>
-            <input 
-                class="form-control border-bottom" 
-                id="inputBday"
-                formControlName="listOfInterest"
-                required
-            >
-            <!-- Validation -->
-            <div
-                class="validation"
-                *ngIf="listOfInterest?.invalid && (listOfInterest?.dirty || listOfInterest?.touched)"
-            >
-                <p *ngIf="listOfInterest?.errors?.['required']">List of interest is required.</p>
-            </div>
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('password')?.invalid &&
+              userForm.get('password')?.dirty) ||
+            userForm.get('password')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('password')?.hasError('required')">
+            Password is Required
+          </div>
+          <div *ngIf="userForm.get('password')?.hasError('minlength')">
+            Password must 8 characters above
+          </div>
+          <div *ngIf="userForm.get('password')?.hasError('hasLowercase')">
+            Password must contain lowercase
+          </div>
+          <div *ngIf="userForm.get('password')?.hasError('hasUppercase')">
+            Password must contain uppercase
+          </div>
+          <div *ngIf="userForm.get('password')?.hasError('hasNumber')">
+            Password must contain number
+          </div>
+          <div *ngIf="userForm.get('password')?.hasError('hasSymbol')">
+            Password must contain symbol
+          </div>
         </div>
-        <div class="btnCont">
-            <button type="submit" class="btn saveBtn">Save Changes</button>
-            <button type="button" class="btn cancelBtn" (click)="cancel()">Cancel</button>
+      </div>
+      <div class="group">
+        <label>Confirm Password</label>
+        <div class="input-group">
+          <div>
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              class="form-control border-bottom pass-input"
+              formControlName="confirmPass"
+              required
+            />
+            <i
+              class="bi bi-eye-slash"
+              (click)="toggleConfirmPasswordVisibility()"
+              *ngIf="!showConfirmPassword"
+            ></i>
+            <i
+              class="bi bi-eye"
+              (click)="toggleConfirmPasswordVisibility()"
+              *ngIf="showConfirmPassword"
+            ></i>
+          </div>
         </div>
-    </form>
+        <div
+          class="validation"
+          *ngIf="
+            (userForm.get('password')?.invalid &&
+              userForm.get('password')?.dirty) ||
+            userForm.get('password')?.touched
+          "
+        >
+          <div *ngIf="userForm.get('password')?.hasError('required')">
+            Password is Required
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="button-group">
+      <button type="submit" class="submit">EDIT</button>
+      <button type="button" class="clear" (click)="reset()">RESET</button>
+    </div>
+  </form>
 </div>

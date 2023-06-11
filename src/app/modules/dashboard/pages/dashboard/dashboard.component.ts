@@ -112,6 +112,10 @@ export class DashboardComponent implements OnInit {
     });
   };
 
+  localString = (num: number) => {
+    return num.toLocaleString();
+  };
+
   ngOnInit(): void {
     this.getAllProducts();
   }
