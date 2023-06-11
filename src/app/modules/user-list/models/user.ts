@@ -7,7 +7,7 @@ export interface User {
   email: string;
   phoneNumber: string;
   username: string;
-  password?: string;
+  password: string;
   role: string;
   status: boolean;
 }

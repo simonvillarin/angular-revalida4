@@ -32,6 +32,9 @@
         <div class="user-header">
           <h5 class="title">User's Information</h5>
         </div>
+        <div class="alert alert-danger mb-3 p-3" role="alert" *ngIf="showAlert">
+          {{ alert }}
+        </div>
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
           <div class="input-container">
             <div class="group">
@@ -334,7 +337,9 @@
             >
               {{ buttonAction }}
             </button>
-            <button type="button" class="clear" (click)="resetAlert()">RESET</button>
+            <button type="button" class="clear" (click)="resetAlert()">
+              RESET
+            </button>
           </div>
         </form>
       </div>

@@ -67,33 +67,40 @@
                 (change)="onBrandSelect($event)"
               >
                 <option hidden>Select Brand</option>
-                <option *ngFor="let option of brandOptions" [value]="option.brand">
+                <option
+                  *ngFor="let option of brandOptions"
+                  [value]="option.brand"
+                >
                   {{ option.brand }}
                 </option>
               </select>
-               <button
-                   type="button"
-                  class="add"
-                  data-bs-toggle="modal"
-                  data-bs-target="#brandModal"
-                >
-                 Add
-               </button>
-               <button type="button" class="add" 
-                        data-bs-toggle="modal" data-bs-target="#editBrandModal"  
-                        (click)="editBrand()"
-                        [disabled]="selectedBrandIndex === null">
+              <button
+                type="button"
+                class="add"
+                data-bs-toggle="modal"
+                data-bs-target="#brandModal"
+              >
+                Add
+              </button>
+              <button
+                type="button"
+                class="add"
+                data-bs-toggle="modal"
+                data-bs-target="#editBrandModal"
+                (click)="editBrand()"
+                [disabled]="selectedBrandIndex === null"
+              >
                 Edit
               </button>
-              
-               <button
-                   type="button"
-                  class="add"
-                  data-bs-toggle="modal"
-                  data-bs-target="#deleteBrand"
-                >
-                 Delete
-               </button>
+
+              <button
+                type="button"
+                class="add"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteBrand"
+              >
+                Delete
+              </button>
 
               <div
                 class="validation"
@@ -109,215 +116,20 @@
               </div>
             </div>
 
-              <!-- Brand Modal -->
-              <div
-                class="modal fade"
-                id="brandModal"
-                tabindex="-1"
-                aria-labelledby="brandModalLabel"
-                aria-hidden="true"
-                *ngIf="showBrandModal"
-              >
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="brandModalLabel">Add Brand</h1>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div class="modal-body">
-                      Are you do you want to add {{ newBrand }} as new Option for brand?
-                      <input
-                      id="brand"
-                      class="form-control"
-                      type="text"
-                      [(ngModel)]="newBrand"
-                      [ngModelOptions]="{ standalone: true }"
-                      placeholder="New Brand"
-                    />
-                    </div>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-primary"
-                        (click)="addBrand()"
-                        data-bs-dismiss="modal"
-                      >
-                        Save changes
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-                          <!-- editBrand Modal -->
-              <div
-                class="modal fade"
-                id="editBrandModal"
-                tabindex="-1"
-                aria-labelledby="brandModalLabel"
-                aria-hidden="true"
-                *ngIf="showBrandModal"
-                >
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="brandModalLabel">Edit Brand</h1>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div class="modal-body">
-                      Are you sure you want to edit the brand option to {{ editedBrand }}?
-                      <input
-                        id="brand"
-                        class="form-control"
-                        type="text"
-                        [(ngModel)]="editedBrand"
-                        [ngModelOptions]="{ standalone: true }"
-                        placeholder="New Brand"
-                      />
-                    </div>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-primary"
-                        (click)="updateBrand()"
-                        data-bs-dismiss="modal"
-                      >
-                        Save changes
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-               <!-- deleteBrand Modal -->
-               <div
-               class="modal fade"
-               id="deleteBrand"
-               tabindex="-1"
-               aria-labelledby="brandModalLabel"
-               aria-hidden="true"
-               *ngIf="showBrandModal"
-             >
-               <div class="modal-dialog">
-                 <div class="modal-content">
-                   <div class="modal-header">
-                     <h1 class="modal-title fs-5" id="brandModalLabel">Delete Brand</h1>
-                     <button
-                       type="button"
-                       class="btn-close"
-                       data-bs-dismiss="modal"
-                       aria-label="Close"
-                     ></button>
-                   </div>
-                   <div class="modal-body">
-                    Are you sure you want to delete the brand option {{ newBrand }}?
-                     <input
-                     id="brand"
-                     class="form-control"
-                     type="text"
-                     [(ngModel)]="newBrand"
-                     [ngModelOptions]="{ standalone: true }"
-                     placeholder="New Brand"
-                   />
-                   </div>
-                   <div class="modal-footer">
-                     <button
-                       type="button"
-                       class="btn btn-secondary"
-                       data-bs-dismiss="modal"
-                     >
-                       Close
-                     </button>
-                     <button
-                       type="button"
-                       class="btn btn-primary"
-                      
-                       data-bs-dismiss="modal"
-                     >
-                     <!--  (click)="deleteSelectedBrand()" -->
-                       Save changes
-                     </button>
-                   </div>
-                 </div>
-               </div>
-             </div>
-
-
-            <div class="group">
-                <label for="category">Category</label>
-                <select
-                  (change)="onCategorySelect($event)"
-                  class="form-select"
-                  id="category"
-                  aria-label="Category"
-                  formControlName="category"
-                  [value]="buttonAction"
-                >
-                  <option hidden>Select Category</option>
-                  <option *ngFor="let option of categoryOptions" [value]="option.category">
-                    {{ option.category }}
-                  </option>
-                </select>
-                <button
-                  class="add"
-                  type="button"
-                  data-bs-toggle="modal"
-                  data-bs-target="#categoryModal"
-                >
-                  Add
-                </button>
-                <div
-                  class="validation"
-                  *ngIf="
-                    (productForm.get('category')?.invalid &&
-                      productForm.get('category')?.dirty) ||
-                    productForm.get('category')?.touched
-                  "
-                >
-                  <div *ngIf="productForm.get('category')?.hasError('required')">
-                    Category is Required
-                  </div>
-                </div>
-              </div>
-          </div>
-              <!-- Category Modal -->
-          <div
+            <!-- Brand Modal -->
+            <div
               class="modal fade"
-              id="categoryModal"
+              id="brandModal"
               tabindex="-1"
-              aria-labelledby="categoryModalLabel"
+              aria-labelledby="brandModalLabel"
               aria-hidden="true"
-              *ngIf="showCategoryModal"
+              *ngIf="showBrandModal"
             >
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="categoryModalLabel">
-                      Add Category
+                    <h1 class="modal-title fs-5" id="brandModalLabel">
+                      Add Brand
                     </h1>
                     <button
                       type="button"
@@ -327,15 +139,16 @@
                     ></button>
                   </div>
                   <div class="modal-body">
-                    Are you do you want to add {{ newOption }} as new Option for category?
+                    Are you do you want to add {{ newBrand }} as new Option for
+                    brand?
                     <input
-                      id="category"
+                      id="brand"
                       class="form-control"
                       type="text"
-                      [(ngModel)]="newOption"
+                      [(ngModel)]="newBrand"
                       [ngModelOptions]="{ standalone: true }"
-                      placeholder="New Category"
-                  />
+                      placeholder="New Brand"
+                    />
                   </div>
                   <div class="modal-footer">
                     <button
@@ -348,7 +161,7 @@
                     <button
                       type="button"
                       class="btn btn-primary"
-                      (click)="addNewOption()"
+                      (click)="addBrand()"
                       data-bs-dismiss="modal"
                     >
                       Save changes
@@ -357,6 +170,211 @@
                 </div>
               </div>
             </div>
+
+            <!-- editBrand Modal -->
+            <div
+              class="modal fade"
+              id="editBrandModal"
+              tabindex="-1"
+              aria-labelledby="brandModalLabel"
+              aria-hidden="true"
+              *ngIf="showBrandModal"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="brandModalLabel">
+                      Edit Brand
+                    </h1>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure you want to edit the brand option to
+                    {{ editedBrand }}?
+                    <input
+                      id="brand"
+                      class="form-control"
+                      type="text"
+                      [(ngModel)]="editedBrand"
+                      [ngModelOptions]="{ standalone: true }"
+                      placeholder="New Brand"
+                    />
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      (click)="updateBrand()"
+                      data-bs-dismiss="modal"
+                    >
+                      Save changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- deleteBrand Modal -->
+            <div
+              class="modal fade"
+              id="deleteBrand"
+              tabindex="-1"
+              aria-labelledby="brandModalLabel"
+              aria-hidden="true"
+              *ngIf="showBrandModal"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="brandModalLabel">
+                      Delete Brand
+                    </h1>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure you want to delete the brand option
+                    {{ newBrand }}?
+                    <input
+                      id="brand"
+                      class="form-control"
+                      type="text"
+                      [(ngModel)]="newBrand"
+                      [ngModelOptions]="{ standalone: true }"
+                      placeholder="New Brand"
+                    />
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      data-bs-dismiss="modal"
+                    >
+                      <!--  (click)="deleteSelectedBrand()" -->
+                      Save changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="group">
+              <label for="category">Category</label>
+              <select
+                (change)="onCategorySelect($event)"
+                class="form-select"
+                id="category"
+                aria-label="Category"
+                formControlName="category"
+                [value]="buttonAction"
+              >
+                <option hidden>Select Category</option>
+                <option
+                  *ngFor="let option of categoryOptions"
+                  [value]="option.category"
+                >
+                  {{ option.category }}
+                </option>
+              </select>
+              <button
+                class="add"
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#categoryModal"
+              >
+                Add
+              </button>
+              <div
+                class="validation"
+                *ngIf="
+                  (productForm.get('category')?.invalid &&
+                    productForm.get('category')?.dirty) ||
+                  productForm.get('category')?.touched
+                "
+              >
+                <div *ngIf="productForm.get('category')?.hasError('required')">
+                  Category is Required
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Category Modal -->
+          <div
+            class="modal fade"
+            id="categoryModal"
+            tabindex="-1"
+            aria-labelledby="categoryModalLabel"
+            aria-hidden="true"
+            *ngIf="showCategoryModal"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="categoryModalLabel">
+                    Add Category
+                  </h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  Are you do you want to add {{ newOption }} as new Option for
+                  category?
+                  <input
+                    id="category"
+                    class="form-control"
+                    type="text"
+                    [(ngModel)]="newOption"
+                    [ngModelOptions]="{ standalone: true }"
+                    placeholder="New Category"
+                  />
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    (click)="addNewOption()"
+                    data-bs-dismiss="modal"
+                  >
+                    Save changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="input-container">
             <div class="group" formArrayName="description">
@@ -432,25 +450,53 @@
             </div>
           </div>
 
-          <div class="group product-image">
-            <label for="formFile">Product Image</label>
-            <input
-              class="form-control"
-              (change)="onFileSelected($event)"
-              type="file"
-              id="formFile"
-              formControlName="productImg"
-            />
-            <div
-              class="validation"
-              *ngIf="
-                (productForm.get('productImg')?.invalid &&
-                  productForm.get('productImg')?.dirty) ||
-                productForm.get('productImg')?.touched
-              "
-            >
-              <div *ngIf="productForm.get('productImg')?.hasError('required')">
-                Product Image is Required
+          <div class="input-container">
+            <div class="group">
+              <label for="formFile">Product Image</label>
+              <input
+                class="form-control"
+                (change)="onFileSelected($event)"
+                type="file"
+                id="formFile"
+                formControlName="productImg"
+              />
+              <div
+                class="validation"
+                *ngIf="
+                  (productForm.get('productImg')?.invalid &&
+                    productForm.get('productImg')?.dirty) ||
+                  productForm.get('productImg')?.touched
+                "
+              >
+                <div
+                  *ngIf="productForm.get('productImg')?.hasError('required')"
+                >
+                  Product Image is Required
+                </div>
+              </div>
+            </div>
+            <div class="group" *ngIf="isActionEdit">
+              <label>Status</label>
+              <select
+                class="form-select"
+                aria-label="Status"
+                formControlName="status"
+              >
+                <option hidden>Select Status</option>
+                <option value="true">Active</option>
+                <option value="false">Deactivate</option>
+              </select>
+              <div
+                class="validation"
+                *ngIf="
+                  (productForm.get('status')?.invalid &&
+                    productForm.get('status')?.dirty) ||
+                  productForm.get('status')?.touched
+                "
+              >
+                <div *ngIf="productForm.get('status')?.hasError('required')">
+                  Status is Required
+                </div>
               </div>
             </div>
           </div>
@@ -465,7 +511,9 @@
             >
               {{ buttonAction }}
             </button>
-            <button type="button" class="clear" (click)="resetAlert()">RESET</button>
+            <button type="button" class="clear" (click)="resetAlert()">
+              RESET
+            </button>
           </div>
         </form>
       </div>

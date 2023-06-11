@@ -39,6 +39,8 @@ export class UserListComponent implements OnInit, AfterViewInit {
   buttonAction: string = 'ADD';
   id: number = 0;
   search: string = '';
+  alert: string = '';
+  showAlert: boolean = false;
 
   allInterests: string[] = [
     'Desktop PC',
@@ -206,46 +208,18 @@ export class UserListComponent implements OnInit, AfterViewInit {
     this.isActionEdit = true;
     this.id = id;
 
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "Do you want to edit this user?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, edit it!',
-      cancelButtonText: 'No, cancel',
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.userForm.patchValue({
-
-          firstName: user.firstName,
-          lastName: user.lastName,
-          middleName: user.middleName,
-          birthDate: user.birthdate,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          userName: user.username,
-          role: user.role,
-          status: user.status,
-
-        });
-        Swal.fire(
-          'Done!',
-          'User successfully loaded.',
-          'success'
-        )
-      } else if (
-        result.dismiss === Swal.DismissReason.cancel
-      ) {
-        Swal.fire(
-          'Cancelled',
-          'You have cancelled the transaction.',
-          'error'
-        )
-      }
-    })
-
-
+    this.userForm.patchValue({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      middleName: user.middleName,
+      birthDate: user.birthdate,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      userName: user.username,
+      passowrd: user.password,
+      role: user.role,
+      status: user.status,
+    });
   };
 
   deleteUser = (id: number) => {
@@ -253,13 +227,12 @@ export class UserListComponent implements OnInit, AfterViewInit {
       status: false,
     };
 
-
     Swal.fire({
       title: 'Are you sure?',
-      text: "Do you want to delete this user?",
+      text: 'Do you want to deactivate this user?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: 'Yes, deactivate it!',
       cancelButtonText: 'No, cancel',
       reverseButtons: true,
     }).then((result) => {
@@ -267,33 +240,19 @@ export class UserListComponent implements OnInit, AfterViewInit {
         this.userListService.getUserById(id).subscribe((data) => {
           if (data.status) {
             this.userListService
-              .updateUser(id, payload)
+              .updateUser(data.userId, payload)
               .subscribe((res) => console.log(res));
             const index = this.dataSource.data.findIndex(
               (user) => user.userId === id
             );
             this.dataSource.data[index].status = false;
+            Swal.fire('Done!', 'User successfully deleted.', 'success');
           } else {
-            console.log('User already deactivated');
+            Swal.fire('Error', 'User already deactivated', 'error');
           }
         });
-        Swal.fire(
-          'Done!',
-          'User successfully deleted.',
-          'success'
-        )
-      } else if (
-        result.dismiss === Swal.DismissReason.cancel
-      ) {
-        Swal.fire(
-          'Cancelled',
-          'You have cancelled the transaction.',
-          'error'
-        )
       }
-    })
-
-
+    });
   };
 
   resetAlert() {
@@ -307,27 +266,15 @@ export class UserListComponent implements OnInit, AfterViewInit {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire(
-          'Done!',
-          'The form has been reset.',
-          'success'
-        )
         this.reset();
-      } else if (
-        result.dismiss === Swal.DismissReason.cancel
-      ) {
-        Swal.fire(
-          'Cancelled',
-          'You have cancelled the transaction.',
-          'error'
-        )
       }
-    })
+    });
   }
-
 
   reset = () => {
     this.userForm.reset();
+    this.isActionEdit = false;
+    this.buttonAction = 'ADD';
   };
 
   onSubmit(): void {
@@ -352,7 +299,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
       if (this.userForm.valid) {
         Swal.fire({
           title: 'Are you sure?',
-          text: "Do you want to add new product?",
+          text: 'Do you want to add new product?',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Yes, save it!',
@@ -360,23 +307,26 @@ export class UserListComponent implements OnInit, AfterViewInit {
           reverseButtons: true,
         }).then((result) => {
           if (result.isConfirmed) {
-            this.userListService.addUser(user).subscribe((res) => console.log(res));
-            this.dataSource.data = [...this.dataSource.data, user];
-            Swal.fire(
-              'Done!',
-              'User, Successfully Added!.',
-              'success'
-            )
-          } else if (
-            result.dismiss === Swal.DismissReason.cancel
-          ) {
-            Swal.fire(
-              'Cancelled',
-              'You have cancelled the transaction.',
-              'error'
-            )
+            this.userListService.addUser(user).subscribe((res: any) => {
+              if (res.message == 'Email already exists') {
+                this.alert = 'Email already exists';
+                this.showAlert = true;
+                setTimeout(() => (this.showAlert = false), 3000);
+              } else if (res.message == 'Username already exists') {
+                this.alert = 'Username already exists';
+                this.showAlert = true;
+                setTimeout(() => (this.showAlert = false), 3000);
+              } else if (res.message == 'Phone number already exists') {
+                this.alert = 'Phone number already exists';
+                this.showAlert = true;
+                setTimeout(() => (this.showAlert = false), 3000);
+              } else {
+                this.dataSource.data = [...this.dataSource.data, user];
+                Swal.fire('Done!', 'User, Successfully Added!.', 'success');
+              }
+            });
           }
-        })
+        });
       }
 
       if (this.userForm.invalid) {
@@ -384,98 +334,134 @@ export class UserListComponent implements OnInit, AfterViewInit {
         console.log('Invalid Form');
         return;
       }
+      this.userForm.reset();
     } else {
-      let user: any;
+      this.userListService.getUserById(this.id).subscribe((data) => {
+        const firstName = this.userForm.get('firstName')?.value;
+        const lastName = this.userForm.get('lastName')?.value;
+        const middleName = this.userForm.get('middleName')?.value;
+        const birthdate = this.userForm.get('birthDate')?.value;
+        const email = this.userForm.get('email')?.value;
+        const phoneNumber = this.userForm.get('phoneNumber')?.value;
+        const username = this.userForm.get('userName')?.value;
+        const password = this.userForm.get('password')?.value;
+        const role = this.userForm.get('role')?.value;
+        const status = this.userForm.get('status')?.value;
 
-      if (this.userForm.get('password') == null) {
-        this.userForm.patchValue({
-          password: 'sample',
-          confirmPass: 'sample',
-        });
-
-        const user = {
-          firstName: this.userForm.get('firstName')?.value,
-          lastName: this.userForm.get('lastName')?.value,
-          middleName: this.userForm.get('middleName')?.value,
-          birthdate: this.userForm.get('birthDate')?.value,
-          phoneNumber: this.userForm.get('phoneNumber')?.value,
-          password: this.userForm.get('password')?.value,
-          role: this.userForm.get('role')?.value,
-          status: this.userForm.get('status')?.value,
+        let user: any = {
+          firstName: firstName,
+          lastName: lastName,
+          middleName: middleName,
+          birthdate: birthdate,
+          role: role,
+          status: status,
         };
-      } else {
-        user = {
-          firstName: this.userForm.get('firstName')?.value,
-          lastName: this.userForm.get('lastName')?.value,
-          middleName: this.userForm.get('middleName')?.value,
-          birthdate: this.userForm.get('birthDate')?.value,
-          phoneNumber: this.userForm.get('phoneNumber')?.value,
-          password: this.userForm.get('password')?.value,
-          role: this.userForm.get('role')?.value,
-          status: this.userForm.get('status')?.value,
-        };
-      }
 
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "Do you want to edit this user?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, edit it!',
-        cancelButtonText: 'No, cancel',
-        reverseButtons: true,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.userListService
-            .updateUser(this.id, user)
-            .subscribe((res) => console.log(res));
-          Swal.fire(
-            'Done!',
-            'User, Successfully Updated!.',
-            'success'
-          )
-        } else if (
-          result.dismiss === Swal.DismissReason.cancel
-        ) {
-          Swal.fire(
-            'Cancelled',
-            'You have cancelled the transaction.',
-            'error'
-          )
+        if (password == '') {
+          this.userForm.patchValue({
+            password: 'sample',
+            confirmPass: 'sample',
+          });
+
+          if (
+            email != data.email &&
+            username != data.username &&
+            phoneNumber != data.phoneNumber
+          ) {
+            user.email = email;
+            user.username = username;
+            user.phoneNumber = phoneNumber;
+          } else if (email != data.email && username != data.username) {
+            user.email = email;
+            user.username = username;
+          } else if (email != data.email && phoneNumber != data.phoneNumber) {
+            user.email = email;
+            user.phoneNumber = phoneNumber;
+          } else if (
+            username != data.username &&
+            phoneNumber != data.phoneNumber
+          ) {
+            user.username = username;
+            user.phoneNumber = phoneNumber;
+          } else if (email != data.email) {
+            user.email = email;
+          } else if (username != data.username) {
+            user.username = username;
+          } else if (phoneNumber != data.phoneNumber) {
+            user.phoneNumber = phoneNumber;
+          }
+        } else {
+          if (password != data.password) {
+            user.password = password;
+          }
         }
-      })
-      const index = this.dataSource.data.findIndex(
-        (user) => user.userId === this.id
-      );
-      this.dataSource.data[index].firstName =
-        this.userForm.get('firstName')?.value;
-      this.dataSource.data[index].lastName =
-        this.userForm.get('lastName')?.value;
-      this.dataSource.data[index].middleName =
-        this.userForm.get('middleName')?.value;
-      this.dataSource.data[index].birthdate =
-        this.userForm.get('birthDate')?.value;
-      this.dataSource.data[index].email = this.userForm.get('email')?.value;
-      this.dataSource.data[index].phoneNumber =
-        this.userForm.get('phoneNumber')?.value;
-      this.dataSource.data[index].username =
-        this.userForm.get('userName')?.value;
-      this.dataSource.data[index].password =
-        this.userForm.get('password')?.value;
-      this.dataSource.data[index].role = this.userForm.get('role')?.value;
 
-      let status = false;
-      console.log(this.userForm.get('status')?.value);
-      if (this.userForm.get('status')?.value) {
-        status = true;
-      } else {
-        status = false;
-      }
-      this.dataSource.data[index].status = status;
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'Do you want to edit this user?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, edit it!',
+          cancelButtonText: 'No, cancel',
+          reverseButtons: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.userListService
+              .updateUser(this.id, user)
+              .subscribe((res: any) => {
+                console.log(res);
+                if (res.message == 'Email already exists') {
+                  this.alert = 'Email already exists';
+                  this.showAlert = true;
+                  setTimeout(() => (this.showAlert = false), 3000);
+                } else if (res.message == 'Username already exists') {
+                  this.alert = 'Username already exists';
+                  this.showAlert = true;
+                  setTimeout(() => (this.showAlert = false), 3000);
+                } else if (res.message == 'Phone number already exists') {
+                  this.alert = 'Phone number already exists';
+                  this.showAlert = true;
+                  setTimeout(() => (this.showAlert = false), 3000);
+                } else {
+                  const index = this.dataSource.data.findIndex(
+                    (user) => user.userId === this.id
+                  );
+                  this.dataSource.data[index].firstName =
+                    this.userForm.get('firstName')?.value;
+                  this.dataSource.data[index].lastName =
+                    this.userForm.get('lastName')?.value;
+                  this.dataSource.data[index].middleName =
+                    this.userForm.get('middleName')?.value;
+                  this.dataSource.data[index].birthdate =
+                    this.userForm.get('birthDate')?.value;
+                  this.dataSource.data[index].email =
+                    this.userForm.get('email')?.value;
+                  this.dataSource.data[index].phoneNumber =
+                    this.userForm.get('phoneNumber')?.value;
+                  this.dataSource.data[index].username =
+                    this.userForm.get('userName')?.value;
+                  this.dataSource.data[index].password =
+                    this.userForm.get('password')?.value;
+                  this.dataSource.data[index].role =
+                    this.userForm.get('role')?.value;
 
-      this.buttonAction = 'ADD';
-      this.isActionEdit = false;
+                  let status = false;
+                  if (this.userForm.get('status')?.value) {
+                    status = true;
+                  } else {
+                    status = false;
+                  }
+                  this.dataSource.data[index].status = status;
+
+                  this.buttonAction = 'ADD';
+                  this.isActionEdit = false;
+                  Swal.fire('Done!', 'User, Successfully Updated!.', 'success');
+                  this.userForm.reset();
+                }
+              });
+          }
+        });
+      });
     }
-    this.userForm.reset();
   }
 }
