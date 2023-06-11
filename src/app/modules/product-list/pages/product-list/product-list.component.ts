@@ -14,16 +14,6 @@ import { Product } from '../../models/product';
 import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
 
-interface Brand {
-  id: number;
-  brand: string;
-}
-
-interface Category {
-  id: number;
-  category: string;
-}
-
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
@@ -43,32 +33,6 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getAllProducts();
-    this.fetchBrandOptions();
-    this.fetchCategoryOptions();
-  }
-
-  localString = (num: number) => {
-    return num.toLocaleString();
-  };
-
-  fetchBrandOptions() {
-    this.http
-      .get<Brand[]>('http://localhost:3000/brands')
-      .subscribe((response) => {
-        console.log(response);
-        this.brandOptions = response;
-        console.log(this.brandOptions);
-      });
-  }
-
-  fetchCategoryOptions() {
-    this.http
-      .get<Category[]>('http://localhost:3000/categories')
-      .subscribe((response) => {
-        console.log(response);
-        this.categoryOptions = response;
-        console.log(this.categoryOptions);
-      });
   }
 
   getAllProducts = () => {
@@ -143,111 +107,25 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   }
 
   // Category
-  categoryOptions: Category[] = [];
-  newOption: string | undefined;
-  showCategoryModal: boolean = true;
-  editedCategory: string | undefined;
-  selectedCategoryIndex: number | null = null;
+  categoryOptions: string[] = [
+    'Desktop Computer',
+    'Notebook Computer',
+    'Accessories',
+    'Components',
+    'Peropherals',
+  ];
 
-  addNewOption() {
-    console.log(this.newOption);
-    if (
-      this.newOption &&
-      !this.categoryOptions
-        .map((category) => category.category)
-        .includes(this.newOption)
-    ) {
-      this.http
-        .post<Brand>('http://localhost:3000/categories', {
-          category: this.newOption,
-        })
-        .subscribe((response) => {
-          this.newOption = '';
-          this.fetchCategoryOptions();
-        });
-    }
-    console.log(this.categoryOptions);
-  }
-
-  onCategorySelect(event: Event) {
-    const selectedIndex = (event.target as HTMLSelectElement).selectedIndex;
-    console.log('Selected index:', selectedIndex);
-    this.selectedCategoryIndex = selectedIndex;
-  }
-
-  editCategory() {
-    console.log(this.selectedCategoryIndex);
-    if (this.selectedCategoryIndex !== null) {
-      const selectedIndex = this.selectedCategoryIndex;
-      const selectCategory = this.categoryOptions[selectedIndex];
-
-      this.editedCategory = selectCategory.category; // Assign the selected brand object directly
-      this.newOption = this.editedCategory;
-      this.selectedCategoryIndex = null;
-    }
-    console.log(this.editedCategory);
-  }
   // brand
 
-  brandOptions: Brand[] = [];
-  newBrand: string | undefined;
-  showBrandModal: boolean = true;
-  editedBrand: string | undefined;
-  selectedBrandIndex: number | null = null;
-
-  addBrand() {
-    console.log(this.newBrand);
-    if (
-      this.newBrand &&
-      !this.brandOptions.map((brand) => brand.brand).includes(this.newBrand)
-    ) {
-      this.http
-        .post<Brand>('http://localhost:3000/brands', { brand: this.newBrand })
-        .subscribe((response) => {
-          this.newBrand = '';
-          this.fetchBrandOptions();
-        });
-    }
-  }
-
-  onBrandSelect(event: Event) {
-    const selectedIndex = (event.target as HTMLSelectElement).selectedIndex;
-    console.log('Selected index:', selectedIndex);
-    this.selectedBrandIndex = selectedIndex;
-  }
-
-  editBrand() {
-    console.log(this.selectedBrandIndex);
-    if (this.selectedBrandIndex !== null) {
-      const selectedIndex = this.selectedBrandIndex;
-      const selectedBrand = this.brandOptions[selectedIndex];
-
-      this.editedBrand = selectedBrand.brand;
-      this.newBrand = this.editedBrand;
-      this.selectedBrandIndex = null;
-    }
-    console.log(this.editedBrand);
-  }
-
-  updateBrand() {
-    if (this.selectedBrandIndex !== null) {
-      const selectedIndex = this.selectedBrandIndex;
-      const selectedBrand = this.brandOptions[selectedIndex];
-
-      const updatedBrand: Brand = {
-        id: selectedBrand.id,
-        brand: this.newBrand || '',
-      };
-
-      this.http
-        .get<Brand[]>('http://localhost:3000/brands?timestamp=' + Date.now())
-        .subscribe(() => {
-          this.newBrand = '';
-          this.selectedBrandIndex = null;
-          this.fetchBrandOptions(); // Update brandOptions after successful update
-        });
-    }
-  }
+  brandOptions: string[] = [
+    'Lenovo',
+    'Asus',
+    'GIGABYTE',
+    'MSI',
+    'Samsung',
+    'Dell',
+    'Real Me',
+  ];
 
   rowMatchesSearch = (row: any): boolean => {
     if (this.search === '') {
@@ -291,8 +169,6 @@ export class ProductListComponent implements OnInit, AfterViewInit {
           productImg: product.img,
         });
 
-        this.newOption = product.category;
-        this.newBrand = product.brand;
         Swal.fire('Done!', 'Product successfully loaded.', 'success');
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire('Cancelled', 'You have cancelled the transaction.', 'error');

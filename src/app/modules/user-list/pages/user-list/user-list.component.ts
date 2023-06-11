@@ -19,6 +19,9 @@ import {
   hasNumberValidator,
   hasSymbolValidator,
   hasUppercaseValidator,
+  mobileNumberContainLetters,
+  mobileNumberIsValid,
+  numberLengthValidator,
 } from 'src/app/modules/validators/custom.validator';
 import { User } from '../../models/user';
 import { UserListService } from '../../services/user-list.service';
@@ -89,7 +92,14 @@ export class UserListComponent implements OnInit, AfterViewInit {
       middleName: [''],
       birthDate: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', Validators.required],
+      phoneNumber: [
+        '',
+        [
+          Validators.required,
+          mobileNumberContainLetters(),
+          mobileNumberIsValid(),
+        ],
+      ],
       userName: ['', [Validators.required]],
       password: [
         '',
@@ -102,6 +112,13 @@ export class UserListComponent implements OnInit, AfterViewInit {
           hasSymbolValidator(),
         ],
       ],
+      houseNo: ['', Validators.required],
+      buildingName: [''],
+      streetName: ['', Validators.required],
+      brgy: ['', Validators.required],
+      city: ['', Validators.required],
+      zipCode: ['', [Validators.required, numberLengthValidator()]],
+      province: ['', Validators.required],
       confirmPass: ['', Validators.required],
       role: ['', Validators.required],
       status: ['', Validators.required],
@@ -357,36 +374,43 @@ export class UserListComponent implements OnInit, AfterViewInit {
           status: status,
         };
 
-        if (
-          email != data.email &&
-          username != data.username &&
-          phoneNumber != data.phoneNumber
-        ) {
-          user.email = email;
-          user.username = username;
-          user.phoneNumber = phoneNumber;
-        } else if (email != data.email && username != data.username) {
-          user.email = email;
-          user.username = username;
-        } else if (email != data.email && phoneNumber != data.phoneNumber) {
-          user.email = email;
-          user.phoneNumber = phoneNumber;
-        } else if (
-          username != data.username &&
-          phoneNumber != data.phoneNumber
-        ) {
-          user.username = username;
-          user.phoneNumber = phoneNumber;
-        } else if (email != data.email) {
-          user.email = email;
-        } else if (username != data.username) {
-          user.username = username;
-        } else if (phoneNumber != data.phoneNumber) {
-          user.phoneNumber = phoneNumber;
-        }
+        if (password == '') {
+          this.userForm.patchValue({
+            password: 'sample',
+            confirmPass: 'sample',
+          });
 
-        if (password != data.password) {
-          user.password = password;
+          if (
+            email != data.email &&
+            username != data.username &&
+            phoneNumber != data.phoneNumber
+          ) {
+            user.email = email;
+            user.username = username;
+            user.phoneNumber = phoneNumber;
+          } else if (email != data.email && username != data.username) {
+            user.email = email;
+            user.username = username;
+          } else if (email != data.email && phoneNumber != data.phoneNumber) {
+            user.email = email;
+            user.phoneNumber = phoneNumber;
+          } else if (
+            username != data.username &&
+            phoneNumber != data.phoneNumber
+          ) {
+            user.username = username;
+            user.phoneNumber = phoneNumber;
+          } else if (email != data.email) {
+            user.email = email;
+          } else if (username != data.username) {
+            user.username = username;
+          } else if (phoneNumber != data.phoneNumber) {
+            user.phoneNumber = phoneNumber;
+          }
+        } else {
+          if (password != data.password) {
+            user.password = password;
+          }
         }
 
         Swal.fire({
