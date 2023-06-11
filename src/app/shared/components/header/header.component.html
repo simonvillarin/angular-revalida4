@@ -50,7 +50,7 @@
               [(ngModel)]="searchInput"
               (input)="filterData()"
             />
-            <i class="bi bi-x" id="close" (click)="clearInput()"></i>
+            <i class="bi bi-x" id="close" (click)="closeSearch()"></i>
           </div>
           <div class="predict-container" *ngIf="showPredictions">
             <div class="predict" *ngFor="let item of filteredData">

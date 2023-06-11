@@ -66,6 +66,12 @@ export class HeaderComponent implements OnInit {
     this.isShowMenu = false;
   };
 
+  closeSearch = () => {
+    this.isShowSearch = false;
+    this.isShowDropdown = false;
+    this.isShowMenu = false;
+  };
+
   clearInput = () => {
     this.searchInput = '';
   };
