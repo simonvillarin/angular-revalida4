@@ -31,6 +31,9 @@
         <div class="product-header">
           <h5 class="title">Product Information</h5>
         </div>
+        <div class="alert alert-danger mb-3 p-3" role="alert" *ngIf="showAlert">
+          {{ alert }}
+        </div>
         <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
           <div class="input-container">
             <div class="group">
@@ -57,18 +60,27 @@
             </div>
             <div class="group">
               <label for="brand">Brand</label>
-              <!-- (change)="onBrandSelected($event)" -->
               <select
                 class="form-select"
-                id="brand"
                 aria-label="Brand"
                 formControlName="brand"
-                [value]="buttonAction"
               >
                 <option hidden>Select Brand</option>
-                <option *ngFor="let option of brandOptions" [value]="option">
-                  {{ option }}
-                </option>
+                <option value="A4Tech">A4Tech</option>
+                <option value="Asus">Asus</option>
+                <option value="Corsair">Corsair</option>
+                <option value="Dell">Dell</option>
+                <option value="Gigabyte">Gigabyte</option>
+                <option value="HyperX">HyperX</option>
+                <option value="Keychron">Keychron</option>
+                <option value="Lenovo">Lenovo</option>
+                <option value="Logitech">Logitech</option>
+                <option value="MSI">MSI</option>
+                <option value="Razer">Razer</option>
+                <option value="Real Me">Real Me</option>
+                <option value="RedDragon">RedDragon</option>
+                <option value="Samsung">Samsung</option>
+                <option value="SteelSeries">SteelSeries</option>
               </select>
               <div
                 class="validation"
@@ -88,15 +100,23 @@
               <label for="category">Category</label>
               <select
                 class="form-select"
-                id="category"
                 aria-label="Category"
                 formControlName="category"
-                [value]="buttonAction"
               >
                 <option hidden>Select Category</option>
-                <option *ngFor="let option of categoryOptions" [value]="option">
-                  {{ option }}
-                </option>
+                <option value="Chasis">Chasis</option>
+                <option value="Cooler">Cooler</option>
+                <option value="Graphics Card">Graphics Card</option>
+                <option value="Headset">Headset</option>
+                <option value="Keyboard">Keyboard</option>
+                <option value="Memory">Memory</option>
+                <option value="Monitor">Monitor</option>
+                <option value="Motherboard">Motherboard</option>
+                <option value="Mouse">Mouse</option>
+                <option value="Mousepad">Mousepad</option>
+                <option value="Power Supply">Power Supply</option>
+                <option value="Processor">Processor</option>
+                <option value="Storage">Storage</option>
               </select>
 
               <div

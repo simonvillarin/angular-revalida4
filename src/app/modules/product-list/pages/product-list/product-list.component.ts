@@ -25,11 +25,13 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   selectedFileName: string | undefined;
   isActionEdit = false;
   buttonAction: string = 'ADD';
-  id: number = 0;
+  product: any;
   file: any;
   search: string = '';
   categories: string[] = [];
   brands: string[] = [];
+  alert: string = '';
+  showAlert: boolean = false;
 
   ngOnInit(): void {
     this.getAllProducts();
@@ -148,32 +150,21 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   editProduct = (id: number, product: any) => {
     this.buttonAction = 'EDIT';
     this.isActionEdit = true;
+    this.product = product;
 
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to edit this product?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, edit it!',
-      cancelButtonText: 'No, cancel',
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        console.log(product);
-
-        this.productForm.patchValue({
-          itemName: product.productName,
-          description: product.description,
-          quantity: product.quantity,
-          price: product.price,
-          productImg: product.img,
-        });
-
-        Swal.fire('Done!', 'Product successfully loaded.', 'success');
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire('Cancelled', 'You have cancelled the transaction.', 'error');
-      }
+    this.productForm.patchValue({
+      itemName: product.productName,
+      brand: product.brand,
+      category: product.category,
+      quantity: product.quantity,
+      price: product.price,
+      status: product.isAvailable ? 'true' : 'false',
     });
+    this.description.clear();
+    product.description.map((d: any) =>
+      this.description.push(this.fb.control(d))
+    );
+    this.file = undefined;
   };
 
   deleteProduct = (id: number) => {
@@ -229,64 +220,171 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   };
 
   onSubmit(): void {
-    const product: any = {
-      productName: this.productForm.get('itemName')?.value,
-      brand: this.productForm.get('brand')?.value,
-      category: this.productForm.get('category')?.value,
-      description: this.productForm.get('description')?.value,
-      quantity: this.productForm.get('quantity')?.value,
-      price: this.productForm.get('price')?.value,
-      img: '',
-      isAvailable: true,
-    };
-
-    console.log(this.file);
-
-    const formData = new FormData();
-    formData.append(
-      'product',
-      new Blob([JSON.stringify(product)], { type: 'application/json' })
-    );
-    formData.append('file', this.file);
-
     if (this.isActionEdit == false) {
-      if (this.productForm.valid) {
-        Swal.fire({
-          title: 'Are you sure?',
-          text: 'Do you want to add new product?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Yes, save it!',
-          cancelButtonText: 'No, cancel',
-          reverseButtons: true,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.productListService
-              .addProduct(formData)
-              .subscribe((res: any) => {
-                product.img = res.imageLink;
-                console.log(res);
-              });
-            console.log(product);
-            Swal.fire('Done!', 'Product, Successfully Added!.', 'success');
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire(
-              'Cancelled',
-              'You have cancelled the transaction.',
-              'error'
-            );
-          }
-        });
-      }
-      this.dataSource.data = [...this.dataSource.data, product];
+      const product: any = {
+        productName: this.productForm.get('itemName')?.value,
+        brand: this.productForm.get('brand')?.value,
+        category: this.productForm.get('category')?.value,
+        description: this.productForm.get('description')?.value,
+        quantity: this.productForm.get('quantity')?.value,
+        price: this.productForm.get('price')?.value,
+        img: '',
+        isAvailable: true,
+      };
 
-      if (this.productForm.invalid) {
-        this.productForm.markAllAsTouched();
-        console.log('Invalid Form');
-        return;
-      }
+      const formData = new FormData();
+      formData.append(
+        'product',
+        new Blob([JSON.stringify(product)], { type: 'application/json' })
+      );
+      formData.append('file', this.file);
+
+      // if (this.productForm.valid) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to add new product?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, save it!',
+        cancelButtonText: 'No, cancel',
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.productListService.addProduct(formData).subscribe((res: any) => {
+            product.img = res.imageLink;
+            console.log(res);
+            if (res.message == 'Product name already exists') {
+              this.showAlert = true;
+              this.alert = 'Product name already exists';
+              setTimeout(() => (this.showAlert = false), 3000);
+            } else {
+              this.dataSource.data = [...this.dataSource.data, product];
+              Swal.fire('Done!', 'Product, Successfully Added!.', 'success');
+            }
+          });
+        }
+      });
+      //  }
+      this.description.clear();
+      //this.productForm.reset();
+      // if (this.productForm.invalid) {
+      //   this.productForm.markAllAsTouched();
+      //   console.log('Invalid Form');
+      //   return;
+      // }
     } else {
+      const productName = this.productForm.get('itemName')?.value;
+      const brand = this.productForm.get('brand')?.value;
+      const category = this.productForm.get('category')?.value;
+      const description = this.productForm.get('description')?.value;
+      const quantity = this.productForm.get('quantity')?.value;
+      const price = this.productForm.get('price')?.value;
+      const status = this.productForm.get('status')?.value;
+
+      const prod: any = {
+        brand: brand,
+        category: category,
+        description: description,
+        quantity: quantity,
+        price: price,
+        img: '',
+        isAvailable: status == 'true' ? true : false,
+      };
+
+      const formData = new FormData();
+      formData.append(
+        'product',
+        new Blob([JSON.stringify(prod)], { type: 'application/json' })
+      );
+      formData.append('file', this.file);
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to add new product?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, save it!',
+        cancelButtonText: 'No, cancel',
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (this.file == undefined) {
+            if (productName != this.product.productName) {
+              prod.productName = productName;
+            }
+            this.productListService
+              .updateProduct(this.product.productId, prod)
+              .subscribe((res: any) => {
+                console.log(res);
+                if (res.message == 'Product name already exists') {
+                  this.showAlert = true;
+                  this.alert = 'Product name already exists';
+                  setTimeout(() => (this.showAlert = false), 3000);
+                } else {
+                  const index = this.dataSource.data.findIndex(
+                    (product) => product.productId === this.product.productId
+                  );
+
+                  this.dataSource.data[index].productName = productName;
+                  this.dataSource.data[index].brand = brand;
+                  this.dataSource.data[index].category = category;
+                  this.dataSource.data[index].description = description;
+                  this.dataSource.data[index].quantity = quantity;
+                  this.dataSource.data[index].price = price;
+                  this.dataSource.data[index].img = this.product.img;
+                  this.dataSource.data[index].isAvailable =
+                    status == 'true' ? true : false;
+                  this.description.clear();
+                  this.isActionEdit = false;
+                  this.buttonAction = 'Add';
+                  Swal.fire(
+                    'Done!',
+                    'Product, Successfully Updated!.',
+                    'success'
+                  );
+                }
+              });
+          } else {
+            if (productName != this.product.productName) {
+              prod.productName = productName;
+            }
+            this.productListService
+              .updateProductWithImage(this.product.productId, formData)
+              .subscribe((res: any) => {
+                this.product.img = res.imageLink;
+                console.log(res);
+                if (res.message == 'Product name already exists') {
+                  this.showAlert = true;
+                  this.alert = 'Product name already exists';
+                  setTimeout(() => (this.showAlert = false), 3000);
+                } else {
+                  const index = this.dataSource.data.findIndex(
+                    (product) => product.productId === this.product.productId
+                  );
+
+                  this.dataSource.data[index].productName = productName;
+                  this.dataSource.data[index].brand = brand;
+                  this.dataSource.data[index].category = category;
+                  this.dataSource.data[index].description = description;
+                  this.dataSource.data[index].quantity = quantity;
+                  this.dataSource.data[index].price = price;
+                  this.dataSource.data[index].img = this.product.img;
+                  this.dataSource.data[index].isAvailable =
+                    status == 'true' ? true : false;
+                  this.description.clear();
+                  this.isActionEdit = false;
+                  this.buttonAction = 'Add';
+                  Swal.fire(
+                    'Done!',
+                    'Product, Successfully Updated!.',
+                    'success'
+                  );
+                }
+              });
+          }
+        }
+      });
+      this.productForm.reset();
     }
-    this.productForm.reset();
   }
 }
