@@ -12,6 +12,17 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductListService } from '../../services/product-list.service';
 import { Product } from '../../models/product';
 import Swal from 'sweetalert2';
+import { HttpClient } from '@angular/common/http';
+
+interface Brand {
+  id: number;
+  brand: string;
+}
+
+interface Category {
+  id: number;
+  category: string;
+}
 
 @Component({
   selector: 'app-product-list',
@@ -32,6 +43,26 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getAllProducts();
+    this.fetchBrandOptions();
+    this.fetchCategoryOptions();
+  }
+
+  fetchBrandOptions() {
+    this.http.get<Brand[]>('http://localhost:3000/brands')
+      .subscribe((response) => {
+        console.log(response);
+        this.brandOptions = response;
+        console.log(this.brandOptions);
+      });
+  }
+
+  fetchCategoryOptions() {
+    this.http.get<Category[]>('http://localhost:3000/categories')
+      .subscribe((response) => {
+        console.log(response);
+        this.categoryOptions = response;
+        console.log(this.categoryOptions);
+      });
   }
 
   getAllProducts = () => {
@@ -46,7 +77,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     private router: Router,
     private fb: FormBuilder,
     private elementRef: ElementRef,
-    private productListService: ProductListService
+    private productListService: ProductListService,
+    private http: HttpClient
   ) {
     this.productForm = this.fb.group({
       itemName: ['', Validators.required],
@@ -103,63 +135,106 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  categoryOptions: string[] = [
-    'Desktop',
-    'Notebook',
-    'Components',
-    'Peripherals',
-  ];
-  showAddOption: boolean = false;
-  newOption: string | undefined;
-  showCategoryModal: boolean = false;
 
-  onOptionSelected(event: any) {
-    const selectedValue = event.target.value;
-    if (selectedValue === 'add') {
-      this.showAddOption = true;
-      this.showCategoryModal = true;
-    } else {
-      this.showAddOption = false;
-      this.showCategoryModal = false;
-    }
-  }
+  // Category
+  categoryOptions: Category[] = [];
+  newOption: string | undefined;
+  showCategoryModal: boolean = true;
+  editedCategory: string | undefined;
+  selectedCategoryIndex: number | null = null;
+
 
   addNewOption() {
     console.log(this.newOption);
-    if (this.newOption && !this.categoryOptions.includes(this.newOption)) {
-      this.categoryOptions.push(this.newOption);
-      this.newOption = '';
-      this.showAddOption = false;
-      this.showCategoryModal = false;
+    if (this.newOption && !this.categoryOptions.map(category => category.category).includes(this.newOption)) {
+      this.http.post<Brand>('http://localhost:3000/categories', { category: this.newOption })
+        .subscribe(response => {
+          this.newOption = '';
+          this.fetchCategoryOptions();
+        });
     }
     console.log(this.categoryOptions);
   }
 
-  brandOptions: string[] = ['Asus', 'Real Me', 'Dell', 'Lenovo'];
-  showAddBrand: boolean = false;
-  newBrand: string | undefined;
-  showBrandModal: boolean = false;
 
-  onBrandSelected(event: any) {
-    const selectedValue = event.target.value;
-    if (selectedValue === 'add') {
-      this.showAddBrand = true;
-      this.showBrandModal = true;
-    } else {
-      this.showAddBrand = false;
-      this.showBrandModal = false;
-    }
+  onCategorySelect(event: Event) {
+    const selectedIndex = (event.target as HTMLSelectElement).selectedIndex;
+    console.log('Selected index:', selectedIndex);
+    this.selectedCategoryIndex = selectedIndex;
   }
+
+  editCategory() {
+    console.log(this.selectedCategoryIndex);
+    if (this.selectedCategoryIndex !== null) {
+      const selectedIndex = this.selectedCategoryIndex;
+      const selectCategory = this.categoryOptions[selectedIndex];
+
+      this.editedCategory = selectCategory.category; // Assign the selected brand object directly
+      this.newOption = this.editedCategory;
+      this.selectedCategoryIndex = null;
+    }
+    console.log(this.editedCategory);
+  }
+  // brand
+
+  brandOptions: Brand[] = [];
+  newBrand: string | undefined;
+  showBrandModal: boolean = true;
+  editedBrand: string | undefined;
+  selectedBrandIndex: number | null = null;
 
   addBrand() {
     console.log(this.newBrand);
-    if (this.newBrand && !this.brandOptions.includes(this.newBrand)) {
-      this.brandOptions.push(this.newBrand);
-      this.newBrand = '';
-      this.showAddBrand = false;
+    if (this.newBrand && !this.brandOptions.map(brand => brand.brand).includes(this.newBrand)) {
+      this.http.post<Brand>('http://localhost:3000/brands', { brand: this.newBrand })
+        .subscribe(response => {
+          this.newBrand = '';
+          this.fetchBrandOptions();
+        });
     }
-    console.log(this.brandOptions);
   }
+
+  onBrandSelect(event: Event) {
+    const selectedIndex = (event.target as HTMLSelectElement).selectedIndex;
+    console.log('Selected index:', selectedIndex);
+    this.selectedBrandIndex = selectedIndex;
+  }
+
+
+  editBrand() {
+    console.log(this.selectedBrandIndex);
+    if (this.selectedBrandIndex !== null) {
+      const selectedIndex = this.selectedBrandIndex;
+      const selectedBrand = this.brandOptions[selectedIndex];
+
+      this.editedBrand = selectedBrand.brand;
+      this.newBrand = this.editedBrand;
+      this.selectedBrandIndex = null;
+    }
+    console.log(this.editedBrand);
+  }
+
+
+  updateBrand() {
+    if (this.selectedBrandIndex !== null) {
+      const selectedIndex = this.selectedBrandIndex;
+      const selectedBrand = this.brandOptions[selectedIndex];
+
+
+      const updatedBrand: Brand = {
+        id: selectedBrand.id,
+        brand: this.newBrand || ''
+      };
+
+      this.http.get<Brand[]>('http://localhost:3000/brands?timestamp=' + Date.now())
+        .subscribe(() => {
+          this.newBrand = '';
+          this.selectedBrandIndex = null;
+          this.fetchBrandOptions(); // Update brandOptions after successful update
+        });
+    }
+  }
+
 
   rowMatchesSearch = (row: any): boolean => {
     if (this.search === '') {
@@ -240,7 +315,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
           (product) => product.productId === id
         );
         this.dataSource.data[index].isAvailable = false;
-    
+
         Swal.fire(
           'Done!',
           'Product successfully deleted.',
