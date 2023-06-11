@@ -11,6 +11,18 @@ import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductListService } from '../../services/product-list.service';
 import { Product } from '../../models/product';
+import Swal from 'sweetalert2';
+import { HttpClient } from '@angular/common/http';
+
+interface Brand {
+  id: number;
+  brand: string;
+}
+
+interface Category {
+  id: number;
+  category: string;
+}
 
 @Component({
   selector: 'app-product-list',
@@ -31,6 +43,26 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getAllProducts();
+    this.fetchBrandOptions();
+    this.fetchCategoryOptions();
+  }
+
+  fetchBrandOptions() {
+    this.http.get<Brand[]>('http://localhost:3000/brands')
+      .subscribe((response) => {
+        console.log(response);
+        this.brandOptions = response;
+        console.log(this.brandOptions);
+      });
+  }
+
+  fetchCategoryOptions() {
+    this.http.get<Category[]>('http://localhost:3000/categories')
+      .subscribe((response) => {
+        console.log(response);
+        this.categoryOptions = response;
+        console.log(this.categoryOptions);
+      });
   }
 
   getAllProducts = () => {
@@ -45,7 +77,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     private router: Router,
     private fb: FormBuilder,
     private elementRef: ElementRef,
-    private productListService: ProductListService
+    private productListService: ProductListService,
+    private http: HttpClient
   ) {
     this.productForm = this.fb.group({
       itemName: ['', Validators.required],
@@ -102,63 +135,106 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  categoryOptions: string[] = [
-    'Desktop',
-    'Notebook',
-    'Components',
-    'Peripherals',
-  ];
-  showAddOption: boolean = false;
-  newOption: string | undefined;
-  showCategoryModal: boolean = false;
 
-  onOptionSelected(event: any) {
-    const selectedValue = event.target.value;
-    if (selectedValue === 'add') {
-      this.showAddOption = true;
-      this.showCategoryModal = true;
-    } else {
-      this.showAddOption = false;
-      this.showCategoryModal = false;
-    }
-  }
+  // Category
+  categoryOptions: Category[] = [];
+  newOption: string | undefined;
+  showCategoryModal: boolean = true;
+  editedCategory: string | undefined;
+  selectedCategoryIndex: number | null = null;
+
 
   addNewOption() {
     console.log(this.newOption);
-    if (this.newOption && !this.categoryOptions.includes(this.newOption)) {
-      this.categoryOptions.push(this.newOption);
-      this.newOption = '';
-      this.showAddOption = false;
-      this.showCategoryModal = false;
+    if (this.newOption && !this.categoryOptions.map(category => category.category).includes(this.newOption)) {
+      this.http.post<Brand>('http://localhost:3000/categories', { category: this.newOption })
+        .subscribe(response => {
+          this.newOption = '';
+          this.fetchCategoryOptions();
+        });
     }
     console.log(this.categoryOptions);
   }
 
-  brandOptions: string[] = ['Asus', 'Real Me', 'Dell', 'Lenovo'];
-  showAddBrand: boolean = false;
-  newBrand: string | undefined;
-  showBrandModal: boolean = false;
 
-  onBrandSelected(event: any) {
-    const selectedValue = event.target.value;
-    if (selectedValue === 'add') {
-      this.showAddBrand = true;
-      this.showBrandModal = true;
-    } else {
-      this.showAddBrand = false;
-      this.showBrandModal = false;
-    }
+  onCategorySelect(event: Event) {
+    const selectedIndex = (event.target as HTMLSelectElement).selectedIndex;
+    console.log('Selected index:', selectedIndex);
+    this.selectedCategoryIndex = selectedIndex;
   }
+
+  editCategory() {
+    console.log(this.selectedCategoryIndex);
+    if (this.selectedCategoryIndex !== null) {
+      const selectedIndex = this.selectedCategoryIndex;
+      const selectCategory = this.categoryOptions[selectedIndex];
+
+      this.editedCategory = selectCategory.category; // Assign the selected brand object directly
+      this.newOption = this.editedCategory;
+      this.selectedCategoryIndex = null;
+    }
+    console.log(this.editedCategory);
+  }
+  // brand
+
+  brandOptions: Brand[] = [];
+  newBrand: string | undefined;
+  showBrandModal: boolean = true;
+  editedBrand: string | undefined;
+  selectedBrandIndex: number | null = null;
 
   addBrand() {
     console.log(this.newBrand);
-    if (this.newBrand && !this.brandOptions.includes(this.newBrand)) {
-      this.brandOptions.push(this.newBrand);
-      this.newBrand = '';
-      this.showAddBrand = false;
+    if (this.newBrand && !this.brandOptions.map(brand => brand.brand).includes(this.newBrand)) {
+      this.http.post<Brand>('http://localhost:3000/brands', { brand: this.newBrand })
+        .subscribe(response => {
+          this.newBrand = '';
+          this.fetchBrandOptions();
+        });
     }
-    console.log(this.brandOptions);
   }
+
+  onBrandSelect(event: Event) {
+    const selectedIndex = (event.target as HTMLSelectElement).selectedIndex;
+    console.log('Selected index:', selectedIndex);
+    this.selectedBrandIndex = selectedIndex;
+  }
+
+
+  editBrand() {
+    console.log(this.selectedBrandIndex);
+    if (this.selectedBrandIndex !== null) {
+      const selectedIndex = this.selectedBrandIndex;
+      const selectedBrand = this.brandOptions[selectedIndex];
+
+      this.editedBrand = selectedBrand.brand;
+      this.newBrand = this.editedBrand;
+      this.selectedBrandIndex = null;
+    }
+    console.log(this.editedBrand);
+  }
+
+
+  updateBrand() {
+    if (this.selectedBrandIndex !== null) {
+      const selectedIndex = this.selectedBrandIndex;
+      const selectedBrand = this.brandOptions[selectedIndex];
+
+
+      const updatedBrand: Brand = {
+        id: selectedBrand.id,
+        brand: this.newBrand || ''
+      };
+
+      this.http.get<Brand[]>('http://localhost:3000/brands?timestamp=' + Date.now())
+        .subscribe(() => {
+          this.newBrand = '';
+          this.selectedBrandIndex = null;
+          this.fetchBrandOptions(); // Update brandOptions after successful update
+        });
+    }
+  }
+
 
   rowMatchesSearch = (row: any): boolean => {
     if (this.search === '') {
@@ -182,34 +258,113 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this.buttonAction = 'EDIT';
     this.isActionEdit = true;
 
-    console.log(product);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to edit this product?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, edit it!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(product);
 
-    this.productForm.patchValue({
-      itemName: product.productName,
-      description: product.description,
-      quantity: product.quantity,
-      price: product.price,
-      productImg: product.img,
-    });
+        this.productForm.patchValue({
+          itemName: product.productName,
+          description: product.description,
+          quantity: product.quantity,
+          price: product.price,
+          productImg: product.img,
+        });
 
-    this.newOption = product.category;
-    this.newBrand = product.brand;
+        this.newOption = product.category;
+        this.newBrand = product.brand;
+        Swal.fire(
+          'Done!',
+          'Product successfully loaded.',
+          'success'
+        )
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'You have cancelled the transaction.',
+          'error'
+        )
+      }
+    })
   };
 
   deleteProduct = (id: number) => {
     const payload = {
       isAvailable: false,
     };
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to delete this product?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const index = this.dataSource.data.findIndex(
+          (product) => product.productId === id
+        );
+        this.dataSource.data[index].isAvailable = false;
 
-    const index = this.dataSource.data.findIndex(
-      (product) => product.productId === id
-    );
-    this.dataSource.data[index].isAvailable = false;
+        Swal.fire(
+          'Done!',
+          'Product successfully deleted.',
+          'success'
+        )
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'You have cancelled the transaction.',
+          'error'
+        )
+      }
+    })
 
     this.productListService
       .updateProduct(id, payload)
       .subscribe((res) => console.log(res));
   };
+
+  resetAlert() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You're about to reset the form.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, reset it!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Done!',
+          'The form has been reset.',
+          'success'
+        )
+        this.reset();
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'You have cancelled the transaction.',
+          'error'
+        )
+      }
+    })
+  }
 
   reset = () => {
     this.productForm.reset();
@@ -238,11 +393,36 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
     if (this.isActionEdit == false) {
       if (this.productForm.valid) {
-        this.productListService.addProduct(formData).subscribe((res: any) => {
-          product.img = res.imageLink;
-          console.log(res);
-        });
-        console.log(product);
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "Do you want to add new product?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, save it!',
+          cancelButtonText: 'No, cancel',
+          reverseButtons: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.productListService.addProduct(formData).subscribe((res: any) => {
+              product.img = res.imageLink;
+              console.log(res);
+            });
+            console.log(product);
+            Swal.fire(
+              'Done!',
+              'Product, Successfully Added!.',
+              'success'
+            )
+          } else if (
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            Swal.fire(
+              'Cancelled',
+              'You have cancelled the transaction.',
+              'error'
+            )
+          }
+        })
       }
       this.dataSource.data = [...this.dataSource.data, product];
 

@@ -22,6 +22,7 @@ import {
 } from 'src/app/modules/validators/custom.validator';
 import { User } from '../../models/user';
 import { UserListService } from '../../services/user-list.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user-list',
@@ -205,17 +206,46 @@ export class UserListComponent implements OnInit, AfterViewInit {
     this.isActionEdit = true;
     this.id = id;
 
-    this.userForm.patchValue({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      middleName: user.middleName,
-      birthDate: user.birthdate,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      userName: user.username,
-      role: user.role,
-      status: user.status,
-    });
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to edit this user?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, edit it!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.userForm.patchValue({
+
+          firstName: user.firstName,
+          lastName: user.lastName,
+          middleName: user.middleName,
+          birthDate: user.birthdate,
+          email: user.email,
+          phoneNumber: user.phoneNumber,
+          userName: user.username,
+          role: user.role,
+          status: user.status,
+
+        });
+        Swal.fire(
+          'Done!',
+          'User successfully loaded.',
+          'success'
+        )
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'You have cancelled the transaction.',
+          'error'
+        )
+      }
+    })
+
+
   };
 
   deleteUser = (id: number) => {
@@ -223,20 +253,78 @@ export class UserListComponent implements OnInit, AfterViewInit {
       status: false,
     };
 
-    this.userListService.getUserById(id).subscribe((data) => {
-      if (data.status) {
-        this.userListService
-          .updateUser(id, payload)
-          .subscribe((res) => console.log(res));
-        const index = this.dataSource.data.findIndex(
-          (user) => user.userId === id
-        );
-        this.dataSource.data[index].status = false;
-      } else {
-        console.log('User already deactivated');
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to delete this user?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.userListService.getUserById(id).subscribe((data) => {
+          if (data.status) {
+            this.userListService
+              .updateUser(id, payload)
+              .subscribe((res) => console.log(res));
+            const index = this.dataSource.data.findIndex(
+              (user) => user.userId === id
+            );
+            this.dataSource.data[index].status = false;
+          } else {
+            console.log('User already deactivated');
+          }
+        });
+        Swal.fire(
+          'Done!',
+          'User successfully deleted.',
+          'success'
+        )
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'You have cancelled the transaction.',
+          'error'
+        )
       }
-    });
+    })
+
+
   };
+
+  resetAlert() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You're about to reset the form",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, reset it!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Done!',
+          'The form has been reset.',
+          'success'
+        )
+        this.reset();
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'You have cancelled the transaction.',
+          'error'
+        )
+      }
+    })
+  }
+
 
   reset = () => {
     this.userForm.reset();
@@ -262,8 +350,33 @@ export class UserListComponent implements OnInit, AfterViewInit {
       };
 
       if (this.userForm.valid) {
-        this.userListService.addUser(user).subscribe((res) => console.log(res));
-        this.dataSource.data = [...this.dataSource.data, user];
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "Do you want to add new product?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, save it!',
+          cancelButtonText: 'No, cancel',
+          reverseButtons: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.userListService.addUser(user).subscribe((res) => console.log(res));
+            this.dataSource.data = [...this.dataSource.data, user];
+            Swal.fire(
+              'Done!',
+              'User, Successfully Added!.',
+              'success'
+            )
+          } else if (
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            Swal.fire(
+              'Cancelled',
+              'You have cancelled the transaction.',
+              'error'
+            )
+          }
+        })
       }
 
       if (this.userForm.invalid) {
@@ -303,9 +416,34 @@ export class UserListComponent implements OnInit, AfterViewInit {
         };
       }
 
-      this.userListService
-        .updateUser(this.id, user)
-        .subscribe((res) => console.log(res));
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to edit this user?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, edit it!',
+        cancelButtonText: 'No, cancel',
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.userListService
+            .updateUser(this.id, user)
+            .subscribe((res) => console.log(res));
+          Swal.fire(
+            'Done!',
+            'User, Successfully Updated!.',
+            'success'
+          )
+        } else if (
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          Swal.fire(
+            'Cancelled',
+            'You have cancelled the transaction.',
+            'error'
+          )
+        }
+      })
       const index = this.dataSource.data.findIndex(
         (user) => user.userId === this.id
       );
