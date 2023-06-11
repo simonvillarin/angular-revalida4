@@ -12,6 +12,8 @@ import { Cart } from '../../models/cart';
 export class CardComponent {
   @Input() product: Product | undefined;
 
+  showCheck: boolean = false;
+
   constructor(private router: Router, private cartService: CartService) {}
 
   viewProduct = (id: number) => {
@@ -37,6 +39,17 @@ export class CardComponent {
       img: product.img,
     };
 
+    // const local = localStorage.getItem('cart');
+    // if (local) {
+    //   const quantity = JSON.parse(local);
+    //   let qty = quantity + 1;
+    //   localStorage.setItem('cart', JSON.stringify(qty));
+    // } else {
+    //   localStorage.setItem('cart', '1');
+    // }
+
     this.cartService.addCartItem(payload).subscribe((res) => console.log(res));
+    this.showCheck = true;
+    setTimeout(() => (this.showCheck = false), 2000);
   };
 }

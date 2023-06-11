@@ -1,28 +1,52 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart/cart.service';
+import { ProductListService } from 'src/app/modules/product-list/services/product-list.service';
+import { Product } from 'src/app/modules/product-list/models/product';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit, AfterViewInit {
+export class HeaderComponent implements OnInit {
+  @Input() cartItems = 0;
   isShowMenu: boolean = false;
   isShowDropdown: boolean = false;
   isShowSearch: boolean = false;
   searchInput: string = '';
-  cartItems: number = 0;
+  products: Product[] = [];
+  showPredictions: boolean = false;
+  filteredData: any[] = [];
 
-  constructor(private router: Router, private cartService: CartService) {}
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    private productService: ProductListService
+  ) {}
 
   ngOnInit(): void {
-    this.cartItems = this.cartService.getCartItems();
+    this.getAllProducts();
   }
 
-  ngAfterViewInit(): void {
-    this.cartItems = this.cartService.getCartItems();
-  }
+  getAllProducts = () => {
+    this.productService.getAllProducts().subscribe((data) => {
+      this.products = data;
+      console.log(data);
+    });
+  };
+
+  filterData = () => {
+    if (this.searchInput) {
+      this.showPredictions = true;
+      this.filteredData = this.products.filter((item) =>
+        item.productName.toLowerCase().includes(this.searchInput.toLowerCase())
+      );
+    } else {
+      this.showPredictions = false;
+      this.filteredData = [];
+    }
+  };
 
   toggleMenu = () => {
     this.isShowMenu = !this.isShowMenu;

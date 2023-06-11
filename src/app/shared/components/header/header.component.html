@@ -45,8 +45,24 @@
         <div class="search" [class.show-search]="isShowSearch">
           <div class="search-container">
             <i class="bi bi-search" id="search"></i>
-            <input type="text" [(ngModel)]="searchInput" />
+            <input
+              type="text"
+              [(ngModel)]="searchInput"
+              (input)="filterData()"
+            />
             <i class="bi bi-x" id="close" (click)="clearInput()"></i>
+          </div>
+          <div class="predict-container" *ngIf="showPredictions">
+            <div class="predict" *ngFor="let item of filteredData">
+              <div class="product" [routerLink]="['/product', item.productId]">
+                <div class="img">
+                  <img src="{{ item.img }}" alt="{{ item.productName }}" />
+                </div>
+                <div class="product-name">
+                  {{ item.productName }}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -61,7 +77,7 @@
       </div>
       <div class="icon" routerLink="/cart">
         <i class="bi bi-cart2"></i>
-        <div class="cart-count">{{ cartItems }}</div>
+        <!-- <div class="cart-count">{{ cartItems }}</div> -->
       </div>
     </div>
   </div>

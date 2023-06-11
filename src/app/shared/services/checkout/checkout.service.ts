@@ -22,4 +22,12 @@ export class CheckoutService {
   deleteCheckout = (id: number) => {
     return this.http.delete(`${this.BASE_URL}/checkout/${id}`);
   };
+
+  getCheckoutByProductName = (checkout: any) => {
+    return this.http.get(`${this.BASE_URL}/checkout/productName`, checkout);
+  };
+
+  deleteAll = () => {
+    return this.http.delete(`${this.BASE_URL}/checkout/all`);
+  };
 }

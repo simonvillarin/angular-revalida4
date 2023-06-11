@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header [cartItems]="cartCount"></app-header>
 <!-- Modal -->
 <div
   class="modal fade"
@@ -46,9 +46,9 @@
         />
       </div>
       <div class="image">
-        <img [src]="item.img" />
+        <img [src]="item.img" (click)="routeToProduct(item.productId)" />
       </div>
-      <div>
+      <div (click)="routeToProduct(item.productId)" class="product-name">
         {{ item.productName }}
       </div>
       <div>₱ {{ item.price }}</div>

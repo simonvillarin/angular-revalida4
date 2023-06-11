@@ -14,7 +14,6 @@ import { CheckoutService } from 'src/app/shared/services/checkout/checkout.servi
 })
 export class CheckoutComponent implements OnInit {
   cartItems: Checkout[] = [];
-
   constructor(
     private checkoutService: CheckoutService,
     private orderService: OrderService,
@@ -27,6 +26,10 @@ export class CheckoutComponent implements OnInit {
     this.getCheckoutByUserId();
   }
 
+  deleteAll = () => {
+    this.checkoutService.deleteAll().subscribe(() => {});
+  };
+
   getCheckoutByUserId = () => {
     let userId;
     const userLocalStorage = localStorage.getItem('user');
@@ -35,9 +38,10 @@ export class CheckoutComponent implements OnInit {
       userId = user.userId;
     }
 
-    this.checkoutService
-      .getCheckoutByUserId(userId)
-      .subscribe((data) => (this.cartItems = data));
+    this.checkoutService.getCheckoutByUserId(userId).subscribe((data) => {
+      this.cartItems = data;
+      console.log(data);
+    });
   };
 
   // Calculate Total
@@ -95,13 +99,17 @@ export class CheckoutComponent implements OnInit {
       this.orderService.addOrder(payload).subscribe((res) => console.log(res));
     }
 
+    setTimeout(() => {
+      this.router.navigate(['orders']);
+    }, 500);
+
     for (let i = 0; i < this.cartItems.length; i++) {
       let quantity = this.cartItems[i].quantity;
       let productId = this.cartItems[i].productId;
       this.productService.getProductById(productId).subscribe((data) => {
         const product = {
-          soldItems: totalQuantity,
-          soldPrice: totalPrice,
+          soldItems: data.soldItems + totalQuantity,
+          soldPrice: data.soldPrice + totalPrice,
           quantity: data.quantity - quantity,
         };
 
@@ -114,17 +122,16 @@ export class CheckoutComponent implements OnInit {
     }
 
     for (let i = 0; i < this.cartItems.length; i++) {
-      this.checkoutService
-        .deleteCheckout(this.cartItems[i].cartId)
-        .subscribe((res) => console.log(res));
-    }
-    for (let i = 0; i < this.cartItems.length; i++) {
       this.cartService
         .deleteCartItem(this.cartItems[i].cartId)
         .subscribe((res) => console.log(res));
     }
 
-    this.router.navigate(['orders']);
+    this.checkoutService.deleteAll().subscribe((res) => console.log(res));
     this.cartItems = [];
+  };
+
+  routeToProduct = (id: number) => {
+    this.router.navigate([`/product/${id}`]);
   };
 }

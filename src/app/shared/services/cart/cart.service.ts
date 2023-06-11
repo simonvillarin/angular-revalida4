@@ -36,4 +36,8 @@ export class CartService {
   deleteCartItem = (id: number) => {
     return this.http.delete(`${this.BASE_URL}/cartItem/${id}`);
   };
+
+  getCartItemByProductName = (cart: any) => {
+    return this.http.post(`${this.BASE_URL}/cartItem/productName`, cart);
+  };
 }

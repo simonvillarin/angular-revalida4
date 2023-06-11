@@ -11,6 +11,7 @@ import { CheckoutService } from 'src/app/shared/services/checkout/checkout.servi
 })
 export class CartComponent implements OnInit {
   cartItems: Cart[] = [];
+  cartCount = 0;
 
   constructor(
     private router: Router,
@@ -20,6 +21,7 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllCartItems();
+    this.getCartItems();
   }
 
   getAllCartItems = () => {
@@ -131,7 +133,21 @@ export class CartComponent implements OnInit {
           .addCheckout(payload)
           .subscribe((res) => console.log(res));
       }
-      this.router.navigate(['checkout']);
+      setTimeout(() => {
+        this.router.navigate(['checkout']);
+      }, 1000);
     }
   }
+
+  routeToProduct = (id: number) => {
+    this.router.navigate([`/product/${id}`]);
+  };
+
+  getCartItems = () => {
+    const local = localStorage.getItem('cart');
+    if (local) {
+      this.cartCount = JSON.parse(local);
+    }
+    this.cartCount = 0;
+  };
 }

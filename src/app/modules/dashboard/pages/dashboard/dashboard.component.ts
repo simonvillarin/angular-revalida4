@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
+import { Product } from 'src/app/modules/product-list/models/product';
+import { ProductListService } from 'src/app/modules/product-list/services/product-list.service';
 
 export interface PCParts {
   item: string;
@@ -49,8 +51,14 @@ const ELEMENT_DATA: PCParts[] = [
 })
 export class DashboardComponent implements OnInit {
   isShowMenu: boolean = false;
+  products: Product[] = [];
+  categories: any[] = [];
+  soldItems: any[] = [];
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private productService: ProductListService
+  ) {}
 
   toggleMenu() {
     this.isShowMenu = !this.isShowMenu;
@@ -61,70 +69,50 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/login']);
   };
 
-  ngOnInit(): void {
-    Chart.register(...registerables);
+  getAllProducts = () => {
+    this.productService.getAllProducts().subscribe((res) => {
+      let filterData = res.sort((a, b) => b.price - a.price);
+      this.products = filterData.slice(0, 5);
+      this.categories = res.map((product) => product.category);
+      this.soldItems = res.map((product) => product.soldItems);
 
-    const data = {
-      labels: ['Desktop', 'Notebooks', 'Mother Board', 'SSD', 'Keyboard'],
-      datasets: [
-        {
-          label: 'Top 5 Items',
-          data: [10, 90, 30, 70, 50],
-          fill: false,
-          borderColor: 'rgb(75, 192, 192)',
-          backgroundColor: 'rgb(76, 175, 80)',
-          tension: 0.1,
-        },
-      ],
-    };
+      Chart.register(...registerables);
 
-    new Chart('lineChart', {
-      type: 'bar',
-      data: data,
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
+      const data = {
+        labels: this.categories,
+        datasets: [
+          {
+            label: 'Product List',
+            data: this.soldItems,
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgb(76, 175, 80)',
+            tension: 0.1,
+          },
+        ],
+      };
+
+      new Chart('lineChart', {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+          animation: {
+            duration: 1500,
+            easing: 'easeInOutBounce',
+            delay: 100,
           },
         },
-        animation: {
-          duration: 3000,
-          easing: 'easeInOutBounce', 
-          delay: 500,
-          
-        },
-      },
+      });
     });
-  }
+  };
 
-  columns = [
-    {
-      columnDef: 'position',
-      header: 'No.',
-      cell: (element: PCParts) => `${element.position}`,
-    },
-    {
-      columnDef: 'item',
-      header: 'Item',
-      cell: (element: PCParts) => `${element.item}`,
-    },
-    {
-      columnDef: 'price',
-      header: 'Price',
-      cell: (element: PCParts) => `${element.price}`,
-    },
-    {
-      columnDef: 'qtySold',
-      header: 'Quantity Sold',
-      cell: (element: PCParts) => `${element.qtySold}`,
-    },
-    {
-      columnDef: 'totalSales',
-      header: 'Total Sales',
-      cell: (element: PCParts) => `${element.totalSales}`,
-    },
-  ];
-  dataSource = ELEMENT_DATA;
-  displayedColumns = this.columns.map((c) => c.columnDef);
+  ngOnInit(): void {
+    this.getAllProducts();
+  }
 }

@@ -7,7 +7,11 @@
     <div class="price">₱ {{ product.price }}</div>
     <div class="commands">
       <button class="add" (click)="addToCartItem(product)">
-        <span><i class="bi bi-cart2"></i></span> ADD TO CART
+        <span
+          ><i class="bi bi-cart2" *ngIf="!showCheck"></i
+          ><i class="bi bi-check2" *ngIf="showCheck"></i
+        ></span>
+        ADD TO CART
       </button>
       <button
         class="view"

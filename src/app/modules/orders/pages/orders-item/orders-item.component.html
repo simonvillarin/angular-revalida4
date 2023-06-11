@@ -7,7 +7,10 @@
         <button>Pending</button>
       </div>
       <div *ngFor="let item of i.item">
-        <app-pending-orders [order]="item"></app-pending-orders>
+        <app-pending-orders
+          [order]="item"
+          (click)="routeToProduct(item.productId)"
+        ></app-pending-orders>
         {{ getQuantity(item.totalQuantity) }}
         {{ getPrice(item.totalPrice) }}
       </div>

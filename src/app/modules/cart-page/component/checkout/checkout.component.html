@@ -16,7 +16,7 @@
       </div>
       <!-- Item on Cart -->
       <div class="item-container" *ngFor="let item of cartItems">
-        <div class="item">
+        <div class="item" (click)="routeToProduct(item.productId)">
           <div class="image">
             <!-- Image -->
             <img [src]="item.img" />

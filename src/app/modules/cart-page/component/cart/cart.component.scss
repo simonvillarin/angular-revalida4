@@ -47,6 +47,11 @@ img {
   object-fit: contain;
 }
 
+.product-name,
+img {
+  cursor: pointer;
+}
+
 .button-group > button {
   padding: 0.5rem 1rem;
   font-size: 1.125rem;

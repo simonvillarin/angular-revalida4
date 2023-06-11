@@ -2,7 +2,6 @@
   position: relative;
   width: 100%;
   border: 1px solid rgb(229, 229, 229);
-  border-radius: 0.25rem;
 }
 
 .img {
@@ -52,7 +51,6 @@ button {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  border-radius: 0.25rem;
   padding: 0.5rem;
 }
 
@@ -78,4 +76,8 @@ button {
 .view:hover {
   background-color: rgb(76, 175, 80);
   color: rgb(255, 255, 255);
+}
+
+.bi-check2 {
+  font-size: 1.25rem;
 }

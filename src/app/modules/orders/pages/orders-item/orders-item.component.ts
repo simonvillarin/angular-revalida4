@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Order } from 'src/app/shared/models/order';
 import { OrderService } from 'src/app/shared/services/order/order.service';
 
@@ -14,7 +15,7 @@ export class OrdersItemComponent implements OnInit, AfterViewInit {
   totalQuantity: number = 0;
   totalPrice: number = 0;
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private router: Router) {}
 
   ngOnInit(): void {
     this.getOrdersById();
@@ -57,5 +58,9 @@ export class OrdersItemComponent implements OnInit, AfterViewInit {
 
   getPrice = (price: number) => {
     this.totalPrice = price;
+  };
+
+  routeToProduct = (id: number) => {
+    this.router.navigate([`/product/${id}`]);
   };
 }

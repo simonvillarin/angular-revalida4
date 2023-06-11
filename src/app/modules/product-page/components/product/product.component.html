@@ -22,16 +22,20 @@
         <div class="qty">
           <div>Quantity:</div>
           <div class="button-group">
-            <button>-</button>
-            <div class="quantity">1</div>
-            <button>-</button>
+            <button (click)="decrease()">-</button>
+            <div class="quantity">{{ quantity }}</div>
+            <button (click)="increase()">+</button>
           </div>
         </div>
         <div class="actions">
-          <button class="add">
-            <i class="bi bi-cart-plus"></i> ADD TO CART
+          <button class="add" (click)="addToCart()">
+            <i class="bi bi-cart-plus" *ngIf="!showCheck"></i>
+            <i class="bi bi-check2 icon-cart" *ngIf="showCheck"></i> ADD TO CART
           </button>
-          <button class="buy">BUY NOW</button>
+          <button class="buy" (click)="buyNow()">
+            <span class="loader" *ngIf="showSpinner"></span>
+            BUY NOW
+          </button>
         </div>
       </div>
     </div>
@@ -44,11 +48,58 @@
     </div>
   </div>
 
-  <app-rating
-    [userRatingsReview]="userRatingsReview"
-    [userCount]="userCount"
-    [totalRating]="totalRating"
-    [aveUserRating]="aveUserRating"
-    [prodName]="prodName"
-  ></app-rating>
+  <div class="comment">
+    <div class="title rating">Review the Product</div>
+    <div class="comment-input">
+      <div class="circle">{{ firstLetter }}</div>
+      <div class="input-container">
+        <form (ngSubmit)="onSubmit()">
+          <div class="input">
+            <input
+              type="text"
+              [(ngModel)]="comment"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <div *ngIf="comment != ''">
+              <i class="bi bi-x" (click)="clear()"></i>
+            </div>
+          </div>
+          <button type="submit"><i class="bi bi-send"></i></button>
+        </form>
+      </div>
+    </div>
+    <div class="title rating r">Product Reviews</div>
+    <ng-container *ngFor="let comment of comments">
+      <div class="review">
+        <div class="review-header">
+          <div>
+            <span
+              *ngFor="let ratingId of ratingArray; index as i"
+              [id]="'star_' + i"
+            >
+              <mat-icon>
+                {{ aveIconStatus(i) }}
+              </mat-icon>
+            </span>
+          </div>
+          <div class="date">{{ comment.commentDate }}</div>
+        </div>
+        <div class="name">{{ comment.commentator }}</div>
+        <div class="com">
+          {{ comment.comment }}
+        </div>
+        <div class="actions" *ngIf="comment.userId == userId">
+          <div class="delete" (click)="deleteComment(comment.commentId)">
+            <i class="bi bi-trash"></i>Delete
+          </div>
+          <div
+            class="edit"
+            (click)="editComment(comment.commentId, comment.comment)"
+          >
+            <i class="bi bi-pencil"></i>Edit
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 </div>
