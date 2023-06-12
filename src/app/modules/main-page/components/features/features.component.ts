@@ -9,15 +9,11 @@ import { ProductService } from 'src/app/shared/services/product/product.service'
   styleUrls: ['./features.component.scss'],
 })
 export class FeaturesComponent implements OnInit{
-  img: string =
-    'https://ld-wp73.template-help.com/woocommerce/prod_21514/v2/wp-content/uploads/2019/05/11413138-300x300.jpg';
-  productName: string = 'Intel Core i3-8100';
-  price: string = '12,000';
-
   productList: Product[] = [];
   userProductInterest: Product[] = [];
   featuredProductList: Product[] = [];
   userId: any;
+  userInterest: any;
 
   constructor(
     private productService: ProductService,
@@ -28,7 +24,6 @@ export class FeaturesComponent implements OnInit{
     this.getAllProducts();
   }
   
-  userInterest: any;
   getAllProducts() {
     const local = localStorage.getItem('user');
     if (local) {

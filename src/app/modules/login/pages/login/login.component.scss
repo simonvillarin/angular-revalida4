@@ -160,3 +160,12 @@ button {
     transform: translate(-8%, -12%);
   }
 }
+
+.alert {
+  border-radius: 0px;
+}
+
+.alert i {
+  color: rgb(218, 43, 43);
+  font-size: larger;
+}

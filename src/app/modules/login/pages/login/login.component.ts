@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   customColor = '#4CAF50';
   image = 'login/src/assets/images/img.svg';
   showPassword = false;
+  errorMessage: string = '';
 
   loginForm: FormGroup;
   constructor(
@@ -53,6 +54,9 @@ export class LoginComponent implements OnInit {
         } else {
           this.router.navigate(['/home']);
         }
+      }, (error) => {
+        console.log('Login failed:', error);
+        this.errorMessage = 'Invalid username or password. Please try again.';
       });
       this.loginForm.reset();
     }
