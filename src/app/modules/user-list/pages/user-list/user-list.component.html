@@ -1,10 +1,7 @@
 <div class="wrapper">
   <div class="sidebar" [class.show-sidebar]="isShowMenu">
     <div class="logo">
-      <img
-      src="../../../../../assets/images/TechUnt (1).png"
-      alt="Logo"
-    />
+      <img src="../../../../../assets/images/TechUnt (1).png" alt="Logo" />
     </div>
     <nav>
       <div class="link" routerLink="/dashboard" routerLinkActive="link-active">
@@ -466,13 +463,13 @@
               <div
                 class="validation"
                 *ngIf="
-                  (userForm.get('password')?.invalid &&
-                    userForm.get('password')?.dirty) ||
-                  userForm.get('password')?.touched
+                  (userForm.get('confirmPass')?.invalid &&
+                    userForm.get('confirmPass')?.dirty) ||
+                  userForm.get('confirmPass')?.touched
                 "
               >
-                <div *ngIf="userForm.get('password')?.hasError('required')">
-                  Password is Required
+                <div *ngIf="userForm.get('confirmPass')?.hasError('required')">
+                  Confirm password is Required
                 </div>
               </div>
             </div>

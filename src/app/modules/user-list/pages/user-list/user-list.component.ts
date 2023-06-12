@@ -27,7 +27,6 @@ import {
 import { User } from '../../models/user';
 import { UserListService } from '../../services/user-list.service';
 import Swal from 'sweetalert2';
-import { last } from 'rxjs';
 
 @Component({
   selector: 'app-user-list',
@@ -404,7 +403,6 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
       if (this.userForm.invalid) {
         this.userForm.markAllAsTouched();
-        console.log('Invalid Form');
         return;
       }
       this.userForm.reset();
