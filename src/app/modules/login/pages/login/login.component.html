@@ -6,6 +6,12 @@
         <h1>Sign In</h1>
       </div>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" name="loginForm">
+        <!-- Alert message -->
+        <div class="alert alert-danger border-0" role="alert" *ngIf="errorMessage !== ''">
+          <div>
+            <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
+          </div>
+        </div>
         <!-- Username -->
         <div class="group">
           <label class="inputLbl">Username</label>
