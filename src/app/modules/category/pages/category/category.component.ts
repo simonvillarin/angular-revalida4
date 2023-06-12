@@ -22,6 +22,7 @@ export class CategoryComponent implements OnInit {
   selectedCategories: string[] = [];
   startvalue: number = 0;
   endvalue: number = 0;
+  errorMessage: string = '';
 
   constructor(
     private productService: ProductService,
@@ -33,31 +34,24 @@ export class CategoryComponent implements OnInit {
     {
       name: 'COMPUTERS',
       categories: [
-        "Desktop PC", "Notebooks", "Mini PC", 
-        "Diskless Package", "Software"
+        "Desktop Build"
       ],
     },
     {
       name: 'COMPONENTS',
       categories: [
         "Chassis", "Processor", "Motherboard", 
-        "Grapics Card", "Memory", "Power Supply", 
-        "Hard Drive", "Sound Card","LAN Card", 
-        "Optical Drive"
+        "Graphics Card", "Memory", "Power Supply", 
+        "Storage", "Monitor"
       ],
     },
     {
       name: 'PERIPHERALS',
       categories: [
-        "Display", "Audio", "Gaming", "Keyboard",
-        "Mouse", "Furniture", "Printer", "Scanner",
-        "Office Supplies", "Surveilance|CCTV",
-        "UPS|AVR", "Webcam"
+        "Keyboard", "Mouse", "Mousepad"
       ]
     }
   ]
-
-  
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
@@ -66,9 +60,15 @@ export class CategoryComponent implements OnInit {
       this.categories = [];
       this.brands = [];
       this.getAllProducts();
+      this.updateFilteredProducts();
       console.log(this.tabName);
       console.log(this.productList);
     })
+  }
+
+  updateFilteredProducts() {
+    this.filteredProducts = []
+    this.getAllProducts();
   }
 
   // Get Products Filtered by Tabname and its Category.
@@ -78,10 +78,10 @@ export class CategoryComponent implements OnInit {
         return this.tabs.some((tab) => {
           if (tab.name === this.tabName && tab.categories.includes(product.category)) {
             // Populate Categories
-            this.categories = tab.categories;
+            this.categories = tab.categories.map((c: any) => c.toUpperCase());
             // Populate Brands
-            if (!this.brands.includes(product.brand)) {
-              this.brands.push(product.brand);
+            if (!this.brands.includes(product.brand.toUpperCase())) {
+              this.brands.push(product.brand.toUpperCase());
             }
             return true;
           }
@@ -99,29 +99,34 @@ export class CategoryComponent implements OnInit {
       this.filterProducts();
 
       this.cartService.cartItems = 1;
+
+      this.selectedCategories = [];
+      this.selectedBrands = [];
     });
+    
   }
 
   // Category select
   onCategoryCheckboxChange(category: string, isChecked: boolean) {
     if (isChecked) {
-      this.selectedCategories = [category];
+      this.selectedCategories = [category.toUpperCase()];
     } else {
-      this.selectedCategories = []
+      this.selectedCategories = [];
     }
     this.filterProducts();
   }
-  
+
   // Brands select
   onBrandCheckboxChange(brand: string, isChecked: boolean) {
     if (isChecked) {
-      this.selectedBrands.push(brand);
+      this.selectedBrands.push(brand.toUpperCase());
     } else {
-      const index = this.selectedBrands.indexOf(brand);
+      const index = this.selectedBrands.indexOf(brand.toUpperCase());
       if (index !== -1) {
         this.selectedBrands.splice(index, 1);
       }
     }
+    
     this.filterProducts();
   }
 
@@ -129,18 +134,21 @@ export class CategoryComponent implements OnInit {
     this.filteredProducts = this.productList.filter((product) => {
       const isCategorySelected =
         this.selectedCategories.length === 0 ||
-        this.selectedCategories.includes(product.category);
+        this.selectedCategories.includes(product.category.toUpperCase());
   
       const isBrandSelected =
         this.selectedBrands.length === 0 ||
-        this.selectedBrands.includes(product.brand);
+        this.selectedBrands.includes(product.brand.toUpperCase());
   
         const isPriceInRange = product.price >= this.startvalue && product.price <= this.endvalue;
   
         return isCategorySelected && isBrandSelected && isPriceInRange;
     });
-  }
-  
-  
 
+    if (this.filteredProducts.length === 0) {
+      this.errorMessage = 'No products found.';
+    } else {
+      this.errorMessage = '';
+    }
+  }
 }
