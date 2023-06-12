@@ -1,10 +1,7 @@
 <div class="wrapper">
   <div class="sidebar" [class.show-sidebar]="isShowMenu">
     <div class="logo">
-      <img
-      src="../../../../../assets/images/TechUnt (1).png"
-      alt="Logo"
-    />
+      <img src="../../../../../assets/images/TechUnt (1).png" alt="Logo" />
     </div>
     <nav>
       <div class="link" routerLink="/dashboard" routerLinkActive="link-active">
@@ -466,43 +463,16 @@
               <div
                 class="validation"
                 *ngIf="
-                  (userForm.get('password')?.invalid &&
-                    userForm.get('password')?.dirty) ||
-                  userForm.get('password')?.touched
+                  (userForm.get('confirmPass')?.invalid &&
+                    userForm.get('confirmPass')?.dirty) ||
+                  userForm.get('confirmPass')?.touched
                 "
               >
-                <div *ngIf="userForm.get('password')?.hasError('required')">
-                  Password is Required
+                <div *ngIf="userForm.get('confirmPass')?.hasError('required')">
+                  Confirm password is Required
                 </div>
               </div>
             </div>
-            <div class="group">
-              <label>Role</label>
-              <select
-                class="form-select"
-                aria-label="Role"
-                formControlName="role"
-              >
-                <option hidden>Select Role</option>
-                <option value="ADMIN">Admin</option>
-                <option value="USER">USER</option>
-              </select>
-              <div
-                class="validation"
-                *ngIf="
-                  (userForm.get('role')?.invalid &&
-                    userForm.get('role')?.dirty) ||
-                  userForm.get('role')?.touched
-                "
-              >
-                <div *ngIf="userForm.get('role')?.hasError('required')">
-                  Role is Required
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="input-container">
             <div class="group" *ngIf="isActionEdit">
               <label>Status</label>
               <select
@@ -608,20 +578,6 @@
               <th mat-header-cell *matHeaderCellDef>Username</th>
               <td mat-cell *matCellDef="let element">
                 {{ element.username }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="role">
-              <th mat-header-cell *matHeaderCellDef>Role</th>
-              <td mat-cell *matCellDef="let element">
-                <div
-                  [ngClass]="{
-                    user: element.role === 'USER',
-                    admin: element.role === 'ADMIN'
-                  }"
-                >
-                  {{ element.role }}
-                </div>
               </td>
             </ng-container>
 
