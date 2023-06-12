@@ -6,6 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import {
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -26,6 +27,7 @@ import {
 import { User } from '../../models/user';
 import { UserListService } from '../../services/user-list.service';
 import Swal from 'sweetalert2';
+import { last } from 'rxjs';
 
 @Component({
   selector: 'app-user-list',
@@ -91,6 +93,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
       ],
       middleName: [''],
       birthDate: ['', Validators.required],
+      listOfInterest: fb.array([]),
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: [
         '',
@@ -130,6 +133,18 @@ export class UserListComponent implements OnInit, AfterViewInit {
     this.userForm.get('confirmPass')?.valueChanges.subscribe(() => {
       this.checkPasswordMatch();
     });
+  }
+
+  get listOfInterest(): FormArray {
+    return this.userForm.get('listOfInterest') as FormArray;
+  }
+
+  addListOfInterest(): void {
+    this.listOfInterest.push(this.fb.control(''));
+  }
+
+  removeListOfInterest(index: number): void {
+    this.listOfInterest.removeAt(index);
   }
 
   checkPasswordMatch(): void {
@@ -230,6 +245,14 @@ export class UserListComponent implements OnInit, AfterViewInit {
       lastName: user.lastName,
       middleName: user.middleName,
       birthDate: user.birthdate,
+      listOfInterest: user.listOfInterest,
+      houseNo: user.house,
+      buildingName: user.building,
+      streetName: user.street,
+      brgy: user.barangay,
+      city: user.city,
+      province: user.province,
+      zipCode: user.zipcode,
       email: user.email,
       phoneNumber: user.phoneNumber,
       userName: user.username,
@@ -237,6 +260,10 @@ export class UserListComponent implements OnInit, AfterViewInit {
       role: user.role,
       status: user.status,
     });
+    this.listOfInterest.clear();
+    user.listOfInterest.map((interest) =>
+      this.listOfInterest.push(this.fb.control(interest))
+    );
   };
 
   deleteUser = (id: number) => {
@@ -295,22 +322,50 @@ export class UserListComponent implements OnInit, AfterViewInit {
   };
 
   onSubmit(): void {
+    const firstName = this.userForm.get('firstName')?.value;
+    const lastName = this.userForm.get('lastName')?.value;
+    const middleName = this.userForm.get('middleName')?.value;
+    const birthdate = this.userForm.get('birthDate')?.value;
+    const listOfInterest = this.userForm.get('listOfInterest')?.value;
+    const email = this.userForm.get('email')?.value;
+    const phoneNumber = this.userForm.get('phoneNumber')?.value;
+    const house = this.userForm.get('houseNo')?.value;
+    const building = this.userForm.get('buildingName')?.value;
+    const street = this.userForm.get('streetName')?.value;
+    const barangay = this.userForm.get('brgy')?.value;
+    const city = this.userForm.get('city')?.value;
+    const province = this.userForm.get('province')?.value;
+    const zipcode = this.userForm.get('zipCode')?.value;
+    const username = this.userForm.get('userName')?.value;
+    const password = this.userForm.get('password')?.value;
+    const role = this.userForm.get('role')?.value;
+    let status = this.userForm.get('status')?.value;
+
     if (this.isActionEdit == false) {
       this.userForm.patchValue({
         status: true,
       });
+      status = this.userForm.get('status')?.value;
 
       const user: any = {
-        firstName: this.userForm.get('firstName')?.value,
-        lastName: this.userForm.get('lastName')?.value,
-        middleName: this.userForm.get('middleName')?.value,
-        birthdate: this.userForm.get('birthDate')?.value,
-        email: this.userForm.get('email')?.value,
-        phoneNumber: this.userForm.get('phoneNumber')?.value,
-        username: this.userForm.get('userName')?.value,
-        password: this.userForm.get('password')?.value,
-        role: this.userForm.get('role')?.value,
-        status: this.userForm.get('status')?.value,
+        firstName: firstName,
+        lastName: lastName,
+        middleName: middleName,
+        birthdate: birthdate,
+        listOfInterest: listOfInterest,
+        house: house,
+        building: building,
+        street: street,
+        barangay: barangay,
+        city: city,
+        province: province,
+        zipcode: zipcode,
+        email: email,
+        phoneNumber: phoneNumber,
+        username: username,
+        password: password,
+        role: role,
+        status: status,
       };
 
       if (this.userForm.valid) {
@@ -354,22 +409,19 @@ export class UserListComponent implements OnInit, AfterViewInit {
       this.userForm.reset();
     } else {
       this.userListService.getUserById(this.id).subscribe((data) => {
-        const firstName = this.userForm.get('firstName')?.value;
-        const lastName = this.userForm.get('lastName')?.value;
-        const middleName = this.userForm.get('middleName')?.value;
-        const birthdate = this.userForm.get('birthDate')?.value;
-        const email = this.userForm.get('email')?.value;
-        const phoneNumber = this.userForm.get('phoneNumber')?.value;
-        const username = this.userForm.get('userName')?.value;
-        const password = this.userForm.get('password')?.value;
-        const role = this.userForm.get('role')?.value;
-        const status = this.userForm.get('status')?.value;
-
         let user: any = {
           firstName: firstName,
           lastName: lastName,
           middleName: middleName,
           birthdate: birthdate,
+          listOfInterest: listOfInterest,
+          house: house,
+          building: building,
+          street: street,
+          barangay: barangay,
+          city: city,
+          province: province,
+          zipcode: zipcode,
           role: role,
           status: status,
         };
@@ -443,32 +495,23 @@ export class UserListComponent implements OnInit, AfterViewInit {
                   const index = this.dataSource.data.findIndex(
                     (user) => user.userId === this.id
                   );
-                  this.dataSource.data[index].firstName =
-                    this.userForm.get('firstName')?.value;
-                  this.dataSource.data[index].lastName =
-                    this.userForm.get('lastName')?.value;
-                  this.dataSource.data[index].middleName =
-                    this.userForm.get('middleName')?.value;
-                  this.dataSource.data[index].birthdate =
-                    this.userForm.get('birthDate')?.value;
-                  this.dataSource.data[index].email =
-                    this.userForm.get('email')?.value;
-                  this.dataSource.data[index].phoneNumber =
-                    this.userForm.get('phoneNumber')?.value;
-                  this.dataSource.data[index].username =
-                    this.userForm.get('userName')?.value;
-                  this.dataSource.data[index].password =
-                    this.userForm.get('password')?.value;
-                  this.dataSource.data[index].role =
-                    this.userForm.get('role')?.value;
+                  this.dataSource.data[index].firstName = firstName;
+                  this.dataSource.data[index].lastName = lastName;
+                  this.dataSource.data[index].middleName = middleName;
+                  this.dataSource.data[index].birthdate = birthdate;
+                  this.dataSource.data[index].email = email;
+                  this.dataSource.data[index].phoneNumber = phoneNumber;
+                  this.dataSource.data[index].username = username;
+                  this.dataSource.data[index].password = password;
+                  this.dataSource.data[index].role = role;
 
-                  let status = false;
-                  if (this.userForm.get('status')?.value) {
-                    status = true;
+                  let _status = false;
+                  if (status == 'true') {
+                    _status = true;
                   } else {
-                    status = false;
+                    _status = false;
                   }
-                  this.dataSource.data[index].status = status;
+                  this.dataSource.data[index].status = _status;
 
                   this.buttonAction = 'ADD';
                   this.isActionEdit = false;

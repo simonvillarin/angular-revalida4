@@ -220,6 +220,12 @@ i {
   gap: 0.25rem;
 }
 
+.df {
+  display: grid;
+  grid-template-columns: 1fr 0.2fr;
+  overflow: hidden;
+}
+
 .input-group > * {
   width: 100%;
   position: relative;

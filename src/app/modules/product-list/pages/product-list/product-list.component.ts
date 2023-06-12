@@ -229,6 +229,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
         quantity: this.productForm.get('quantity')?.value,
         price: this.productForm.get('price')?.value,
         img: '',
+        soldItems: 0,
+        soldPrice: 0,
         isAvailable: true,
       };
 

@@ -123,6 +123,32 @@
                 </div>
               </div>
             </div>
+            <div class="group" formArrayName="listOfInterest">
+              <label for="description">List Of Interest</label>
+              <div
+                class="input-group df"
+                *ngFor="let desc of listOfInterest.controls; let i = index"
+              >
+                <input
+                  type="text"
+                  class="form-control border-bottom"
+                  placeholder="Enter interest"
+                  [formControlName]="i"
+                />
+                <span>
+                  <button
+                    class="remove"
+                    type="button"
+                    (click)="removeListOfInterest(i)"
+                  >
+                    REMOVE
+                  </button>
+                </span>
+              </div>
+              <button class="add" type="button" (click)="addListOfInterest()">
+                ADD INTEREST
+              </button>
+            </div>
             <div class="group">
               <label>Email</label>
               <input
@@ -147,6 +173,9 @@
                 </div>
               </div>
             </div>
+          </div>
+          <!-- Address -->
+          <div class="input-container">
             <div class="group">
               <label>Phone Number</label>
               <input
@@ -184,9 +213,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <!-- Address -->
-          <div class="input-container">
             <div class="group">
               <label>House No | Unit</label>
               <input
@@ -202,8 +228,8 @@
                   userForm.get('houseNo')?.touched
                 "
               >
-                <div *ngIf="userForm.get('userName')?.hasError('required')">
-                  House Number is Required
+                <div *ngIf="userForm.get('houseNo')?.hasError('required')">
+                  House number is Required
                 </div>
               </div>
             </div>
@@ -214,7 +240,22 @@
                 class="form-control border-bottom"
                 formControlName="buildingName"
               />
+              <div
+                class="validation"
+                *ngIf="
+                  (userForm.get('buildingName')?.invalid &&
+                    userForm.get('buildingName')?.dirty) ||
+                  userForm.get('buildingName')?.touched
+                "
+              >
+                <div *ngIf="userForm.get('buildingName')?.hasError('required')">
+                  Building is Required
+                </div>
+              </div>
             </div>
+          </div>
+          <!-- Address -->
+          <div class="input-container">
             <div class="group">
               <label>Street</label>
               <input
@@ -231,13 +272,30 @@
                 "
               >
                 <div *ngIf="userForm.get('streetName')?.hasError('required')">
-                  Street Name is Required
+                  Street name is Required
                 </div>
               </div>
             </div>
-          </div>
-          <!-- Address -->
-          <div class="input-container">
+            <div class="group">
+              <label>Barangay</label>
+              <input
+                type="text"
+                class="form-control border-bottom"
+                formControlName="brgy"
+              />
+              <div
+                class="validation"
+                *ngIf="
+                  (userForm.get('brgy')?.invalid &&
+                    userForm.get('brgy')?.dirty) ||
+                  userForm.get('brgy')?.touched
+                "
+              >
+                <div *ngIf="userForm.get('brgy')?.hasError('required')">
+                  Barangay is Required
+                </div>
+              </div>
+            </div>
             <div class="group">
               <label>City</label>
               <input
@@ -258,26 +316,9 @@
                 </div>
               </div>
             </div>
-            <div class="group">
-              <label>Barangay</label>
-              <input
-                type="text"
-                class="form-control border-bottom"
-                formControlName="brgy"
-              />
-              <div
-                class="validation"
-                *ngIf="
-                  (userForm.get('brgy')?.invalid &&
-                    userForm.get('brgy')?.dirty) ||
-                  userForm.get('brgy')?.touched
-                "
-              >
-                <div *ngIf="userForm.get('brgy')?.hasError('required')">
-                  Street Name is Required
-                </div>
-              </div>
-            </div>
+          </div>
+          <!-- address -->
+          <div class="input-container">
             <div class="group">
               <label>Province</label>
               <input
@@ -294,13 +335,10 @@
                 "
               >
                 <div *ngIf="userForm.get('province')?.hasError('required')">
-                  Street Name is Required
+                  Province is Required
                 </div>
               </div>
             </div>
-          </div>
-          <!-- address -->
-          <div class="input-container">
             <div class="group">
               <label>Zip Code</label>
               <input
@@ -345,6 +383,9 @@
                 </div>
               </div>
             </div>
+          </div>
+          <!-- login credentials -->
+          <div class="input-container">
             <div class="group">
               <label>Password</label>
               <div class="input-group">
@@ -395,9 +436,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <!-- login credentials -->
-          <div class="input-container">
             <div class="group">
               <label>Confirm Password</label>
               <div class="input-group">
@@ -457,6 +495,9 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="input-container">
             <div class="group" *ngIf="isActionEdit">
               <label>Status</label>
               <select
@@ -482,6 +523,7 @@
               </div>
             </div>
           </div>
+
           <div class="button-group">
             <button
               type="submit"

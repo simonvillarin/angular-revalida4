@@ -215,12 +215,19 @@ export class SignupFormComponent {
   }
 
   onSubmit(): void {
-    const user: User = {
+    const user: any = {
       firstName: this.personalInfoForm.value.firstName,
       lastName: this.personalInfoForm.value.lastName,
       middleName: this.personalInfoForm.value.middleName,
       birthdate: this.personalInfoForm.value.birthdate,
       listOfInterest: this.interests,
+      house: this.addressInfoForm.value.houseNo,
+      building: this.addressInfoForm.value.buildingName,
+      street: this.addressInfoForm.value.streetName,
+      barangay: this.addressInfoForm.value.brgy,
+      city: this.addressInfoForm.value.city,
+      province: this.addressInfoForm.value.province,
+      zipcode: this.addressInfoForm.value.zipCode,
       email: this.loginCredentialForm.value.email,
       phoneNumber: this.loginCredentialForm.value.phoneNumber,
       username: this.loginCredentialForm.value.username,
