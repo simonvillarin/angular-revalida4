@@ -16,7 +16,9 @@ import {
   hasNumberValidator,
   hasSymbolValidator,
   hasUppercaseValidator,
-  maxLengthValidator,
+  mobileNumberContainLetters,
+  mobileNumberIsValid,
+  numberLengthValidator,
 } from 'src/app/modules/validators/custom.validator';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
@@ -30,6 +32,7 @@ export class SignupFormComponent {
   // Form Groups
   signupForm: FormGroup;
   personalInfoForm: FormGroup;
+  addressInfoForm: FormGroup;
   loginCredentialForm: FormGroup;
 
   // Password Field
@@ -46,11 +49,19 @@ export class SignupFormComponent {
   filteredInterests: Observable<string[]>;
   interests: string[] = [];
   allInterests: string[] = [
-    'Desktop PC',
-    'Notebooks',
-    'Computer Components',
-    'Computer Peripherals',
-    'Accessories',
+    'Chasis',
+    'Cooler',
+    'Graphics Card',
+    'Headset',
+    'Keyboard',
+    'Memory',
+    'Monitor',
+    'Motherboard',
+    'Mouse',
+    'Mousepad',
+    'Power Supply',
+    'Processor',
+    'Storage',
   ];
   @ViewChild('interestInput') interestInput!: ElementRef<HTMLInputElement>;
   @ViewChild('stepper') stepper!: MatStepper;
@@ -67,8 +78,26 @@ export class SignupFormComponent {
       birthdate: ['', [Validators.required, birthdateValidator()]],
     });
 
+    this.addressInfoForm = this.fb.group({
+      houseNo: ['', Validators.required],
+      buildingName: [''],
+      streetName: ['', Validators.required],
+      brgy: ['', Validators.required],
+      city: ['', Validators.required],
+      zipCode: ['', [Validators.required, numberLengthValidator()]],
+      province: ['', Validators.required],
+    });
+
     this.loginCredentialForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
+      phoneNumber: [
+        '',
+        [
+          Validators.required,
+          mobileNumberContainLetters(),
+          mobileNumberIsValid(),
+        ],
+      ],
       username: ['', Validators.required],
       password: [
         '',
@@ -86,6 +115,7 @@ export class SignupFormComponent {
 
     this.signupForm = this.fb.group({
       personalInfoForm: this.personalInfoForm,
+      addressInfoForm: this.addressInfoForm,
       loginCredentialForm: this.loginCredentialForm,
     });
 
@@ -193,23 +223,28 @@ export class SignupFormComponent {
   }
 
   onSubmit(): void {
-    const user: User = {
+    const user: any = {
       firstName: this.personalInfoForm.value.firstName,
       lastName: this.personalInfoForm.value.lastName,
       middleName: this.personalInfoForm.value.middleName,
       birthdate: this.personalInfoForm.value.birthdate,
       listOfInterest: this.interests,
+      house: this.addressInfoForm.value.houseNo,
+      building: this.addressInfoForm.value.buildingName,
+      street: this.addressInfoForm.value.streetName,
+      barangay: this.addressInfoForm.value.brgy,
+      city: this.addressInfoForm.value.city,
+      province: this.addressInfoForm.value.province,
+      zipcode: this.addressInfoForm.value.zipCode,
       email: this.loginCredentialForm.value.email,
+      phoneNumber: this.loginCredentialForm.value.phoneNumber,
       username: this.loginCredentialForm.value.username,
       password: this.loginCredentialForm.value.password,
       role: 'USER',
       status: true,
     };
 
-    if (
-      this.personalInfoForm.valid &&
-      this.loginCredentialForm.valid
-    ) {
+    if (this.personalInfoForm.valid && this.loginCredentialForm.valid) {
       console.log(user);
       this.signUpService
         .saveUser(user)

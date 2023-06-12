@@ -1,6 +1,11 @@
 <div class="wrapper">
   <div class="sidebar" [class.show-sidebar]="isShowMenu">
-    <div class="logo">Logo</div>
+    <div class="logo">
+      <img
+      src="../../../../../assets/images/TechUnt (1).png"
+      alt="Logo"
+    />
+    </div>
     <nav>
       <div class="link" routerLink="/dashboard" routerLinkActive="link-active">
         <mat-icon fontIcon="dashboard"></mat-icon>Dashboard
@@ -101,6 +106,7 @@
               />
             </div>
           </div>
+          <!-- bday email and cpNum -->
           <div class="input-container">
             <div class="group">
               <label>Birthday</label>
@@ -121,6 +127,32 @@
                   Birthdate is Required
                 </div>
               </div>
+            </div>
+            <div class="group" formArrayName="listOfInterest">
+              <label for="description">List Of Interest</label>
+              <div
+                class="input-group df"
+                *ngFor="let desc of listOfInterest.controls; let i = index"
+              >
+                <input
+                  type="text"
+                  class="form-control border-bottom"
+                  placeholder="Enter interest"
+                  [formControlName]="i"
+                />
+                <span>
+                  <button
+                    class="remove"
+                    type="button"
+                    (click)="removeListOfInterest(i)"
+                  >
+                    REMOVE
+                  </button>
+                </span>
+              </div>
+              <button class="add" type="button" (click)="addListOfInterest()">
+                ADD INTEREST
+              </button>
             </div>
             <div class="group">
               <label>Email</label>
@@ -146,6 +178,9 @@
                 </div>
               </div>
             </div>
+          </div>
+          <!-- Address -->
+          <div class="input-container">
             <div class="group">
               <label>Phone Number</label>
               <input
@@ -165,10 +200,173 @@
                 <div *ngIf="userForm.get('phoneNumber')?.hasError('required')">
                   Phone number is Required
                 </div>
+                <div
+                  *ngIf="
+                    userForm
+                      .get('phoneNumber')
+                      ?.hasError('mobileNoHasNoLetters')
+                  "
+                >
+                  Phone Number has a character.
+                </div>
+                <div
+                  *ngIf="
+                    userForm.get('phoneNumber')?.hasError('mobileNoIsValid')
+                  "
+                >
+                  Phone Number not valid.
+                </div>
+              </div>
+            </div>
+            <div class="group">
+              <label>House No | Unit</label>
+              <input
+                type="text"
+                class="form-control border-bottom"
+                formControlName="houseNo"
+              />
+              <div
+                class="validation"
+                *ngIf="
+                  (userForm.get('houseNo')?.invalid &&
+                    userForm.get('houseNo')?.dirty) ||
+                  userForm.get('houseNo')?.touched
+                "
+              >
+                <div *ngIf="userForm.get('houseNo')?.hasError('required')">
+                  House number is Required
+                </div>
+              </div>
+            </div>
+            <div class="group">
+              <label>Building Name</label>
+              <input
+                type="text"
+                class="form-control border-bottom"
+                formControlName="buildingName"
+              />
+              <div
+                class="validation"
+                *ngIf="
+                  (userForm.get('buildingName')?.invalid &&
+                    userForm.get('buildingName')?.dirty) ||
+                  userForm.get('buildingName')?.touched
+                "
+              >
+                <div *ngIf="userForm.get('buildingName')?.hasError('required')">
+                  Building is Required
+                </div>
               </div>
             </div>
           </div>
+          <!-- Address -->
           <div class="input-container">
+            <div class="group">
+              <label>Street</label>
+              <input
+                type="text"
+                class="form-control border-bottom"
+                formControlName="streetName"
+              />
+              <div
+                class="validation"
+                *ngIf="
+                  (userForm.get('streetName')?.invalid &&
+                    userForm.get('streetName')?.dirty) ||
+                  userForm.get('streetName')?.touched
+                "
+              >
+                <div *ngIf="userForm.get('streetName')?.hasError('required')">
+                  Street name is Required
+                </div>
+              </div>
+            </div>
+            <div class="group">
+              <label>Barangay</label>
+              <input
+                type="text"
+                class="form-control border-bottom"
+                formControlName="brgy"
+              />
+              <div
+                class="validation"
+                *ngIf="
+                  (userForm.get('brgy')?.invalid &&
+                    userForm.get('brgy')?.dirty) ||
+                  userForm.get('brgy')?.touched
+                "
+              >
+                <div *ngIf="userForm.get('brgy')?.hasError('required')">
+                  Barangay is Required
+                </div>
+              </div>
+            </div>
+            <div class="group">
+              <label>City</label>
+              <input
+                type="text"
+                class="form-control border-bottom"
+                formControlName="city"
+              />
+              <div
+                class="validation"
+                *ngIf="
+                  (userForm.get('city')?.invalid &&
+                    userForm.get('city')?.dirty) ||
+                  userForm.get('city')?.touched
+                "
+              >
+                <div *ngIf="userForm.get('city')?.hasError('required')">
+                  City is Required
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- address -->
+          <div class="input-container">
+            <div class="group">
+              <label>Province</label>
+              <input
+                type="text"
+                class="form-control border-bottom"
+                formControlName="province"
+              />
+              <div
+                class="validation"
+                *ngIf="
+                  (userForm.get('province')?.invalid &&
+                    userForm.get('province')?.dirty) ||
+                  userForm.get('province')?.touched
+                "
+              >
+                <div *ngIf="userForm.get('province')?.hasError('required')">
+                  Province is Required
+                </div>
+              </div>
+            </div>
+            <div class="group">
+              <label>Zip Code</label>
+              <input
+                type="number"
+                class="form-control border-bottom"
+                formControlName="zipCode"
+              />
+              <div
+                class="validation"
+                *ngIf="
+                  (userForm.get('zipCode')?.invalid &&
+                    userForm.get('zipCode')?.dirty) ||
+                  userForm.get('zipCode')?.touched
+                "
+              >
+                <div *ngIf="userForm.get('zipCode')?.hasError('required')">
+                  Street Name is Required
+                </div>
+                <div *ngIf="userForm.get('zipCode')?.hasError('numberLength')">
+                  Zip Code Invalid.
+                </div>
+              </div>
+            </div>
             <div class="group">
               <label>Username</label>
               <input
@@ -190,6 +388,9 @@
                 </div>
               </div>
             </div>
+          </div>
+          <!-- login credentials -->
+          <div class="input-container">
             <div class="group">
               <label>Password</label>
               <div class="input-group">
@@ -275,8 +476,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="input-container">
             <div class="group">
               <label>Role</label>
               <select
@@ -301,6 +500,9 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="input-container">
             <div class="group" *ngIf="isActionEdit">
               <label>Status</label>
               <select
@@ -326,6 +528,7 @@
               </div>
             </div>
           </div>
+
           <div class="button-group">
             <button
               type="submit"

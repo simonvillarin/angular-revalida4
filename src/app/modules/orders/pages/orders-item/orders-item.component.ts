@@ -1,5 +1,5 @@
-import { map } from 'rxjs';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { map, Observable, of } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Order } from 'src/app/shared/models/order';
 import { OrderService } from 'src/app/shared/services/order/order.service';
@@ -9,8 +9,8 @@ import { OrderService } from 'src/app/shared/services/order/order.service';
   templateUrl: './orders-item.component.html',
   styleUrls: ['./orders-item.component.scss'],
 })
-export class OrdersItemComponent implements OnInit, AfterViewInit {
-  orders: Order[] = [];
+export class OrdersItemComponent implements OnInit {
+  orders: Observable<any[]> | undefined;
   orderItems: any[] = [];
   orderTrackings: any[] = [];
 
@@ -20,10 +20,6 @@ export class OrdersItemComponent implements OnInit, AfterViewInit {
     this.getOrdersById();
   }
 
-  ngAfterViewInit(): void {
-    Promise.resolve().then(() => {});
-  }
-
   getOrdersById = () => {
     let userId;
     const userLocalStorage = localStorage.getItem('user');
@@ -31,8 +27,11 @@ export class OrdersItemComponent implements OnInit, AfterViewInit {
       userId = JSON.parse(userLocalStorage).userId;
     }
 
+    this.orders = this.orderService.getOrdersByUserId(userId);
+
+    console.log(this.orders);
+
     this.orderService.getOrdersByUserId(userId).subscribe((data) => {
-      this.orders = data;
       for (let i = 0; i < data.length; i++) {
         if (!this.orderTrackings.includes(data[i].orderTracking)) {
           this.orderTrackings.push(data[i].orderTracking);
@@ -53,7 +52,7 @@ export class OrdersItemComponent implements OnInit, AfterViewInit {
             });
 
             const item = {
-              item: data1,
+              item: of(data1),
               totalQuantity: totalQuantity,
               totalPrice: totalPrice,
               date: date,
@@ -63,6 +62,7 @@ export class OrdersItemComponent implements OnInit, AfterViewInit {
           });
       }
       this.orderItems.reverse();
+      this.orders = of(this.orderItems);
     });
   };
 

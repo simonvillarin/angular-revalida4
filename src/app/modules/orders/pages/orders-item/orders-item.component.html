@@ -1,13 +1,13 @@
 <app-header></app-header>
 <div class="container">
   <div class="title">My Orders</div>
-  <div class="orders-container" *ngFor="let i of orderItems">
+  <div class="orders-container" *ngFor="let i of orders | async">
     <div>
       <div class="status">
         <div>{{ i.date }}</div>
         <button>Pending</button>
       </div>
-      <div *ngFor="let item of i.item">
+      <div *ngFor="let item of i.item | async">
         <app-pending-orders
           [order]="item"
           (click)="routeToProduct(item.productId)"

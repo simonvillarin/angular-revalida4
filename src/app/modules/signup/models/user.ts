@@ -5,6 +5,7 @@ export interface User {
   birthdate: Date;
   listOfInterest: string[];
   email: string;
+  phoneNumber: number;
   username: string;
   password: string;
   role: string;

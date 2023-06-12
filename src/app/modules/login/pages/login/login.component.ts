@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   //password icon
   customColor = '#4CAF50';
   image = 'login/src/assets/images/img.svg';
+  showPassword = false;
 
   loginForm: FormGroup;
   constructor(
@@ -36,6 +37,10 @@ export class LoginComponent implements OnInit {
   get password() {
     return this.loginForm.get('password') as FormControl;
   }
+
+  togglePasswordVisibility = () => {
+    this.showPassword = !this.showPassword;
+  };
 
   ngOnInit(): void {}
 
