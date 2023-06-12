@@ -94,7 +94,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => 
+    loadChildren: () =>
       import('./modules/product-page/product-page.module').then(
         (m) => m.ProductPageModule
       ),
@@ -102,35 +102,25 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => 
-      import('./modules/profile/profile.module').then(
-        (m) => m.ProfileModule
-      ),
-    canActivate: [userExistsGuard], 
+    loadChildren: () =>
+      import('./modules/profile/profile.module').then((m) => m.ProfileModule),
+    canActivate: [userExistsGuard],
   },
   {
     path: '',
-    loadChildren: () => 
+    loadChildren: () =>
       import('./modules/change-password/change-password.module').then(
         (m) => m.ChangePasswordModule
       ),
-    canActivate: [userExistsGuard], 
+    canActivate: [userExistsGuard],
   },
   {
     path: '',
-    loadChildren: () => 
+    loadChildren: () =>
       import('./modules/forgot-password/forgot-password.module').then(
         (m) => m.ForgotPasswordModule
       ),
   },
-  {
-    path: '**',
-    redirectTo: '404'
-  },
-  {
-    path: '404',
-    component: ErrorPage404Component,
-  }
 ];
 
 @NgModule({
