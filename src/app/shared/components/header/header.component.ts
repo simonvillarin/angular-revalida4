@@ -80,4 +80,5 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
   };
+
 }

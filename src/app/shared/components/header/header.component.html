@@ -22,24 +22,27 @@
       <li class="nav-item">
         <a
           class="nav-link"
-          routerLink="/computers"
+          routerLink="/category"
           routerLinkActive="nav-link-active"
+          [queryParams]="{ tabName: 'COMPUTERS' }"
           >COMPUTERS</a
         >
       </li>
       <li class="nav-item">
         <a
           class="nav-link"
-          routerLink="/components"
+          routerLink="/category"
           routerLinkActive="nav-link-active"
+          [queryParams]="{ tabName: 'COMPONENTS' }"
           >COMPONENTS</a
         >
       </li>
       <li class="nav-item">
         <a
           class="nav-link"
-          routerLink="/peripherals"
+          routerLink="/category"
           routerLinkActive="nav-link-active"
+          [queryParams]="{ tabName: 'PERIPHERALS' }"
           >PERIPHERALS</a
         >
       </li>
