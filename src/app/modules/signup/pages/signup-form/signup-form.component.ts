@@ -49,11 +49,19 @@ export class SignupFormComponent {
   filteredInterests: Observable<string[]>;
   interests: string[] = [];
   allInterests: string[] = [
-    'Desktop PC',
-    'Notebooks',
-    'Computer Components',
-    'Computer Peripherals',
-    'Accessories',
+    'Chasis',
+    'Cooler',
+    'Graphics Card',
+    'Headset',
+    'Keyboard',
+    'Memory',
+    'Monitor',
+    'Motherboard',
+    'Mouse',
+    'Mousepad',
+    'Power Supply',
+    'Processor',
+    'Storage',
   ];
   @ViewChild('interestInput') interestInput!: ElementRef<HTMLInputElement>;
   @ViewChild('stepper') stepper!: MatStepper;
