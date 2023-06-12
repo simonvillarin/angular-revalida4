@@ -319,6 +319,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
     this.userForm.reset();
     this.isActionEdit = false;
     this.buttonAction = 'ADD';
+    this.listOfInterest.clear();
   };
 
   onSubmit(): void {
