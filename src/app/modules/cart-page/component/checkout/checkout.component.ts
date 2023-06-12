@@ -29,6 +29,7 @@ export class CheckoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.deleteAll();
     this.getCheckoutByUserId();
     this.getAddress();
   }
