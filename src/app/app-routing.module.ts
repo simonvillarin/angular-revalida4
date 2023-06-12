@@ -123,14 +123,14 @@ const routes: Routes = [
         (m) => m.ForgotPasswordModule
       ),
   },
-  {
-    path: '**',
-    redirectTo: '404'
-  },
-  {
-    path: '404',
-    component: ErrorPage404Component,
-  }
+  // {
+  //   path: '**',
+  //   redirectTo: '404'
+  // },
+  // {
+  //   path: '404',
+  //   component: ErrorPage404Component,
+  // }
 ];
 
 @NgModule({
