@@ -237,6 +237,25 @@
                     </div>
                   </div>
                 </div>
+                <!-- BRGY -->
+                <div class="col col-md">
+                  <div class="form-group">
+                    <label>Barangay</label>
+                    <input
+                      type="text"
+                      class="form-control border-bottom"
+                      formControlName="brgy"
+                    />
+                    <mat-error
+                      *ngIf="
+                        addressInfoForm.get('brgy')?.invalid &&
+                        addressInfoForm.get('brgy')?.touched
+                      "
+                    >
+                      Barangay is Required
+                    </mat-error>
+                  </div>
+                </div>
                 <div class="row gx-5">
                   <!-- City -->
                   <div class="col col-md">
@@ -254,25 +273,6 @@
                         "
                       >
                         City is Required
-                      </mat-error>
-                    </div>
-                  </div>
-                  <!-- BRGY -->
-                  <div class="col col-md">
-                    <div class="form-group">
-                      <label>Barangay</label>
-                      <input
-                        type="text"
-                        class="form-control border-bottom"
-                        formControlName="brgy"
-                      />
-                      <mat-error
-                        *ngIf="
-                          addressInfoForm.get('brgy')?.invalid &&
-                          addressInfoForm.get('brgy')?.touched
-                        "
-                      >
-                        Barangay is Required
                       </mat-error>
                     </div>
                   </div>
@@ -369,11 +369,11 @@
                 <!-- PhoneNumber -->
                 <div class="row gx-5">
                   <div class="form-group">
-                    <label>Cellphone Number</label>
+                    <label>Phone Number</label>
                     <input
                       type="text"
                       class="form-control border-bottom"
-                      placeholder="+639123456789 | 09123456789"
+                      placeholder="09123456789"
                       formControlName="phoneNumber"
                       required
                     />
@@ -440,26 +440,31 @@
                   <div class="form-group">
                     <label>Password</label>
                     <div class="input-group">
-                      <input
-                        [type]="showPassword ? 'text' : 'password'"
-                        class="form-control border-bottom"
-                        formControlName="password"
-                        required
-                      />
-                      <div class="input-group-append">
-                        <span
-                          class="input-group-text"
+                      <div>
+                        <input
+                          [type]="showPassword ? 'text' : 'password'"
+                          class="form-control border-bottom pass-input"
+                          formControlName="password"
+                          required
+                        />
+                        <i
+                          class="bi bi-eye-slash"
                           (click)="togglePasswordVisibility()"
-                        >
-                          <mat-icon>visibility</mat-icon>
-                        </span>
+                          *ngIf="!showPassword"
+                        ></i>
+                        <i
+                          class="bi bi-eye"
+                          (click)="togglePasswordVisibility()"
+                          *ngIf="showPassword"
+                        ></i>
                       </div>
                     </div>
                     <div
                       class="validation"
                       *ngIf="
-                        loginCredentialForm.get('password')?.invalid &&
-                        loginCredentialForm.get('password')?.dirty
+                        (loginCredentialForm.get('password')?.invalid &&
+                          loginCredentialForm.get('password')?.dirty) ||
+                        loginCredentialForm.get('password')?.touched
                       "
                     >
                       <div
@@ -469,7 +474,7 @@
                             ?.hasError('required')
                         "
                       >
-                        Password is required.
+                        Password is Required
                       </div>
                       <div
                         *ngIf="
@@ -478,16 +483,7 @@
                             ?.hasError('minlength')
                         "
                       >
-                        Password must be 8 characters and above.
-                      </div>
-                      <div
-                        *ngIf="
-                          loginCredentialForm
-                            .get('password')
-                            ?.hasError('hasNumber')
-                        "
-                      >
-                        It must contain a number.
+                        Password must 8 characters above
                       </div>
                       <div
                         *ngIf="
@@ -496,7 +492,7 @@
                             ?.hasError('hasLowercase')
                         "
                       >
-                        It must contain a lowercase letter.
+                        Password must contain lowercase
                       </div>
                       <div
                         *ngIf="
@@ -505,7 +501,16 @@
                             ?.hasError('hasUppercase')
                         "
                       >
-                        It must contain an uppercase letter.
+                        Password must contain uppercase
+                      </div>
+                      <div
+                        *ngIf="
+                          loginCredentialForm
+                            .get('password')
+                            ?.hasError('hasNumber')
+                        "
+                      >
+                        Password must contain number
                       </div>
                       <div
                         *ngIf="
@@ -514,7 +519,7 @@
                             ?.hasError('hasSymbol')
                         "
                       >
-                        It must contain a symbol.
+                        Password must contain symbol
                       </div>
                     </div>
                   </div>
@@ -524,43 +529,41 @@
                   <div class="form-group">
                     <label>Confirm Password</label>
                     <div class="input-group">
-                      <input
-                        [type]="showConfirmPassword ? 'text' : 'password'"
-                        class="form-control border-bottom"
-                        formControlName="confirmPass"
-                        required
-                      />
-                      <mat-icon
-                        matSuffix
-                        (click)="toggleConfirmPasswordVisibility()"
-                        >visibility</mat-icon
-                      >
+                      <div>
+                        <input
+                          [type]="showConfirmPassword ? 'text' : 'password'"
+                          class="form-control border-bottom pass-input"
+                          formControlName="confirmPass"
+                          required
+                        />
+                        <i
+                          class="bi bi-eye-slash"
+                          (click)="toggleConfirmPasswordVisibility()"
+                          *ngIf="!showConfirmPassword"
+                        ></i>
+                        <i
+                          class="bi bi-eye"
+                          (click)="toggleConfirmPasswordVisibility()"
+                          *ngIf="showConfirmPassword"
+                        ></i>
+                      </div>
                     </div>
                     <div
                       class="validation"
                       *ngIf="
-                        loginCredentialForm.get('confirmPass')?.invalid &&
-                        (loginCredentialForm.get('confirmPass')?.dirty ||
-                          loginCredentialForm.get('confirmPass')?.touched)
+                        (loginCredentialForm.get('confirmPass')?.invalid &&
+                          loginCredentialForm.get('confirmPass')?.dirty) ||
+                        loginCredentialForm.get('confirmPass')?.touched
                       "
                     >
                       <div
                         *ngIf="
                           loginCredentialForm
-                            .get('confirmPass')
+                            .get('password')
                             ?.hasError('required')
                         "
                       >
-                        Password is required.
-                      </div>
-                      <div
-                        *ngIf="
-                          loginCredentialForm
-                            .get('confirmPass')
-                            ?.hasError('passwordMismatch')
-                        "
-                      >
-                        Passwords do not match.
+                        Confirm password is Required
                       </div>
                     </div>
                   </div>
