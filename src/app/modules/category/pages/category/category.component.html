@@ -4,13 +4,11 @@
     <!-- Price Filter -->
     <div>
       <div class="title">Price</div>
-      <mat-slider [min]="200" [max]="15000" color="accent" thumbLabel="true" (input)="filterProducts()">
+      <mat-slider [min]="200" [max]="500000" color="accent" thumbLabel="true" (input)="filterProducts()">
         <input matSliderStartThumb [(ngModel)]="startvalue" >
         <input matSliderEndThumb [(ngModel)]="endvalue" >
       </mat-slider>
     </div>
-    
-    
     <!-- Category Filter -->
     <div>
       <div class="title">Category</div>
