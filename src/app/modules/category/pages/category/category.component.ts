@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ProductService } from 'src/app/shared/services/product/product.service';
 import { Product } from 'src/app/shared/models/product';
 import { CartService } from 'src/app/shared/services/cart/cart.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-category',
@@ -14,64 +15,106 @@ export class CategoryComponent implements OnInit {
   selectedCategory: string = '';
   selectedBrands: string[] = [];
   selectProdByCategory: Product[] = [];
+  categories: string[] = [];
+  brands: string[] = [];
+  productList: Product[] = [];
+  tabName: string = '';
+  selectedCategories: string[] = [];
+  startvalue: number = 0;
+  endvalue: number = 0;
 
   constructor(
     private productService: ProductService,
-    private router: Router,
+    private route: ActivatedRoute,
     private cartService: CartService
   ) {}
 
-  categories: string[] = [
-    'Chassis',
-    'Processor',
-    'Storage',
-    'Motherboard',
-    'Graphics Card',
-    'Supply',
-    'Memory',
-  ];
+  tabs: any[] = [
+    {
+      name: 'COMPUTERS',
+      categories: [
+        "Desktop PC", "Notebooks", "Mini PC", 
+        "Diskless Package", "Software"
+      ],
+    },
+    {
+      name: 'COMPONENTS',
+      categories: [
+        "Chassis", "Processor", "Motherboard", 
+        "Grapics Card", "Memory", "Power Supply", 
+        "Hard Drive", "Sound Card","LAN Card", 
+        "Optical Drive"
+      ],
+    },
+    {
+      name: 'PERIPHERALS',
+      categories: [
+        "Display", "Audio", "Gaming", "Keyboard",
+        "Mouse", "Furniture", "Printer", "Scanner",
+        "Office Supplies", "Surveilance|CCTV",
+        "UPS|AVR", "Webcam"
+      ]
+    }
+  ]
 
-  brands: string[] = ['ASRock', 'Asus', 'Gigabyte', 'MSI', 'NZXT', 'Lenovo'];
-
-  productList: Product[] = [];
+  
 
   ngOnInit(): void {
-    this.getAllProducts();
+    this.route.queryParams.subscribe((params: Params) => {
+      //Get passed tab name from header
+      this.tabName = params['tabName'];
+      this.categories = [];
+      this.brands = [];
+      this.getAllProducts();
+      console.log(this.tabName);
+      console.log(this.productList);
+    })
   }
 
-  // Filter
+  // Get Products Filtered by Tabname and its Category.
   getAllProducts() {
     this.productService.getAllProducts().subscribe((data) => {
-      this.productList = data;
+      this.productList = data.filter((product) => {
+        return this.tabs.some((tab) => {
+          if (tab.name === this.tabName && tab.categories.includes(product.category)) {
+            // Populate Categories
+            this.categories = tab.categories;
+            // Populate Brands
+            if (!this.brands.includes(product.brand)) {
+              this.brands.push(product.brand);
+            }
+            return true;
+          }
+          return false;
+        });
+      });
+      // Remove duplicate brands
+      this.brands = Array.from(new Set(this.brands));
+
+      // Calculate the minimum and maximum prices
+      const prices = this.productList.map((product) => product.price);
+      this.startvalue = Math.min(...prices);
+      this.endvalue = Math.max(...prices);
+
+      this.filterProducts();
+
       this.cartService.cartItems = 1;
-      // Filter the products based on the selected category and brand
-      //this.filterProducts();
     });
   }
 
-  filterProducts() {
-    this.filteredProducts = this.productList.filter((product) => {
-      const matchesCategory =
-        this.selectedCategory === '' ||
-        product.category === this.selectedCategory;
-      const matchesBrands =
-        this.selectedBrands.length === 0 ||
-        this.selectedBrands.includes(product.brand);
-      return matchesCategory && matchesBrands;
-    });
-  }
-
-  updateSelectedCategory(category: string, checked: boolean) {
-    if (checked) {
-      this.selectedCategory = category;
+  // Category select
+  onCategoryCheckboxChange(category: string, isChecked: boolean) {
+    if (isChecked) {
+      this.selectedCategories = [category];
     } else {
-      this.selectedCategory = '';
+      this.selectedCategories = []
     }
     this.filterProducts();
   }
-
-  updateSelectedBrand(brand: string, checked: boolean) {
-    if (checked) {
+  
+  // Brands select
+  onBrandCheckboxChange(brand: string, isChecked: boolean) {
+    if (isChecked) {
       this.selectedBrands.push(brand);
     } else {
       const index = this.selectedBrands.indexOf(brand);
@@ -81,4 +124,23 @@ export class CategoryComponent implements OnInit {
     }
     this.filterProducts();
   }
+
+  filterProducts() {
+    this.filteredProducts = this.productList.filter((product) => {
+      const isCategorySelected =
+        this.selectedCategories.length === 0 ||
+        this.selectedCategories.includes(product.category);
+  
+      const isBrandSelected =
+        this.selectedBrands.length === 0 ||
+        this.selectedBrands.includes(product.brand);
+  
+        const isPriceInRange = product.price >= this.startvalue && product.price <= this.endvalue;
+  
+        return isCategorySelected && isBrandSelected && isPriceInRange;
+    });
+  }
+  
+  
+
 }
