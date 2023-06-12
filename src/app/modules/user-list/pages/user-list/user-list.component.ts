@@ -64,7 +64,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
   getAllUsers = () => {
     this.userListService.getAllUsers().subscribe((data) => {
       const sortData = data.sort((a, b) => a.userId - b.userId);
-      this.dataSource.data = sortData;
+      this.dataSource.data = sortData.filter((e) => e.role === 'USER');
     });
   };
 
@@ -377,6 +377,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
         }).then((result) => {
           if (result.isConfirmed) {
             this.userListService.addUser(user).subscribe((res: any) => {
+              console.log(res);
               if (res.message == 'Email already exists') {
                 this.alert = 'Email already exists';
                 this.showAlert = true;
@@ -385,14 +386,16 @@ export class UserListComponent implements OnInit, AfterViewInit {
                 this.alert = 'Username already exists';
                 this.showAlert = true;
                 setTimeout(() => (this.showAlert = false), 3000);
-              } else if (res.message == 'Phone number already exists') {
-                this.alert = 'Phone number already exists';
-                this.showAlert = true;
-                setTimeout(() => (this.showAlert = false), 3000);
-              } else {
+              } else if (res.message == 'User successfully added') {
                 this.dataSource.data = [...this.dataSource.data, user];
 
                 Swal.fire('Done!', 'User, Successfully Added!.', 'success');
+                this.userForm.reset();
+                this.listOfInterest.clear();
+              } else {
+                this.alert = 'Phone number already exists';
+                this.showAlert = true;
+                setTimeout(() => (this.showAlert = false), 3000);
               }
             });
           }
@@ -403,8 +406,6 @@ export class UserListComponent implements OnInit, AfterViewInit {
         this.userForm.markAllAsTouched();
         return;
       }
-      this.userForm.reset();
-      this.listOfInterest.clear();
     } else {
       this.userListService.getUserById(this.id).subscribe((data) => {
         let user: any = {
