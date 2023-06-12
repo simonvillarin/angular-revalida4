@@ -345,6 +345,13 @@
               [stepControl]="loginCredentialForm"
               label="Login Credentials"
             >
+              <div
+                class="alert alert-danger mb-1"
+                role="alert"
+                *ngIf="showAlert"
+              >
+                {{ alert }}
+              </div>
               <form [formGroup]="loginCredentialForm">
                 <!-- Email -->
                 <div class="row gx-5">
