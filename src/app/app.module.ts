@@ -1,4 +1,4 @@
-import { NgModule, isDevMode } from '@angular/core';
+import { ErrorHandler, NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +10,7 @@ import { SharedModule } from './shared/shared.module';
 import { MainPageModule } from './modules/main-page/main-page.module';
 import { FormsModule } from '@angular/forms';
 import { HeaderInterceptor } from './core/interceptor/header.interceptor';
+import { CustomErrorHandler } from './error-handling';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,6 +35,10 @@ import { HeaderInterceptor } from './core/interceptor/header.interceptor';
       useClass: HeaderInterceptor,
       multi: true,
     },
+    {
+      provide: ErrorHandler,
+      useClass: CustomErrorHandler
+    }
   ],
   bootstrap: [AppComponent],
 })
