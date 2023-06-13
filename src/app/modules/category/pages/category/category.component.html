@@ -1,44 +1,46 @@
 <app-header></app-header>
-
 <div class="container">
   <div class="filter">
+    <!-- Price Filter -->
     <div>
       <div class="title">Price</div>
-      <mat-slider min="200" max="500">
-        <input value="300" matSliderStartThumb />
-        <input value="400" matSliderEndThumb />
+      <mat-slider [min]="200" [max]="500000" color="accent" thumbLabel="true" (input)="filterProducts()">
+        <input matSliderStartThumb [(ngModel)]="startvalue" >
+        <input matSliderEndThumb [(ngModel)]="endvalue" >
       </mat-slider>
     </div>
+    <!-- Category Filter -->
     <div>
       <div class="title">Category</div>
       <div class="checkbox-container">
         <mat-checkbox
           color="primary"
           *ngFor="let category of categories"
-          [checked]="selectedCategory === category"
-          (change)="updateSelectedCategory(category, $event.checked)"
-          >{{ category }}</mat-checkbox
+          (change)="onCategoryCheckboxChange(category, $event.checked)"
+          [checked]="selectedCategories.includes(category)"
+        >{{ category }}</mat-checkbox
         >
       </div>
     </div>
+    <!-- Brands Filter -->
     <div>
       <div class="title">Brands</div>
       <div class="checkbox-container">
         <mat-checkbox
           color="primary"
           *ngFor="let brand of brands"
+          (change)="onBrandCheckboxChange(brand, $event.checked)"
           [checked]="selectedBrands.includes(brand)"
-          (change)="updateSelectedBrand(brand, $event.checked)"
           >{{ brand }}</mat-checkbox
         >
       </div>
     </div>
   </div>
+  <div *ngIf="errorMessage !== ''" class="text-center mt-5 pt-5">
+    {{ errorMessage }}
+  </div>
   <div class="card-container">
-    <!-- <div *ngIf="filteredProducts.length === 0" class="text-center mt-5 pt-5">
-      No results found.
-    </div> -->
-    <div *ngFor="let product of productList">
+    <div *ngFor="let product of filteredProducts">
       <app-card
         [product]="product"
         *ngIf="product.isAvailable && product.quantity > 1"

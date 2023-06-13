@@ -17,6 +17,8 @@ export class LoginComponent implements OnInit {
   //password icon
   customColor = '#4CAF50';
   image = 'login/src/assets/images/img.svg';
+  showPassword = false;
+  errorMessage: string = '';
 
   loginForm: FormGroup;
   constructor(
@@ -37,6 +39,10 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('password') as FormControl;
   }
 
+  togglePasswordVisibility = () => {
+    this.showPassword = !this.showPassword;
+  };
+
   ngOnInit(): void {}
 
   onSubmit = () => {
@@ -48,6 +54,9 @@ export class LoginComponent implements OnInit {
         } else {
           this.router.navigate(['/home']);
         }
+      }, (error) => {
+        console.log('Login failed:', error);
+        this.errorMessage = 'Invalid username or password. Please try again.';
       });
       this.loginForm.reset();
     }

@@ -29,6 +29,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup-form.component.scss'],
 })
 export class SignupFormComponent {
+  showAlert: boolean = false;
+  alert: string = '';
+
   // Form Groups
   signupForm: FormGroup;
   personalInfoForm: FormGroup;
@@ -49,11 +52,19 @@ export class SignupFormComponent {
   filteredInterests: Observable<string[]>;
   interests: string[] = [];
   allInterests: string[] = [
-    'Desktop PC',
-    'Notebooks',
-    'Computer Components',
-    'Computer Peripherals',
-    'Accessories',
+    'Chassis',
+    'Cooler',
+    'Graphics Card',
+    'Headset',
+    'Keyboard',
+    'Memory',
+    'Monitor',
+    'Motherboard',
+    'Mouse',
+    'Mousepad',
+    'Power Supply',
+    'Processor',
+    'Storage',
   ];
   @ViewChild('interestInput') interestInput!: ElementRef<HTMLInputElement>;
   @ViewChild('stepper') stepper!: MatStepper;
@@ -238,12 +249,26 @@ export class SignupFormComponent {
 
     if (this.personalInfoForm.valid && this.loginCredentialForm.valid) {
       console.log(user);
-      this.signUpService
-        .saveUser(user)
-        .subscribe(() => console.log('User successfully added'));
-      this.personalInfoForm.reset();
-      this.loginCredentialForm.reset();
-      this.router.navigate(['/login']);
+      this.signUpService.saveUser(user).subscribe((res: any) => {
+        console.log(res);
+        if (res.message === 'Email already exists') {
+          this.showAlert = true;
+          this.alert = 'Email already exists';
+          setTimeout(() => (this.showAlert = false), 3000);
+        } else if (res.message === 'Phone number already exists') {
+          this.showAlert = true;
+          this.alert = 'Phone number already exists';
+          setTimeout(() => (this.showAlert = false), 3000);
+        } else if (res.message === 'Username already exists') {
+          this.showAlert = true;
+          this.alert = 'Username already exists';
+          setTimeout(() => (this.showAlert = false), 3000);
+        } else {
+          this.personalInfoForm.reset();
+          this.loginCredentialForm.reset();
+          this.router.navigate(['/login']);
+        }
+      });
     }
 
     if (this.signupForm.invalid || this.interests.length < 3) {

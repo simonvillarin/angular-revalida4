@@ -217,6 +217,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this.productForm.reset();
     this.isActionEdit = false;
     this.buttonAction = 'ADD';
+    this.description.clear();
   };
 
   onSubmit(): void {
@@ -234,6 +235,10 @@ export class ProductListComponent implements OnInit, AfterViewInit {
         isAvailable: true,
       };
 
+      this.productForm.patchValue({
+        status: true,
+      });
+
       const formData = new FormData();
       formData.append(
         'product',
@@ -241,39 +246,45 @@ export class ProductListComponent implements OnInit, AfterViewInit {
       );
       formData.append('file', this.file);
 
-      // if (this.productForm.valid) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: 'Do you want to add new product?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, save it!',
-        cancelButtonText: 'No, cancel',
-        reverseButtons: true,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.productListService.addProduct(formData).subscribe((res: any) => {
-            product.img = res.imageLink;
-            console.log(res);
-            if (res.message == 'Product name already exists') {
-              this.showAlert = true;
-              this.alert = 'Product name already exists';
-              setTimeout(() => (this.showAlert = false), 3000);
-            } else {
-              this.dataSource.data = [...this.dataSource.data, product];
-              Swal.fire('Done!', 'Product, Successfully Added!.', 'success');
-            }
-          });
-        }
-      });
-      //  }
-      this.description.clear();
-      //this.productForm.reset();
-      // if (this.productForm.invalid) {
-      //   this.productForm.markAllAsTouched();
-      //   console.log('Invalid Form');
-      //   return;
-      // }
+      if (this.productForm.valid) {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'Do you want to add new product?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, save it!',
+          cancelButtonText: 'No, cancel',
+          reverseButtons: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.productListService
+              .addProduct(formData)
+              .subscribe((res: any) => {
+                product.img = res.imageLink;
+                console.log(res);
+                if (res.message == 'Product name already exists') {
+                  this.showAlert = true;
+                  this.alert = 'Product name already exists';
+                  setTimeout(() => (this.showAlert = false), 3000);
+                } else {
+                  this.dataSource.data = [...this.dataSource.data, product];
+                  Swal.fire(
+                    'Done!',
+                    'Product, Successfully Added!.',
+                    'success'
+                  );
+                  this.productForm.reset();
+                  this.description.clear();
+                }
+              });
+          }
+        });
+      }
+      if (this.productForm.invalid) {
+        this.productForm.markAllAsTouched();
+        console.log('Invalid Form');
+        return;
+      }
     } else {
       const productName = this.productForm.get('itemName')?.value;
       const brand = this.productForm.get('brand')?.value;

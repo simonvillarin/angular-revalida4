@@ -6,6 +6,12 @@
         <h1>Sign In</h1>
       </div>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" name="loginForm">
+        <!-- Alert message -->
+        <div class="alert alert-danger border-0" role="alert" *ngIf="errorMessage !== ''">
+          <div>
+            <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
+          </div>
+        </div>
         <!-- Username -->
         <div class="group">
           <label class="inputLbl">Username</label>
@@ -23,27 +29,43 @@
             <p *ngIf="username?.errors?.['required']">Username is required.</p>
           </div>
         </div>
-
+        <!-- Validation -->
         <div class="group">
-          <!-- Password -->
-          <label class="inputLbl">Password</label>
-          <input
-            type="password"
-            class="form-control border-bottom"
-            formControlName="password"
-            required
-          />
-          <!-- Validation -->
+          <label>Password</label>
+          <div class="input-group">
+            <div>
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                class="form-control border-bottom pass-input"
+                formControlName="password"
+                required
+              />
+              <i
+                class="bi bi-eye-slash"
+                (click)="togglePasswordVisibility()"
+                *ngIf="!showPassword"
+              ></i>
+              <i
+                class="bi bi-eye"
+                (click)="togglePasswordVisibility()"
+                *ngIf="showPassword"
+              ></i>
+            </div>
+          </div>
           <div
             class="validation"
-            *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+            *ngIf="
+              (loginForm.get('password')?.invalid &&
+                loginForm.get('password')?.dirty) ||
+              loginForm.get('password')?.touched
+            "
           >
-            <div *ngIf="password?.errors?.['required']">
-              Password is required.
+            <div *ngIf="loginForm.get('password')?.hasError('required')">
+              Password is Required
             </div>
           </div>
         </div>
-        <div class="forgot-password">Forgot Password?</div>
+        <div class="forgot-password" routerLink="/forgot">Forgot Password?</div>
         <button type="submit" class="loginbtn">SIGN IN</button>
       </form>
       <div class="no-acc">

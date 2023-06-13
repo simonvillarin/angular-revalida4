@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { userExistsGuard } from './core/guards/user-exists/user-exists.guard';
 import { userNotFoundGuard } from './core/guards/user-not-found/user-not-found.guard';
 import { ErrorPage404Component } from './error-pages/pages/error-page404/error-page404.component';
+import { adminExistsGuard } from './core/guards/admin-exists/admin-exists.guard';
 
 const routes: Routes = [
   {
@@ -44,7 +45,7 @@ const routes: Routes = [
       import('./modules/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
       ),
-    canActivate: [userExistsGuard],
+    canActivateChild: [adminExistsGuard],
   },
   {
     path: '',
@@ -52,7 +53,7 @@ const routes: Routes = [
       import('./modules/product-list/product-list.module').then(
         (m) => m.ProductListModule
       ),
-    canActivate: [userExistsGuard],
+      canActivateChild: [adminExistsGuard],
   },
   {
     path: '',
@@ -60,7 +61,7 @@ const routes: Routes = [
       import('./modules/user-list/user-list.module').then(
         (m) => m.UserListModule
       ),
-    canActivate: [userExistsGuard],
+    canActivateChild: [adminExistsGuard],
   },
   {
     path: '',
@@ -94,7 +95,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => 
+    loadChildren: () =>
       import('./modules/product-page/product-page.module').then(
         (m) => m.ProductPageModule
       ),
@@ -102,35 +103,25 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => 
-      import('./modules/profile/profile.module').then(
-        (m) => m.ProfileModule
-      ),
-    canActivate: [userExistsGuard], 
+    loadChildren: () =>
+      import('./modules/profile/profile.module').then((m) => m.ProfileModule),
+    canActivate: [userExistsGuard],
   },
   {
     path: '',
-    loadChildren: () => 
+    loadChildren: () =>
       import('./modules/change-password/change-password.module').then(
         (m) => m.ChangePasswordModule
       ),
-    canActivate: [userExistsGuard], 
+    canActivate: [userExistsGuard],
   },
   {
     path: '',
-    loadChildren: () => 
+    loadChildren: () =>
       import('./modules/forgot-password/forgot-password.module').then(
         (m) => m.ForgotPasswordModule
       ),
   },
-  {
-    path: '**',
-    redirectTo: '404'
-  },
-  {
-    path: '404',
-    component: ErrorPage404Component,
-  }
 ];
 
 @NgModule({

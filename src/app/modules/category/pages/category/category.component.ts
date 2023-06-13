@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ProductService } from 'src/app/shared/services/product/product.service';
 import { Product } from 'src/app/shared/models/product';
 import { CartService } from 'src/app/shared/services/cart/cart.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-category',
@@ -14,71 +15,140 @@ export class CategoryComponent implements OnInit {
   selectedCategory: string = '';
   selectedBrands: string[] = [];
   selectProdByCategory: Product[] = [];
+  categories: string[] = [];
+  brands: string[] = [];
+  productList: Product[] = [];
+  tabName: string = '';
+  selectedCategories: string[] = [];
+  startvalue: number = 0;
+  endvalue: number = 0;
+  errorMessage: string = '';
 
   constructor(
     private productService: ProductService,
-    private router: Router,
+    private route: ActivatedRoute,
     private cartService: CartService
   ) {}
 
-  categories: string[] = [
-    'Chassis',
-    'Processor',
-    'Storage',
-    'Motherboard',
-    'Graphics Card',
-    'Supply',
-    'Memory',
-  ];
-
-  brands: string[] = ['ASRock', 'Asus', 'Gigabyte', 'MSI', 'NZXT', 'Lenovo'];
-
-  productList: Product[] = [];
+  tabs: any[] = [
+    {
+      name: 'COMPUTERS',
+      categories: [
+        "Desktop Build"
+      ],
+    },
+    {
+      name: 'COMPONENTS',
+      categories: [
+        "Chassis", "Processor", "Motherboard", 
+        "Graphics Card", "Memory", "Power Supply", 
+        "Storage", "Monitor"
+      ],
+    },
+    {
+      name: 'PERIPHERALS',
+      categories: [
+        "Keyboard", "Mouse", "Mousepad"
+      ]
+    }
+  ]
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      //Get passed tab name from header
+      this.tabName = params['tabName'];
+      this.categories = [];
+      this.brands = [];
+      this.getAllProducts();
+      this.updateFilteredProducts();
+      console.log(this.tabName);
+      console.log(this.productList);
+    })
+  }
+
+  updateFilteredProducts() {
+    this.filteredProducts = []
     this.getAllProducts();
   }
 
-  // Filter
+  // Get Products Filtered by Tabname and its Category.
   getAllProducts() {
     this.productService.getAllProducts().subscribe((data) => {
-      this.productList = data;
+      this.productList = data.filter((product) => {
+        return this.tabs.some((tab) => {
+          if (tab.name === this.tabName && tab.categories.includes(product.category)) {
+            // Populate Categories
+            this.categories = tab.categories.map((c: any) => c.toUpperCase());
+            // Populate Brands
+            if (!this.brands.includes(product.brand.toUpperCase())) {
+              this.brands.push(product.brand.toUpperCase());
+            }
+            return true;
+          }
+          return false;
+        });
+      });
+      // Remove duplicate brands
+      this.brands = Array.from(new Set(this.brands));
+
+      // Calculate the minimum and maximum prices
+      const prices = this.productList.map((product) => product.price);
+      this.startvalue = Math.min(...prices);
+      this.endvalue = Math.max(...prices);
+
+      this.filterProducts();
+
       this.cartService.cartItems = 1;
-      // Filter the products based on the selected category and brand
-      //this.filterProducts();
+
+      this.selectedCategories = [];
+      this.selectedBrands = [];
     });
+    
   }
 
-  filterProducts() {
-    this.filteredProducts = this.productList.filter((product) => {
-      const matchesCategory =
-        this.selectedCategory === '' ||
-        product.category === this.selectedCategory;
-      const matchesBrands =
-        this.selectedBrands.length === 0 ||
-        this.selectedBrands.includes(product.brand);
-      return matchesCategory && matchesBrands;
-    });
-  }
-
-  updateSelectedCategory(category: string, checked: boolean) {
-    if (checked) {
-      this.selectedCategory = category;
+  // Category select
+  onCategoryCheckboxChange(category: string, isChecked: boolean) {
+    if (isChecked) {
+      this.selectedCategories = [category.toUpperCase()];
     } else {
-      this.selectedCategory = '';
+      this.selectedCategories = [];
     }
     this.filterProducts();
   }
 
-  updateSelectedBrand(brand: string, checked: boolean) {
-    if (checked) {
-      this.selectedBrands.push(brand);
+  // Brands select
+  onBrandCheckboxChange(brand: string, isChecked: boolean) {
+    if (isChecked) {
+      this.selectedBrands.push(brand.toUpperCase());
     } else {
-      const index = this.selectedBrands.indexOf(brand);
+      const index = this.selectedBrands.indexOf(brand.toUpperCase());
       if (index !== -1) {
         this.selectedBrands.splice(index, 1);
       }
     }
+    
     this.filterProducts();
+  }
+
+  filterProducts() {
+    this.filteredProducts = this.productList.filter((product) => {
+      const isCategorySelected =
+        this.selectedCategories.length === 0 ||
+        this.selectedCategories.includes(product.category.toUpperCase());
+  
+      const isBrandSelected =
+        this.selectedBrands.length === 0 ||
+        this.selectedBrands.includes(product.brand.toUpperCase());
+  
+        const isPriceInRange = product.price >= this.startvalue && product.price <= this.endvalue;
+  
+        return isCategorySelected && isBrandSelected && isPriceInRange;
+    });
+
+    if (this.filteredProducts.length === 0) {
+      this.errorMessage = 'No products found.';
+    } else {
+      this.errorMessage = '';
+    }
   }
 }

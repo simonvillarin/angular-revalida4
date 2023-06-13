@@ -27,7 +27,6 @@ import {
 import { User } from '../../models/user';
 import { UserListService } from '../../services/user-list.service';
 import Swal from 'sweetalert2';
-import { last } from 'rxjs';
 
 @Component({
   selector: 'app-user-list',
@@ -65,7 +64,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
   getAllUsers = () => {
     this.userListService.getAllUsers().subscribe((data) => {
       const sortData = data.sort((a, b) => a.userId - b.userId);
-      this.dataSource.data = sortData;
+      this.dataSource.data = sortData.filter((e) => e.role === 'USER');
     });
   };
 
@@ -123,7 +122,6 @@ export class UserListComponent implements OnInit, AfterViewInit {
       zipCode: ['', [Validators.required, numberLengthValidator()]],
       province: ['', Validators.required],
       confirmPass: ['', Validators.required],
-      role: ['', Validators.required],
       status: ['', Validators.required],
     });
 
@@ -192,7 +190,6 @@ export class UserListComponent implements OnInit, AfterViewInit {
     'email',
     'phoneNumber',
     'username',
-    'role',
     'status',
     'actions',
   ];
@@ -319,6 +316,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
     this.userForm.reset();
     this.isActionEdit = false;
     this.buttonAction = 'ADD';
+    this.listOfInterest.clear();
   };
 
   onSubmit(): void {
@@ -338,7 +336,6 @@ export class UserListComponent implements OnInit, AfterViewInit {
     const zipcode = this.userForm.get('zipCode')?.value;
     const username = this.userForm.get('userName')?.value;
     const password = this.userForm.get('password')?.value;
-    const role = this.userForm.get('role')?.value;
     let status = this.userForm.get('status')?.value;
 
     if (this.isActionEdit == false) {
@@ -364,7 +361,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
         phoneNumber: phoneNumber,
         username: username,
         password: password,
-        role: role,
+        role: 'USER',
         status: status,
       };
 
@@ -380,6 +377,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
         }).then((result) => {
           if (result.isConfirmed) {
             this.userListService.addUser(user).subscribe((res: any) => {
+              console.log(res);
               if (res.message == 'Email already exists') {
                 this.alert = 'Email already exists';
                 this.showAlert = true;
@@ -388,13 +386,16 @@ export class UserListComponent implements OnInit, AfterViewInit {
                 this.alert = 'Username already exists';
                 this.showAlert = true;
                 setTimeout(() => (this.showAlert = false), 3000);
-              } else if (res.message == 'Phone number already exists') {
+              } else if (res.message == 'User successfully added') {
+                this.dataSource.data = [...this.dataSource.data, user];
+
+                Swal.fire('Done!', 'User, Successfully Added!.', 'success');
+                this.userForm.reset();
+                this.listOfInterest.clear();
+              } else {
                 this.alert = 'Phone number already exists';
                 this.showAlert = true;
                 setTimeout(() => (this.showAlert = false), 3000);
-              } else {
-                this.dataSource.data = [...this.dataSource.data, user];
-                Swal.fire('Done!', 'User, Successfully Added!.', 'success');
               }
             });
           }
@@ -403,10 +404,8 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
       if (this.userForm.invalid) {
         this.userForm.markAllAsTouched();
-        console.log('Invalid Form');
         return;
       }
-      this.userForm.reset();
     } else {
       this.userListService.getUserById(this.id).subscribe((data) => {
         let user: any = {
@@ -422,7 +421,6 @@ export class UserListComponent implements OnInit, AfterViewInit {
           city: city,
           province: province,
           zipcode: zipcode,
-          role: role,
           status: status,
         };
 
@@ -503,10 +501,11 @@ export class UserListComponent implements OnInit, AfterViewInit {
                   this.dataSource.data[index].phoneNumber = phoneNumber;
                   this.dataSource.data[index].username = username;
                   this.dataSource.data[index].password = password;
-                  this.dataSource.data[index].role = role;
+
+                  console.log(status);
 
                   let _status = false;
-                  if (status == 'true') {
+                  if (status == 'true' || status == true) {
                     _status = true;
                   } else {
                     _status = false;
@@ -516,6 +515,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
                   this.buttonAction = 'ADD';
                   this.isActionEdit = false;
                   Swal.fire('Done!', 'User, Successfully Updated!.', 'success');
+                  this.listOfInterest.clear();
                   this.userForm.reset();
                 }
               });

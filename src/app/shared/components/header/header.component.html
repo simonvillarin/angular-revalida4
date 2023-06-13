@@ -4,11 +4,8 @@
       <i class="bi bi-list" *ngIf="!isShowMenu"></i>
       <i class="bi bi-x" *ngIf="isShowMenu"></i>
     </div>
-    <div class="logo">
-      <img
-        src="../../../../assets/images/TechUnt (1).png"
-        alt="Logo"
-      />
+    <div class="logo" routerLink="/home">
+      <img src="../../../../assets/images/TechUnt (1).png" alt="Logo" />
     </div>
     <div class="nav-list" [class.show-nav]="isShowMenu">
       <li class="nav-item">
@@ -22,24 +19,27 @@
       <li class="nav-item">
         <a
           class="nav-link"
-          routerLink="/computers"
+          routerLink="/category"
           routerLinkActive="nav-link-active"
+          [queryParams]="{ tabName: 'COMPUTERS' }"
           >COMPUTERS</a
         >
       </li>
       <li class="nav-item">
         <a
           class="nav-link"
-          routerLink="/components"
+          routerLink="/category"
           routerLinkActive="nav-link-active"
+          [queryParams]="{ tabName: 'COMPONENTS' }"
           >COMPONENTS</a
         >
       </li>
       <li class="nav-item">
         <a
           class="nav-link"
-          routerLink="/peripherals"
+          routerLink="/category"
           routerLinkActive="nav-link-active"
+          [queryParams]="{ tabName: 'PERIPHERALS' }"
           >PERIPHERALS</a
         >
       </li>
