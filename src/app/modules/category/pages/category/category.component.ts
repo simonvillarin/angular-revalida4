@@ -76,7 +76,7 @@ export class CategoryComponent implements OnInit {
     this.productService.getAllProducts().subscribe((data) => {
       this.productList = data.filter((product) => {
         return this.tabs.some((tab) => {
-          if (tab.name === this.tabName && tab.categories.includes(product.category)) {
+          if (tab.name === this.tabName && tab.categories.includes(product.category) && product.quantity !== 0) {
             // Populate Categories
             this.categories = tab.categories.map((c: any) => c.toUpperCase());
             // Populate Brands
