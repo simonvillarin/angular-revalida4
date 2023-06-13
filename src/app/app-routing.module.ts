@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { userExistsGuard } from './core/guards/user-exists/user-exists.guard';
 import { userNotFoundGuard } from './core/guards/user-not-found/user-not-found.guard';
 import { ErrorPage404Component } from './error-pages/pages/error-page404/error-page404.component';
+import { adminExistsGuard } from './core/guards/admin-exists/admin-exists.guard';
 
 const routes: Routes = [
   {
@@ -44,7 +45,7 @@ const routes: Routes = [
       import('./modules/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
       ),
-    canActivate: [userExistsGuard],
+    canActivateChild: [adminExistsGuard],
   },
   {
     path: '',
@@ -52,7 +53,7 @@ const routes: Routes = [
       import('./modules/product-list/product-list.module').then(
         (m) => m.ProductListModule
       ),
-    canActivate: [userExistsGuard],
+      canActivateChild: [adminExistsGuard],
   },
   {
     path: '',
@@ -60,7 +61,7 @@ const routes: Routes = [
       import('./modules/user-list/user-list.module').then(
         (m) => m.UserListModule
       ),
-    canActivate: [userExistsGuard],
+    canActivateChild: [adminExistsGuard],
   },
   {
     path: '',

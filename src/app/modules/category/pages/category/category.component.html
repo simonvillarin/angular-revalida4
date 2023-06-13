@@ -36,8 +36,8 @@
       </div>
     </div>
   </div>
-  <div *ngIf="filteredProducts.length === 0" class="text-center mt-5 pt-5">
-    No results found.
+  <div *ngIf="errorMessage !== ''" class="text-center mt-5 pt-5">
+    {{ errorMessage }}
   </div>
   <div class="card-container">
     <div *ngFor="let product of filteredProducts">
