@@ -94,7 +94,6 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     'itemName',
     'itemBrand',
     'category',
-    'itemDesc',
     'quantity',
     'price',
     'image',

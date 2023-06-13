@@ -566,12 +566,18 @@
                       <div
                         *ngIf="
                           loginCredentialForm
-                            .get('password')
+                            .get('confirmPass')
                             ?.hasError('required')
                         "
                       >
                         Confirm password is Required
                       </div>
+                        <div
+                            *ngIf="
+                              loginCredentialForm.get('confirmPass')?.
+                                hasError('passwordMismatch')">
+                                    Passwords do not match.
+                        </div>
                     </div>
                   </div>
                 </div>
