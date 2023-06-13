@@ -13,6 +13,7 @@ export class OrdersItemComponent implements OnInit {
   orderItems: any[] = [];
   orderTrackings: any[] = [];
   errorMessage: string = '';
+  showErrorMessage: boolean = false;
 
   constructor(private orderService: OrderService, private router: Router) {}
 
@@ -31,12 +32,19 @@ export class OrdersItemComponent implements OnInit {
 
     console.log(this.orders);
 
-    this.orderService.getOrdersByUserId(userId).subscribe((data) => {
+    this.orderService.getOrdersByUserId(userId).subscribe((data: any) => {
       for (let i = 0; i < data.length; i++) {
         if (!this.orderTrackings.includes(data[i].orderTracking)) {
           this.orderTrackings.push(data[i].orderTracking);
         }
       }
+
+      if (data.length === 0) {
+        this.showErrorMessage = true;
+      } else {
+        this.showErrorMessage = false;
+      }
+
       for (let i = 0; i < this.orderTrackings.length; i++) {
         this.orderService
           .getOrderByOrderTracking(this.orderTrackings[i])
@@ -60,9 +68,11 @@ export class OrdersItemComponent implements OnInit {
 
             this.orderItems.push(item);
           });
+
       }
       this.orderItems.reverse();
       this.orders = of(this.orderItems);
+      
       
     });
 

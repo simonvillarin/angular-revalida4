@@ -1,11 +1,11 @@
 <app-header></app-header>
 <div class="container">
   <div class="title">My Orders</div>
+  <div *ngIf="showErrorMessage" class="text-center mt-5 pt-5">
+    You have not made an order yet
+  </div>
   <div class="orders-container" *ngFor="let i of orders | async">
-    <div *ngIf="errorMessage !== ''" class="text-center mt-5 pt-5">
-      {{ errorMessage }}
-    </div>
-    <div>
+    <div *ngIf="!showErrorMessage">
       <div class="status">
         <div>{{ i.date }}</div>
         <button>Pending</button>
