@@ -34,19 +34,21 @@ export class FeaturesComponent implements OnInit{
       this.userInterest = {
         listOfInterest: user.listOfInterest
       }
+
+      this.productService.getAllProducts().subscribe((product) => {
+        this.productList = product.filter((data) => {
+          return this.userInterest.listOfInterest.includes(data.category) && data.quantity !== 0;
+        });
+  
+        // Shuffle the productList array randomly
+        this.productList.sort(() => Math.random() - 0.5);
+  
+        // Take a maximum of 12 products
+        this.featuredProductList = this.productList.slice(0, 12);
+        console.log(this.productList);
+      });
     })
 
-    this.productService.getAllProducts().subscribe((product) => {
-      this.productList = product.filter((data) => {
-        return this.userInterest.listOfInterest.includes(data.category);
-      });
-
-      // Shuffle the productList array randomly
-      this.productList.sort(() => Math.random() - 0.5);
-
-      // Take a maximum of 12 products
-      this.featuredProductList = this.productList.slice(0, 12);
-      console.log(this.productList);
-    });
+    
   }
 }
