@@ -37,7 +37,7 @@ const routes: Routes = [
       import('./modules/category/category.module').then(
         (m) => m.CategoryModule
       ),
-    canActivate: [userExistsGuard],
+      canActivate: [userExistsGuard],
   },
   {
     path: '',
@@ -45,7 +45,7 @@ const routes: Routes = [
       import('./modules/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
       ),
-    canActivateChild: [adminExistsGuard],
+      canActivate: [adminExistsGuard],
   },
   {
     path: '',
@@ -53,7 +53,7 @@ const routes: Routes = [
       import('./modules/product-list/product-list.module').then(
         (m) => m.ProductListModule
       ),
-      canActivateChild: [adminExistsGuard],
+      canActivate: [adminExistsGuard],
   },
   {
     path: '',

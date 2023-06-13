@@ -32,8 +32,10 @@ export class DashboardComponent implements OnInit {
 
   getAllProducts = () => {
     this.productService.getAllProducts().subscribe((res) => {
-      let filterData = res.sort((a, b) => b.price - a.price);
-      this.products = filterData.slice(0, 5);
+      console.log(res);
+      let filterData = res.sort((a, b) => b.soldItems - a.soldItems);
+      console.log(filterData);
+      this.products = filterData;
       this.categories = res.map((product) => product.category);
       this.soldItems = res.map((product) => product.soldItems);
 

@@ -23,7 +23,7 @@ export class ProductComponent implements OnInit {
   ratingArray: number[] = [];
   prodName: string = 'Lenovo DB60 Slim USB Portable DVD Burner DB60-WW';
 
-  product: Product | undefined;
+  product: any;
   comments: any[] = [];
   comment: string = '';
   userId: number = 0;
@@ -211,7 +211,9 @@ export class ProductComponent implements OnInit {
 
   // Product Quantity
   increase() {
-    this.quantity++;
+    if(this.quantity < this.product.quantity){
+      this.quantity++;
+    }
   }
 
   decrease() {

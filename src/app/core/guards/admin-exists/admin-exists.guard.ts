@@ -7,7 +7,7 @@ export const adminExistsGuard: CanActivateFn = (route, state) => {
       return true;
     } else {
       const router = inject(Router);
-      router.navigate(['/home']);
+      router.navigateByUrl('/home');
       return false;
     }
 };

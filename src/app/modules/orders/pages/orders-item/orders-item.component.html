@@ -2,6 +2,9 @@
 <div class="container">
   <div class="title">My Orders</div>
   <div class="orders-container" *ngFor="let i of orders | async">
+    <div *ngIf="errorMessage !== ''" class="text-center mt-5 pt-5">
+      {{ errorMessage }}
+    </div>
     <div>
       <div class="status">
         <div>{{ i.date }}</div>

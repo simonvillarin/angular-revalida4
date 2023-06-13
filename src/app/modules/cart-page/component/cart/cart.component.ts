@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProductListService } from 'src/app/modules/product-list/services/product-list.service';
 import { Cart } from 'src/app/shared/models/cart';
 import { CartService } from 'src/app/shared/services/cart/cart.service';
 import { CheckoutService } from 'src/app/shared/services/checkout/checkout.service';
@@ -13,11 +14,13 @@ export class CartComponent implements OnInit {
   cartItems: Cart[] = [];
   cartCount = 0;
   showSpinner: boolean = false;
+  errorMessage: string = '';
 
   constructor(
     private router: Router,
     private cartService: CartService,
-    private checkoutService: CheckoutService
+    private checkoutService: CheckoutService,
+    private productService: ProductListService
   ) {}
 
   ngOnInit(): void {
@@ -35,19 +38,32 @@ export class CartComponent implements OnInit {
 
     this.cartService.getCartItemByUserId(userId).subscribe((data) => {
       this.cartItems = data;
+
+      if (this.cartItems.length === 0) {
+        this.errorMessage = 'No products added to cart.';
+      } else {
+        this.errorMessage = '';
+      }
     });
+
+    
   };
 
   increase(item: any) {
-    item.quantity++;
-
-    const payload = {
-      quantity: item.quantity,
-    };
-
-    this.cartService
-      .updateCartItem(item.cartId, payload)
-      .subscribe((res) => console.log(res));
+    this.productService.getProductById(item.productId).subscribe((data: any) => {
+      if(item.quantity < data.quantity) {
+        item.quantity++;
+      }
+  
+      const payload = {
+        quantity: item.quantity,
+      };
+  
+      this.cartService
+        .updateCartItem(item.cartId, payload)
+        .subscribe((res) => console.log(res));      
+    })
+    
   }
 
   decrease(item: any) {

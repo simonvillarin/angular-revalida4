@@ -37,12 +37,13 @@ export class HeaderComponent implements OnInit {
   };
 
   filterData = () => {
-    if (this.searchInput) {
+    if (this.searchInput !== '') {
+      this.getAllProducts();
       this.showPredictions = true;
       this.filteredData = this.products.filter((item) =>
-        item.productName.toLowerCase().includes(this.searchInput.toLowerCase())
+        item.productName.toLowerCase().includes(this.searchInput.toLowerCase()) && item.quantity > 0
       );
-    } else {
+    } else if(this.searchInput === '') {
       this.showPredictions = false;
       this.filteredData = [];
     }
@@ -64,12 +65,16 @@ export class HeaderComponent implements OnInit {
     this.isShowSearch = !this.isShowSearch;
     this.isShowDropdown = false;
     this.isShowMenu = false;
+    this.searchInput = '';
+    this.products = [];
   };
 
   closeSearch = () => {
     this.isShowSearch = false;
     this.isShowDropdown = false;
     this.isShowMenu = false;
+    this.searchInput = '';
+    this.products = [];
   };
 
   clearInput = () => {
