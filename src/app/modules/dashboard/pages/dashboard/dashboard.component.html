@@ -40,23 +40,23 @@
         </div>
       </div>
 
-      <div class="table-container">
-        <table>
+      <div class="table-container p-0 mt-5 border">
+        <table class="p-0 m-0">
           <thead>
             <th>Product Name</th>
             <th>Brand</th>
             <th>Category</th>
-            <th>Description</th>
+            <!-- <th>Description</th> -->
             <th>Sold Quantity</th>
             <th>Sold Price</th>
           </thead>
           <tbody>
             <ng-container *ngFor="let item of products">
               <tr>
-                <td>{{ item.productName }}</td>
+                <td class="text-start">{{ item.productName }}</td>
                 <td>{{ item.brand }}</td>
                 <td>{{ item.category }}</td>
-                <td>{{ item.description }}</td>
+                <!-- <td>{{ item.description }}</td> -->
                 <td>{{ item.soldItems }}</td>
                 <td>{{ localString(item.soldPrice) }}</td>
               </tr>

@@ -1,7 +1,6 @@
 import { map, Observable, of } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Order } from 'src/app/shared/models/order';
 import { OrderService } from 'src/app/shared/services/order/order.service';
 
 @Component({
@@ -61,12 +60,10 @@ export class OrdersItemComponent implements OnInit {
 
             this.orderItems.push(item);
           });
-
-          
       }
-
       this.orderItems.reverse();
       this.orders = of(this.orderItems);
+      
     });
 
   };

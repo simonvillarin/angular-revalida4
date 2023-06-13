@@ -74,14 +74,16 @@ export class DashboardComponent implements OnInit {
       console.log(res);
       let filterData = res.sort((a, b) => b.soldItems - a.soldItems);
       console.log(filterData);
-      this.products = filterData;
+      this.products = filterData.slice(0, 5);
       this.categories = res.map((product) => product.category);
       this.soldItems = res.map((product) => product.soldItems);
+      // No name duplicate of products
+      const uniqueCategories = [...new Set(this.categories)]; 
 
       Chart.register(...registerables);
 
       const data = {
-        labels: this.categories,
+        labels: uniqueCategories,
         datasets: [
           {
             label: 'Product List',
