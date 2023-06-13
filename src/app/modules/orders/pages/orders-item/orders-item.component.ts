@@ -13,6 +13,7 @@ export class OrdersItemComponent implements OnInit {
   orders: Observable<any[]> | undefined;
   orderItems: any[] = [];
   orderTrackings: any[] = [];
+  errorMessage: string = '';
 
   constructor(private orderService: OrderService, private router: Router) {}
 
@@ -60,10 +61,14 @@ export class OrdersItemComponent implements OnInit {
 
             this.orderItems.push(item);
           });
+
+          
       }
+
       this.orderItems.reverse();
       this.orders = of(this.orderItems);
     });
+
   };
 
   localString = (num: number) => {

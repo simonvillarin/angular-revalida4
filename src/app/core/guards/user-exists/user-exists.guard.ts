@@ -8,7 +8,7 @@ export const userExistsGuard: CanActivateFn = (route, state) => {
       return true;
     } else {
       const router = inject(Router);
-      router.navigate(['/dashboard']);
+      router.navigateByUrl('/dashboard');
       return false;
     }
 };
